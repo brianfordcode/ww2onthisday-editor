@@ -1,10 +1,11 @@
 <template>
+
+<h1>WW2 on this day Editor</h1>
+
 <div class="main-container">
 
-  <h1>WW2 on this day Editor</h1>
-
   <div class="input-fields">
-    <div class="details" style="display: flex; flex-direction: column; width: min-content; margin: 0 auto;">
+    <div class="details">
       <!-- DATE -->
       <label for="date">
         date:
@@ -43,17 +44,12 @@
           {{ (day < 10 ? '0' : '') + day }}
           </option>
         </select>
-        <p>{{this.date}}</p>
-        <button @click="getDate()">add date</button>
       </label>
-
-      <!-- ID -->
-        <span>id: {{this.id}}<button @click="generateId()">Generate</button></span>
-        
 
       <!-- TITLE -->
       <label for="title">
-        <p style="text-align: center;">title:</p> <textarea style="max-width: 272.22px; min-width: 272.22px; min-height: 100px; max-height: 400px; padding: 3px;" v-model="title"/>
+        <p style="text-align: center;">title:</p>
+        <textarea class="textarea" v-model="title"/>
       </label>
       
       <!-- CITATION -->
@@ -64,13 +60,14 @@
       <!-- MAIN PICTURE -->
       <label for="mainPicture">
         main picture link: <input v-model="mainPicture" type="text">
-        <img style="width: 200px;" :src="`${mainPicture}`" :alt="`${mainPicture}`">
+        <img
+          style="width: 200px;" :src="`${mainPicture}`" :alt="`${mainPicture}`">
       </label>
         
       <br>
 
       <!-- LOCATION -->
-      <p style="text-align: center;">Location:</p>
+      <p style="text-align: center;">location:</p>
       <label for="coordinates">
         coordinates: <input v-model="location.coordinates" type="text">
       </label>
@@ -116,16 +113,9 @@
       <div class="books" style="display: flex; flex-direction: column;">
         <div class="book-input-fields" style="display: flex; flex-direction: column;">
           <p style="text-align: center;">Books:</p>
-          <!-- BOOK ID -->
-          <span>
-            id: {{this.bookInput.id}}
-            <button v-if="this.bookInput.id" @click="this.bookInput.id = ''">&#x2715;</button>
-            <br>
-            <button @click="generateBookId(id)">Generate</button>
-          </span>
           <!-- BOOK TITLE -->
           <label for="bookTitle">
-            title: <input v-model="bookInput.title" type="text" required>
+            title: <input v-model="bookInput.title" type="text">
           </label>
           <!-- BOOK PICTURE -->
           <div class="book-picture" style="display: flex; flex-direction: column; align-items: flex-end;">
@@ -217,16 +207,9 @@
       </div>
 
       <!-- MOVIES -->
-      <div class="movies" style="display: flex; flex-direction: column;">
+      <div id="movies" class="movies" style="display: flex; flex-direction: column;">
         <div class="movie-input-fields" style="display: flex; flex-direction: column;">
           <p style="text-align: center;">Movies:</p>
-          <!-- MOVIE ID -->
-          <span>
-            id: {{this.movieInput.id}}
-            <button v-if="this.movieInput.id" @click="this.movieInput.id = ''">&#x2715;</button>
-            <br>
-            <button @click="generateMovieId(id)">Generate</button>
-          </span>
           <!-- MOVIE TITLE -->
           <label for="movieTitle">
             title: <input v-model="movieInput.title" type="text">
@@ -275,7 +258,7 @@
             </select>
             <br>
           </label>
-          <!-- ENTER BUTTON -->
+          <!-- ENTER MOVIE BUTTON -->
           <button
             @click="enterMovie()" 
             style="margin-top: 10px;"
@@ -320,31 +303,26 @@
         </div>
       </div>
 
+
+
     </div>
 
-    <button style="margin-top: 100px;">ENTER</button>
+    <!-- ENTER BUTTON -->
+    <button
+      @click="enterEvent()"
+      style="margin-top: 100px;"
+    >
+    ENTER
+    </button>
 
   </div>
+
+    
 
 </div>
 
   <div class="output" style="width: 100%; margin-top: 20px">
-  {
-      <br>
-      <p>"date": "{{date}}",</p>
-      <p>"id": "{{ id }}",</p>
-      <p>"title": "{{ title }}",</p>
-      <p>"citation": "{{ citation }}",</p>
-      <p>"mainPicture": "{{ mainPicture }}",</p>
-      <p>"location":</p>
-      {
-      <p>"coordinates": "{{ location.coordinates }}",</p>
-      <p>"mapZoom": "{{ location.mapZoom }}"</p>
-      },
-      <p>"keywords": {{ keywords }},</p>
-      <p>"books": {{ books }},</p>
-      <p>"movies": {{ movies }}</p>
-  }
+    <p>{{ $store.state.event }}</p>
   </div>
 
 
@@ -360,7 +338,16 @@ export default {
       year: '',
       month: '',
       day: '',
+      title: '',
+      citation: '',
+      mainPicture: '',
+      location: {
+        coordinates: '',
+        mapZoom: 6,
+      },
       keywordInput: '',
+      keywords: [],
+      books: [],
       bookInput: {
         id: '',
         title: '',
@@ -372,6 +359,7 @@ export default {
           affiliateSource: ''
         }
       },
+      movies: [],
       movieInput: {
         id: '',
         title: '',
@@ -384,18 +372,8 @@ export default {
         }
       },
       // DATA:
-      date: '',
-      id: '',
-      title: '',
-      citation: '',
-      mainPicture: '',
-      location: {
-        coordinates: '',
-        mapZoom: 6,
-      },
-      keywords: [],
-      books: [],
-      movies: [],
+      events: []
+      
     }
   },
   methods: {
@@ -404,26 +382,13 @@ export default {
       this.keywords.push(this.keywordInput)
       this.keywordInput = ''
     },
-    getDate() {
-      if (this.year === '' || this.month === '' || this.day === '') { return }
-      this.date = this.year + "-" + this.month + "-" + this.day
-    },
-    generateId() {
-      this.id = "event-" + Date.now()
-    },
-    generateBookId() {
-      this.bookInput.id = "book-" + Date.now() 
-    },
-    generateMovieId() {
-      this.movieInput.id = "movie-" + Date.now() 
-    },
     enterBook() {
-      if (this.bookInput.id === '' || this.bookInput.title === '' || this.bookInput.picture === '' ||
+      if (this.bookInput.title === '' || this.bookInput.picture === '' ||
         this.bookInput.year ==='' || this.bookInput.mediaLink.link === '' || 
         this.bookInput.mediaLink.affiliateSource === '') {return}
 
         const obj = {
-          id: this.bookInput.id,
+          id: "book-" + Date.now(),
           title: this.bookInput.title,
           picture: this.bookInput.picture,
           year: this.bookInput.year,
@@ -456,12 +421,12 @@ export default {
       this.books.splice(index, 1)
     },
     enterMovie() {
-      if (this.movieInput.id === '' || this.movieInput.title === '' || this.movieInput.picture === '' ||
+      if (this.movieInput.title === '' || this.movieInput.picture === '' ||
         this.movieInput.year ==='' || this.movieInput.mediaLink.link === '' || 
         this.movieInput.mediaLink.affiliateSource === '') {return}
 
       const obj = {
-        id: this.movieInput.id,
+        id: "movie-" + Date.now(),
         title: this.movieInput.title,
         picture: this.movieInput.picture,
         year: this.movieInput.year,
@@ -491,6 +456,26 @@ export default {
       this.movieInput.mediaLink.affiliateSource = this.movies[index].mediaLink.affiliateSource
 
       this.movies.splice(index, 1)
+    },
+    enterEvent() {
+
+      const fullEvent = {
+        date: this.year + "-" + this.month + "-" + this.day,
+        id: "event-" + Date.now(),
+        title: this.title,
+        mainPicture: this.mainPicture,
+        citation: this.citation,
+        location: {
+          coordinates: this.location.coordinates,
+          mapZoom: this.location.mapZoom
+        },
+        keywords: this.keywords,
+        books: this.books,
+        movies: this.movies
+      }
+
+      this.$store.dispatch('addEvent', fullEvent)
+
     }
   },
 
@@ -500,9 +485,9 @@ export default {
 <style scoped>
 
 h1 {
+  text-align: center;
   margin: 20px 0;
 }
-
 
 .main-container {
   display: flex;
@@ -510,11 +495,26 @@ h1 {
   align-items: center;
 }
 
+.details {
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  margin: 0 auto;
+}
+
 .input-fields {
   display: flex;
   flex-direction: column;
   text-align: right;
   justify-content: space-around;
+}
+
+.textarea {
+  max-width: 272.22px;
+  min-width: 272.22px;
+  min-height: 100px;
+  max-height: 400px;
+  padding: 3px;
 }
 
 label {
@@ -526,10 +526,6 @@ input {
 }
 
 .books {
-  margin-right: 50px;
-}
-
-.movies {
   margin-right: 50px;
 }
 
