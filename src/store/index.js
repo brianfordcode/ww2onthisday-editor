@@ -31,8 +31,6 @@ export default createStore({
 
       context.commit('addEvent', submittedEvent)
 
-
-
       await setDoc(doc(db, "submitted-events", 'event-'+Date.now()+''), submittedEvent);
     },
   },
