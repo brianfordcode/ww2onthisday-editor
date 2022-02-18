@@ -5,15 +5,15 @@
   <div class="input-fields">
     <div class="details">
       <!-- DATE -->
-      <label for="date">
-        date:
+      <label for="date" >
+        <span :class="markDateDone()">date:</span>
         <!-- YEAR -->
         <select v-model="year">
           <option disabled selected>YEAR</option>
           <option
             v-for="year in 7"
             :key="year">
-            {{year + 1938}}
+            {{year ? year + 1938 : year}}
           </option>
         <!-- MONTH -->
         </select>
@@ -34,7 +34,7 @@
         </select>
         <!-- DAY -->
         <select v-model="day">
-          <option>day</option>
+          <option disabled selected>DAY</option>
           <option
             v-for="day in 31"
             :key="day"
@@ -45,29 +45,59 @@
       </label>
 
       <!-- TITLE -->
-      <label for="title">
-        <p style="text-align: center;">title:</p>
+      <label for="title" >
+        <p :class="markDone(title)" style="text-align: center;">title:</p>
         <textarea class="textarea" v-model="title"/>
       </label>
       
       <!-- CITATION -->
       <label for="citation">
-        citation: <input v-model="citation" type="text">
+       <span :class="markDone(citation)">citation:</span>
+       <input v-model="citation" type="text">
       </label>
       
       <!-- MAIN PICTURE -->
       <label for="mainPicture">
-        main picture link: <input v-model="mainPicture" type="text">
+        <span :class="markDone(mainPicture)">main picture link:</span>
+        <input v-model="mainPicture" type="text">
         <img
           style="width: 200px;" :src="`${mainPicture}`" :alt="`${mainPicture}`">
       </label>
         
+      <!-- KEYWORDS -->
+      <label for="keywords">
+        <span :class="markKeywordsDone()">keywords:</span>
+        <input
+          v-model="keywordInput"
+          type="text"
+          @keyup.enter="addKeyword(keywordInput)"
+        >
+        <button 
+          style="height: 20px; width: 20px"
+          @click="addKeyword(keywordInput)"
+        >
+        &#43;
+        </button>
+      </label>
+      <div
+        v-for="(keyword, index) in keywords"
+        :key="keyword"
+      >
+        <p>
+          {{ keyword }}
+          <button
+            @click="keywords.splice(index, 1)"
+          >
+          &#x2715;
+          </button>
+        </p>
+      </div>
       <br>
 
       <!-- LOCATION -->
-      <p style="text-align: center;">location:</p>
       <label for="coordinates">
-        coordinates: <input v-model="location.coordinates" type="text">
+        <span :class="markDone(location.coordinates)">coordinates:</span>
+        <input v-model="location.coordinates" type="text">
       </label>
       <label for="mapZoom">
         map zoom: <input style="width: 30px;" v-model="location.mapZoom" type="number" min="1" max="21">
@@ -84,25 +114,6 @@
       />
       <br>
 
-      <!-- KEYWORDS -->
-      <label for="keywords">
-        keywords: <input v-model="keywordInput" type="text">
-        <button @click="addKeyword(keywordInput)">&#43;</button>
-      </label>
-      <div
-        v-for="(keyword, index) in keywords"
-        :key="keyword"
-      >
-        <p>
-          {{ keyword }}
-          <button
-            @click="keywords.splice(index, 1)"
-          >
-          &#x2715;
-          </button>
-        </p>
-      </div>
-      <br>
     </div>
 
     <div class="media" style="display: flex;">
@@ -113,12 +124,13 @@
           <p style="text-align: center;">Books:</p>
           <!-- BOOK TITLE -->
           <label for="bookTitle">
-            title: <input v-model="bookInput.title" type="text">
+            <span :class="markDone(bookInput.title)">title:</span><input v-model="bookInput.title" type="text">
           </label>
           <!-- BOOK PICTURE -->
           <div class="book-picture" style="display: flex; flex-direction: column; align-items: flex-end;">
             <label for="bookPicture" >
-              picture: <input v-model="bookInput.picture" type="text">
+              <span :class="markDone(bookInput.picture)">picture:</span>
+              <input v-model="bookInput.picture" type="text">
             </label>
             <img
               :src="`${bookInput.picture}`"
@@ -128,17 +140,17 @@
           </div>
           <!-- BOOK YEAR -->
           <label for="bookYear">
-            year: <input v-model="bookInput.year" type="text">
+            <span :class="markDone(bookInput.year)">year:</span>
+            <input v-model="bookInput.year" type="text">
           </label>
-          <!-- MEDIA LINK -->
-          <p style="text-align: center;">Media Link:</p>
           <!-- BOOK LINK -->
           <label for="bookLink">
-            link: <input v-model="bookInput.mediaLink.link" type="text">
+            <span :class="markDone(bookInput.mediaLink.link)">link:</span>
+            <input v-model="bookInput.mediaLink.link" type="text">
           </label>
           <!-- AFFILIATE? -->
           <label for="affiliate" style="display: flex; align-items: center; justify-content: flex-end">
-            affiliate:
+            <span :class="markDone(bookInput.mediaLink.affiliate)">affiliate:</span>
             <input
               style="margin-left: 5px;"
               type="checkbox"
@@ -147,9 +159,10 @@
           </label>
           <!-- AFFILIATE SOURCE -->
           <label for="affiliateSource">
-            affiliate source:
+            <span :class="markDone(bookInput.mediaLink.affiliateSource)">affiliate source:</span>
             <!-- AMAZON -->
             <select
+              style="margin-left:2px;"
               v-model="bookInput.mediaLink.affiliateSource"
             >
               <option disabled selected>SOURCE</option>
@@ -210,12 +223,14 @@
           <p style="text-align: center;">Movies:</p>
           <!-- MOVIE TITLE -->
           <label for="movieTitle">
-            title: <input v-model="movieInput.title" type="text">
+            <span :class="markDone(movieInput.title)">title:</span>
+            <input v-model="movieInput.title" type="text">
           </label>
           <!-- MOVIE PICTURE -->
           <div class="movie-picture" style="display: flex; flex-direction: column; align-items: flex-end;">
             <label for="moviePicture" >
-              picture: <input v-model="movieInput.picture" type="text">
+              <span :class="markDone(movieInput.picture)">picture:</span>
+              <input v-model="movieInput.picture" type="text">
             </label>
             <img
               :src="`${movieInput.picture}`"
@@ -225,17 +240,17 @@
           </div>
           <!-- MOVIE YEAR -->
           <label for="movieYear">
-            year: <input v-model="movieInput.year" type="text">
+            <span :class="markDone(movieInput.year)">year:</span>
+            <input v-model="movieInput.year" type="text">
           </label>
-          <!-- MEDIA LINK -->
-          <p style="text-align: center;">Media Link:</p>
           <!-- MOVIE LINK -->
           <label for="movieLink">
-            link: <input v-model="movieInput.mediaLink.link" type="text">
+           <span :class="markDone(movieInput.mediaLink.link)">link:</span>
+           <input v-model="movieInput.mediaLink.link" type="text">
           </label>
           <!-- AFFILIATE? -->
           <label for="affiliate" style="display: flex; align-items: center; justify-content: flex-end">
-            affiliate:
+            <span :class="markDone(movieInput.mediaLink.affiliate)">affiliate:</span>
             <input
               style="margin-left: 5px;"
               type="checkbox"
@@ -244,9 +259,10 @@
           </label>
           <!-- AFFILIATE SOURCE -->
           <label for="affiliateSource">
-            affiliate source:
+            <span :class="markDone(movieInput.mediaLink.affiliateSource)">affiliate source:</span>
             <!-- AMAZON -->
             <select
+              style="margin-left:2px;"
               v-model="movieInput.mediaLink.affiliateSource"
             >
               <option disabled selected>SOURCE</option>
@@ -431,6 +447,21 @@ export default {
 
       Object.assign(this.$data, this.$options.data.call(this));
 
+    },
+    markDateDone() {
+      if (this.year != '' && this.month != '' && this.day != '') {
+        return 'done'
+      }
+    },
+    markDone(data) {
+      if (data && data != 'keywordInput') {
+        return 'done'
+      }
+    },
+    markKeywordsDone() {
+      if (this.keywords.length > 0) {
+        return 'done'
+      }
     }
   },
 }
@@ -472,11 +503,17 @@ label {
 
 input {
   height: 20px;
+  margin-left: 2px;
 }
 
 .books {
   margin-right: 50px;
 }
+
+  .done {
+    background-color: green;
+    color: white;
+  }
 
 @media screen and (max-width:550px) {
   .media {

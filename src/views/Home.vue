@@ -1,25 +1,27 @@
 <template>
 
-  <h1>WW2 on this day Editor</h1>
-
+  <h2>WW2 on this day Editor</h2>
+  
   <edit/>
 
-  <p>{{$store.state.event}}</p>
+  <preview/>
 
 </template>
 
 <script>
 import edit from '../components/edit.vue'
+import preview from '../components/preview.vue'
+
 export default {
-  components: {edit}
+  components: {edit, preview}
 
 }
 </script>
 
 <style scoped>
 
-h1 {
+h2 {
   text-align: center;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 </style>
