@@ -6,7 +6,7 @@
 
   <preview/>
 
-  <submitButton/>
+  <!-- <submitButton/> -->
 
 </template>
 

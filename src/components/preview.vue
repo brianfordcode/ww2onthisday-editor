@@ -5,10 +5,7 @@
     v-for="(event, index) in $store.state.events"
     :key="event"
 >
-    <div
-        class="event-container"
-        
-    >
+    <div class="event-container">
         <div class="event-details">
             <!-- DATE -->
             <p>date: {{new Date($store.state.events[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"})}}</p>
@@ -111,9 +108,23 @@
     </div>
     <div class="buttons">
         <button @click="deleteEvent(event, index)">&#x2715;</button>
+        <button @click="openModal(index)">SUBMIT</button>
         <button @click="editEvent(event)">
             <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
         </button>
+    </div>
+
+    <div
+        class="submit-modal"
+        v-if="selectedIndex === index"
+    >
+        <div>
+            <p>Publish to Site?</p>
+            <div class="modal-btns">
+                <p @click="sendToFireBase(event, index)">yes</p>
+                <p @click="selectedIndex = null">no</p>
+            </div>
+        </div>
     </div>
     
 </div>
@@ -123,14 +134,26 @@
 
 <script>
 export default {
+    data() {
+        return {
+            selectedIndex: null
+        }
+    },
     methods: {
-        deleteEvent(event, index) {
+        deleteEvent(index) {
             this.$store.state.events.splice(index, 1)
-            console.log(this.$store.state.events)
         },
         editEvent(event) {
             console.log('edit', event)
-            this.$store.dispatch('editEvent', event)
+            // this.$store.dispatch('editEvent', event)
+        },
+        openModal(index) {
+            this.selectedIndex = index
+        },
+        sendToFireBase(event, index) {
+            this.$store.dispatch('sendToFirebase', event)
+            this.deleteEvent(index)
+            this.selectedIndex = null
         }
     }
 
@@ -140,10 +163,10 @@ export default {
 <style scoped>
 
 .main-container {
-    
     border: 1px solid;
     width: max-content;
     margin: 0 auto 20px auto;
+    position: relative;
 }
 
 .event-container {
@@ -187,6 +210,29 @@ a {
 .buttons {
     display: flex;
     justify-content: space-between;
+}
+
+.submit-modal {
+    position: absolute;
+    top: 0;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    background-color: rgba(95, 0, 0, 0.61);
+    color: white;
+}
+
+.modal-btns {
+    display: flex;
+    justify-content: space-around;
+}
+
+.modal-btns > * {
+    border: 1px solid;
+    padding: 0 5px;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 550px ) {

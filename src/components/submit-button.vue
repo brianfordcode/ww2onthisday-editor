@@ -13,9 +13,11 @@
 export default {
     methods: {
         handleClick() {
-            console.log(this.$store.state.events)
-            // this.$store.dispatch('sendToFirebase', this.$store.state.events)
-        }
+            // console.log(this.$store.state.events)
+            for (let i = 0; i < this.$store.state.events.length; i++) {
+                this.$store.dispatch('sendToFirebase', this.$store.state.events[i])
+            }
+        },
     }
 
 }

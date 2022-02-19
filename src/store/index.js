@@ -13,6 +13,7 @@ const firebaseConfig = {
   appId: "1:814949029524:web:343f2f6669b975b9fc0681",
   measurementId: "G-YTWHJZS99D"
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
@@ -28,23 +29,20 @@ export default createStore({
   },
   actions: {
     addEvent(context, submittedEvent) {
-
       context.commit('addEvent', submittedEvent)
-
-      
-      // await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
     },
     async sendToFirebase(context, submittedEvent) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
-    
     },
-    deleteEvent(context, event) {
-      console.log('delete', event)
-    },
-    editEvent(context, event) {
-      console.log('edit', event)
-    }
+
+// DO I NEED THESE OR DO EVERYTHING IN PREVIEW COMPONENT???
+    // deleteEvent(context, event) {
+    //   console.log('delete', event)
+    // },
+    // editEvent(context, event) {
+    //   console.log('edit', event)
+    // }
   },
   modules: {
   }
