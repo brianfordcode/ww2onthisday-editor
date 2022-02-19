@@ -525,10 +525,16 @@ input {
   margin-right: 50px;
 }
 
-  .done {
-    background-color: green;
-    color: white;
-  }
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.done {
+  background-color: green;
+  color: white;
+}
 
 @media screen and (max-width:550px) {
   .media {

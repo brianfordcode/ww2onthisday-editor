@@ -110,7 +110,7 @@
         
     </div>
     <div class="buttons">
-        <button @click="deleteEvent(event)">DELETE</button>
+        <button @click="deleteEvent(event)">&#x2715;</button>
         <button @click="editEvent(event)">EDIT</button>
     </div>
     
