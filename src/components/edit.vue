@@ -394,7 +394,7 @@ export default {
     },
     editBook(index) {
 
-      //TRYING TO MAKE A COOLER FUNCTION
+      //TODO: TRY TO MAKE A COOLER FUNCTION
       // const attributes = Object.keys(getInitialMediaState())
       // let firstAttributes = attributes.filter(e => e != 'id' && e != 'mediaLink');
       // console.log(firstAttributes)
@@ -459,6 +459,8 @@ export default {
       this.$store.dispatch('addEvent', fullEvent)
 
       Object.assign(this.$data, this.$options.data.call(this));
+
+      // TODO: TRY TO MAKE DATE INPUT THE SAME DATE
 
     },
     markDateDone() {
