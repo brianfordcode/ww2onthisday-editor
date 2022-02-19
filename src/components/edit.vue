@@ -457,7 +457,6 @@ export default {
         books: this.books,
         movies: this.movies
       }
-
       if (this.year === '' || this.month === '' || this.day === '' || this.title === '') {
         this.showNeedAtLeastADate = true;
         setTimeout(() => {

@@ -81,7 +81,6 @@
                     :key="movie"
                     class="movie media"
                 >
-                    
                     <img
                     class="media-pic"
                     :src="`${movie.picture}`"
@@ -113,8 +112,9 @@
             <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
         </button>
     </div>
+    <!-- MODAL ASKING SURE TO SEND TO FIREBASE -->
     <div
-        class="submit-modal"
+        class="submit-warning-modal"
         v-if="selectedIndex === index"
     >
         <div>
@@ -126,17 +126,16 @@
             </div>
         </div>
     </div>
-    <p 
-        class="submit-modal"
-        style="background-color: green; opacity: 0.80;"
+
+
+</div>
+    <!-- MODAL IF SENT TO FIREBASE  -->
+    <p
+        class="submit-success-modal"
         v-if="submittedEvent"
     >
     Event Submitted!
     </p>
-  
-    
-</div>
-
 
 
 </template>
@@ -165,11 +164,10 @@ export default {
             this.submittedEvent = true
             this.selectedIndex = null
             setTimeout(() => {
-                    this.submittedEvent = true
+                    this.submittedEvent = false
                     this.deleteEvent(index)
-                }, 1000)
-
-            
+                }, 2000)
+                
         }
     }
 
@@ -229,7 +227,7 @@ a {
     cursor: pointer;
 }
 
-.submit-modal {
+.submit-warning-modal {
     position: absolute;
     top: 0;
     justify-content: space-around;
@@ -250,6 +248,16 @@ a {
     border: 1px solid;
     padding: 0 5px;
     cursor: pointer;
+}
+
+.submit-success-modal {
+    background-color: green;
+    padding: 10px 0;
+    opacity: 0.80;
+    position: sticky;
+    bottom: 0;
+    color: white;
+    text-align: center
 }
 
 button {
