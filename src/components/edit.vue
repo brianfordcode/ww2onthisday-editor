@@ -321,7 +321,7 @@
     </div>
     <!-- ENTER BUTTON -->
     <button
-      @click="enterEvent()"
+      @click="addEvent()"
       style="margin: 50px 0;"
     >
     ENTER
@@ -440,7 +440,7 @@ export default {
 
       this.movies.splice(index, 1)
     },
-    enterEvent() {
+    addEvent() {
       const fullEvent = {
         date: this.year + "-" + this.month + "-" + this.day,
         id: "event-" + Date.now(),
