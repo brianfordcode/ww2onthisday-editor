@@ -1,117 +1,162 @@
 <template>
 
 <div
-    class="container"
+    class="main-container"
     v-for="(event, index) in $store.state.event"
     :key="event"
 >
-    <div class="event-details">
-        <p>date: {{new Date($store.state.event[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"})}}</p>
-        title: <p>{{$store.state.event[index].title}}</p>
-        <p>citation: 
-            <a 
-                v-if="$store.state.event[index].citation"
-                :href="`${$store.state.event[index].citation}`"
-                target="_blank"
-            >
-            link
-            </a>
-        </p>
+    <div
+        class="event-container"
         
-        <div style="display: flex; align-items: center">
-            <p>main picture:</p>
-            <img
-                :src="`${$store.state.event[index].mainPicture}`"
-                :alt="`${$store.state.event[index].mainPicture}`"
-                style="width: 100px;"
-            >
-        </div>
-        
-        <p>keywords: {{$store.state.event[index].keywords}}</p>
-        <iframe
-            class="map"
-            v-if="$store.state.event[index].location.coordinates"
-            style="border:0; width: 150px;"
-            loading="lazy"
-            allowfullscreen
-            :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
-            ${$store.state.event[index].location.coordinates}&zoom=${$store.state.event[index].location.mapZoom}
-            &maptype=satellite`"
-        />
-    </div>
-    <div class="media-container">
-        <!-- BOOKS -->
-        <p>books:</p>
-        <div class="media-wrapper">
+    >
+        <div class="event-details">
+            <!-- DATE -->
+            <p>date: {{new Date($store.state.event[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"})}}</p>
+            <!-- TITLE -->
+            title: <p>{{$store.state.event[index].title}}</p>
+            <!-- CITATION -->
+            <p>citation: 
+                <a 
+                    v-if="$store.state.event[index].citation"
+                    :href="`${$store.state.event[index].citation}`"
+                    target="_blank"
+                >
+                &#10003;
+                </a>
+            </p>
             
-            <div
-                v-for="book in $store.state.event[index].books"
-                :key="book"
-                class="book media"
-            >
-                <img class="media-pic" :src="`${book.picture}`" :alt="`${book.picture}`">
-                <div>
-                    <p>title: {{book.title}}</p>
-                    <p>year: {{book.year}}</p>
-                    <p>link: <a v-if="book.mediaLink.link" :href="`${book.mediaLink.link}`" target="_blank">link</a></p>
-                    <p>affiliate: {{book.mediaLink.affiliate}}</p>
-                    <p>affiliate source: {{book.mediaLink.affiliateSource}}</p>
-                </div>
-            </div>
-        </div>
-        <!-- MOVIES -->
-        <p>movies:</p>
-        <div class="media-wrapper">
-            
-            <div
-                v-for="movie in $store.state.event[index].movies"
-                :key="movie"
-                class="movie media"
-            >
-                
+            <div style="display: flex; align-items: center">
+                <p>main picture:</p>
                 <img
-                class="media-pic"
-                :src="`${movie.picture}`"
-                :alt="`${movie.picture}`">
-                <div>
-                    <p>title: {{movie.title}}</p>
-                    <p>year: {{movie.year}}</p>
-                    <p>link: <a v-if="movie.mediaLink.link" :href="`${movie.mediaLink.link}`" target="_blank">link</a></p>
-                    <p>affiliate: {{movie.mediaLink.affiliate}}</p>
-                    <p>affiliate source: {{movie.mediaLink.affiliateSource}}</p>
+                    :src="`${$store.state.event[index].mainPicture}`"
+                    :alt="`${$store.state.event[index].mainPicture}`"
+                    style="width: 100px;"
+                >
+            </div>
+            <!-- KEYWORDS -->
+            <p>keywords: {{$store.state.event[index].keywords}}</p>
+            <!-- MAP -->
+            <iframe
+                class="map"
+                v-if="$store.state.event[index].location.coordinates"
+                style="border:0; width: 250px; height: 150px;"
+                loading="lazy"
+                allowfullscreen
+                :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
+                ${$store.state.event[index].location.coordinates}&zoom=${$store.state.event[index].location.mapZoom}
+                &maptype=satellite`"
+            />
+        </div>
+        <div class="media-container">
+            <!-- BOOKS -->
+            <p>books:</p>
+            <div class="media-wrapper">
+                
+                <div
+                    v-for="book in $store.state.event[index].books"
+                    :key="book"
+                    class="book media"
+                >
+                    <img class="media-pic" :src="`${book.picture}`" :alt="`${book.picture}`">
+                    <div>
+                        <p>title: {{book.title}}</p>
+                        <p>year: {{book.year}}</p>
+                        <p>link:
+                            <a 
+                                v-if="book.mediaLink.link"
+                                :href="`${book.mediaLink.link}`"
+                                target="_blank"
+                            >
+                            &#10003;
+                            </a>
+                        </p>
+                        <p>affiliate: {{book.mediaLink.affiliate}}</p>
+                        <p>affiliate source: {{book.mediaLink.affiliateSource}}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- MOVIES -->
+            <p>movies:</p>
+            <div class="media-wrapper">
+                
+                <div
+                    v-for="movie in $store.state.event[index].movies"
+                    :key="movie"
+                    class="movie media"
+                >
+                    
+                    <img
+                    class="media-pic"
+                    :src="`${movie.picture}`"
+                    :alt="`${movie.picture}`">
+                    <div>
+                        <p>title: {{movie.title}}</p>
+                        <p>year: {{movie.year}}</p>
+                        <p>link:
+                            <a 
+                                v-if="movie.mediaLink.link"
+                                :href="`${movie.mediaLink.link}`"
+                                target="_blank"
+                            >
+                            &#10003;
+                            </a>
+                        </p>
+                        <p>affiliate: {{movie.mediaLink.affiliate}}</p>
+                        <p>affiliate source: {{movie.mediaLink.affiliateSource}}</p>
+                    </div>
                 </div>
             </div>
         </div>
+        
     </div>
-
-
+    <div class="buttons">
+        <button @click="deleteEvent(event)">DELETE</button>
+        <button @click="editEvent(event)">EDIT</button>
+    </div>
+    
 </div>
 
-
-    
-    
 
 </template>
 
 <script>
 export default {
+    methods: {
+        deleteEvent(event) {
+            console.log('delete', event)
+            this.$store.dispatch('deleteEvent', event)
+        },
+        editEvent(event) {
+            console.log('edit', event)
+            this.$store.dispatch('editEvent', event)
+        }
+    }
 
 }
 </script>
 
 <style scoped>
 
-.container {
-    padding: 10px 25px;
+.main-container {
+    
     border: 1px solid;
     width: max-content;
-    margin: 20px auto;
+    margin: 0 auto 20px auto;
+}
+
+.event-container {
     display: flex;
+    padding: 10px 25px;
 }
 
 .event-details {
     max-width: 300px;
     overflow: hidden;
+}
+
+a {
+    color: black;
+    text-decoration: none;
 }
 
 .media-container {
@@ -135,6 +180,11 @@ export default {
     width: auto;
     height: 70px;
     padding-right: 2px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
 }
 
 @media screen and (max-width: 550px ) {

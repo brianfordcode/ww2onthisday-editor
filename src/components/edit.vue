@@ -322,7 +322,7 @@
     <!-- ENTER BUTTON -->
     <button
       @click="enterEvent()"
-      style="margin-top: 50px;"
+      style="margin: 50px 0;"
     >
     ENTER
     </button>

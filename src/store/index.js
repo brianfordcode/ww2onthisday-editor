@@ -34,6 +34,12 @@ export default createStore({
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
     },
+    deleteEvent(context, event) {
+      console.log('delete', event)
+    },
+    editEvent(context, event) {
+      console.log('edit', event)
+    }
   },
   modules: {
   }
