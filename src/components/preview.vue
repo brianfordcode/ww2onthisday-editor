@@ -8,7 +8,7 @@
     <div class="event-container">
         <div class="event-details">
             <!-- DATE -->
-            <p>date: {{new Date($store.state.events[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"})}}</p>
+            <p>date: {{$store.state.events[index].date}}</p>
             <!-- TITLE -->
             title: <p>{{$store.state.events[index].title}}</p>
             <!-- CITATION -->
@@ -163,10 +163,10 @@ export default {
             this.$store.dispatch('sendToFirebase', event)
             this.submittedEvent = true
             this.selectedIndex = null
+            this.deleteEvent(index)
             setTimeout(() => {
-                    this.submittedEvent = false
-                    this.deleteEvent(index)
-                }, 2000)
+                this.submittedEvent = false
+            }, 2000)
                 
         }
     }
@@ -179,6 +179,7 @@ export default {
 .main-container {
     border: 1px solid;
     width: max-content;
+    height: max-content;
     margin: 0 auto 20px auto;
     position: relative;
 }
@@ -257,7 +258,7 @@ a {
     position: sticky;
     bottom: 0;
     color: white;
-    text-align: center
+    text-align: center;
 }
 
 button {

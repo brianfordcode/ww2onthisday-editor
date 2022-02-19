@@ -1,9 +1,9 @@
 <template>
 
   <h2>WW2 on this day Editor</h2>
-  
-  <edit/>
 
+  <edit/>
+  
   <preview/>
 
   <!-- <submitButton/> -->
@@ -26,4 +26,5 @@ h2 {
   text-align: center;
   margin: 10px 0;
 }
+
 </style>
