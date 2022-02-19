@@ -111,7 +111,9 @@
     </div>
     <div class="buttons">
         <button @click="deleteEvent(event)">&#x2715;</button>
-        <button @click="editEvent(event)">EDIT</button>
+        <button @click="editEvent(event)">
+            <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
+        </button>
     </div>
     
 </div>

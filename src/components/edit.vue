@@ -211,7 +211,7 @@
               <button
                 @click="editBook(index)"
               >
-              Edit
+                <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
               </button>
             </div>
           </div>
@@ -312,7 +312,7 @@
               <button
                 @click="editMovie(index)"
               >
-              Edit
+                <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
               </button>
             </div>
           </div>
