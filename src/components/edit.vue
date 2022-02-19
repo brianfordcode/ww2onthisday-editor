@@ -6,7 +6,7 @@
     <div class="details">
       <!-- DATE -->
       <label for="date" >
-        <span :class="markDateDone()">date:</span>
+        <span :class="markDateDone()">date: </span>
         <!-- YEAR -->
         <select v-model="year">
           <option disabled selected>YEAR</option>
@@ -324,7 +324,9 @@
       @click="addEvent()"
       style="margin: 50px 0; padding: 10px;"
     >
-    ADD EVENT
+    <span>ADD EVENT</span>
+    <br>
+    <span v-if="showNeedAtLeastADate">Needs a date and title!</span>
     </button>
     </div>
 </div>
@@ -346,10 +348,9 @@ const getInitialMediaState = () => ({
 })
 
 export default {
-  name: 'Home',
-  components: { },
   data() {
     return {
+      showNeedAtLeastADate: false,
       // INPUTS:
       year: '',
       month: '',
@@ -444,6 +445,7 @@ export default {
       const fullEvent = {
         date: this.year + "-" + this.month + "-" + this.day,
         id: "event-" + Date.now(),
+        timeEventSubmitted: new Date(),
         title: this.title,
         mainPicture: this.mainPicture,
         citation: this.citation,
@@ -456,9 +458,16 @@ export default {
         movies: this.movies
       }
 
-      this.$store.dispatch('addEvent', fullEvent)
-
-      Object.assign(this.$data, this.$options.data.call(this));
+      if (this.year === '' || this.month === '' || this.day === '' || this.title === '') {
+        this.showNeedAtLeastADate = true;
+        setTimeout(() => {
+          this.showNeedAtLeastADate = false;
+        }, 2000)
+      } else {
+        this.$store.dispatch('addEvent', fullEvent)
+        Object.assign(this.$data, this.$options.data.call(this));
+        this.showNeedAtLeastADate = false;
+      }
 
       // TODO: TRY TO MAKE DATE INPUT THE SAME DATE
 
@@ -519,6 +528,10 @@ label {
 input {
   height: 20px;
   margin-left: 2px;
+}
+
+button {
+  cursor: pointer;
 }
 
 .books {

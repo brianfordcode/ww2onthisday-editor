@@ -113,7 +113,6 @@
             <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
         </button>
     </div>
-
     <div
         class="submit-modal"
         v-if="selectedIndex === index"
@@ -123,11 +122,21 @@
             <div class="modal-btns">
                 <p @click="sendToFireBase(event, index)">yes</p>
                 <p @click="selectedIndex = null">no</p>
+                
             </div>
         </div>
     </div>
+    <p 
+        class="submit-modal"
+        style="background-color: green; opacity: 0.80;"
+        v-if="submittedEvent"
+    >
+    Event Submitted!
+    </p>
+  
     
 </div>
+
 
 
 </template>
@@ -136,7 +145,8 @@
 export default {
     data() {
         return {
-            selectedIndex: null
+            selectedIndex: null,
+            submittedEvent: false,
         }
     },
     methods: {
@@ -152,8 +162,14 @@ export default {
         },
         sendToFireBase(event, index) {
             this.$store.dispatch('sendToFirebase', event)
-            this.deleteEvent(index)
+            this.submittedEvent = true
             this.selectedIndex = null
+            setTimeout(() => {
+                    this.submittedEvent = true
+                    this.deleteEvent(index)
+                }, 1000)
+
+            
         }
     }
 
@@ -210,6 +226,7 @@ a {
 .buttons {
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .submit-modal {
@@ -235,6 +252,10 @@ a {
     cursor: pointer;
 }
 
+button {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 550px ) {
     .container {
         flex-direction: column;
@@ -246,6 +267,5 @@ a {
         margin: 0 0 10px 0;
     }
 }
-
 
 </style>
