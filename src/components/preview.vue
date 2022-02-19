@@ -2,7 +2,7 @@
 
 <div
     class="main-container"
-    v-for="(event, index) in $store.state.event"
+    v-for="(event, index) in $store.state.events"
     :key="event"
 >
     <div
@@ -11,14 +11,14 @@
     >
         <div class="event-details">
             <!-- DATE -->
-            <p>date: {{new Date($store.state.event[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"})}}</p>
+            <p>date: {{new Date($store.state.events[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"})}}</p>
             <!-- TITLE -->
-            title: <p>{{$store.state.event[index].title}}</p>
+            title: <p>{{$store.state.events[index].title}}</p>
             <!-- CITATION -->
             <p>citation: 
                 <a 
-                    v-if="$store.state.event[index].citation"
-                    :href="`${$store.state.event[index].citation}`"
+                    v-if="$store.state.events[index].citation"
+                    :href="`${$store.state.events[index].citation}`"
                     target="_blank"
                 >
                 &#10003;
@@ -28,22 +28,22 @@
             <div style="display: flex; align-items: center">
                 <p>main picture:</p>
                 <img
-                    :src="`${$store.state.event[index].mainPicture}`"
-                    :alt="`${$store.state.event[index].mainPicture}`"
+                    :src="`${$store.state.events[index].mainPicture}`"
+                    :alt="`${$store.state.events[index].mainPicture}`"
                     style="width: 100px;"
                 >
             </div>
             <!-- KEYWORDS -->
-            <p>keywords: {{$store.state.event[index].keywords}}</p>
+            <p>keywords: {{$store.state.events[index].keywords}}</p>
             <!-- MAP -->
             <iframe
                 class="map"
-                v-if="$store.state.event[index].location.coordinates"
+                v-if="$store.state.events[index].location.coordinates"
                 style="border:0; width: 250px; height: 150px;"
                 loading="lazy"
                 allowfullscreen
                 :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
-                ${$store.state.event[index].location.coordinates}&zoom=${$store.state.event[index].location.mapZoom}
+                ${$store.state.events[index].location.coordinates}&zoom=${$store.state.events[index].location.mapZoom}
                 &maptype=satellite`"
             />
         </div>
@@ -53,7 +53,7 @@
             <div class="media-wrapper">
                 
                 <div
-                    v-for="book in $store.state.event[index].books"
+                    v-for="book in $store.state.events[index].books"
                     :key="book"
                     class="book media"
                 >
@@ -80,7 +80,7 @@
             <div class="media-wrapper">
                 
                 <div
-                    v-for="movie in $store.state.event[index].movies"
+                    v-for="movie in $store.state.events[index].movies"
                     :key="movie"
                     class="movie media"
                 >
@@ -110,7 +110,7 @@
         
     </div>
     <div class="buttons">
-        <button @click="deleteEvent(event)">&#x2715;</button>
+        <button @click="deleteEvent(event, index)">&#x2715;</button>
         <button @click="editEvent(event)">
             <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
         </button>
@@ -124,9 +124,9 @@
 <script>
 export default {
     methods: {
-        deleteEvent(event) {
-            console.log('delete', event)
-            this.$store.dispatch('deleteEvent', event)
+        deleteEvent(event, index) {
+            this.$store.state.events.splice(index, 1)
+            console.log(this.$store.state.events)
         },
         editEvent(event) {
             console.log('edit', event)

@@ -322,9 +322,9 @@
     <!-- ENTER BUTTON -->
     <button
       @click="addEvent()"
-      style="margin: 50px 0;"
+      style="margin: 50px 0; padding: 10px;"
     >
-    ENTER
+    ADD EVENT
     </button>
     </div>
 </div>

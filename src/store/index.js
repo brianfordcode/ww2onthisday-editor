@@ -19,20 +19,25 @@ const db = getFirestore();
 
 export default createStore({
   state: {
-    event: []
+    events: []
   },
   mutations: {
     addEvent(state, submittedEvent) {
-      state.event.push(submittedEvent)
+      state.events.push(submittedEvent)
     }
   },
   actions: {
-    async addEvent(context, submittedEvent) {
+    addEvent(context, submittedEvent) {
 
       context.commit('addEvent', submittedEvent)
 
+      
+      // await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
+    },
+    async sendToFirebase(context, submittedEvent) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
+    
     },
     deleteEvent(context, event) {
       console.log('delete', event)
