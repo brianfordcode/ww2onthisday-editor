@@ -32,7 +32,7 @@ export default createStore({
       context.commit('addEvent', submittedEvent)
 
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
-      await setDoc(doc(db, "development", 'event-'+Date.now()+''), submittedEvent);
+      await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
     },
   },
   modules: {

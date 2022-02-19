@@ -165,9 +165,10 @@
               style="margin-left:2px;"
               v-model="bookInput.mediaLink.affiliateSource"
             >
-              <option disabled selected>SOURCE</option>
+              <option selected>None</option>
               <option>Amazon</option>
               <option>Ebay</option>
+              <option>Walmart</option>
               <option>Other</option>
             </select>
             <br>
@@ -265,9 +266,10 @@
               style="margin-left:2px;"
               v-model="movieInput.mediaLink.affiliateSource"
             >
-              <option disabled selected>SOURCE</option>
+              <option selected>None</option>
               <option>Amazon</option>
               <option>Ebay</option>
+              <option>Walmart</option>
               <option>Other</option>
             </select>
             <br>
@@ -391,6 +393,16 @@ export default {
         Object.assign(this.$data.bookInput, getInitialMediaState());
     },
     editBook(index) {
+
+      //TRYING TO MAKE A COOLER FUNCTION
+      // const attributes = Object.keys(getInitialMediaState())
+      // let firstAttributes = attributes.filter(e => e != 'id' && e != 'mediaLink');
+      // console.log(firstAttributes)
+      // for (let i = 0; i < firstAttributes.length; i++) {
+      //   let element = firstAttributes[i];
+      //   this.bookInput.element = this.books[index].element
+      // }
+
       this.bookInput.id = this.books[index].id
       this.bookInput.title = this.books[index].title
       this.bookInput.picture = this.books[index].picture
@@ -400,6 +412,7 @@ export default {
       this.bookInput.mediaLink.affiliateSource = this.books[index].mediaLink.affiliateSource
 
       this.books.splice(index, 1)
+
     },
     enterMovie() {
       const obj = {
