@@ -5,7 +5,7 @@
   <div class="input-fields">
     <div class="details">
       <!-- DATE -->
-      <label for="date" >
+      <label for="date">
         <span :class="markDateDone()">date: </span>
         <!-- YEAR -->
         <select v-model="year">
@@ -42,6 +42,7 @@
           {{ (day < 10 ? '0' : '') + day }}
           </option>
         </select>
+        <button @click="clearDate()">&#x2715;</button>
       </label>
 
       <!-- TITLE -->
@@ -464,12 +465,29 @@ export default {
         }, 2000)
       } else {
         this.$store.dispatch('addEvent', fullEvent)
+        
+        // SAVE DATE
+        const year = this.year
+        const month = this.month
+        const day = this.day
+
         Object.assign(this.$data, this.$options.data.call(this));
         this.showNeedAtLeastADate = false;
+
+        // KEEP SAME DATE FOR NEXT EVENT
+        this.year = year
+        this.month = month
+        this.day = day
+
       }
 
       // TODO: TRY TO MAKE DATE INPUT THE SAME DATE
 
+    },
+    clearDate() {
+      this.year = ''
+      this.month = ''
+      this.day = ''
     },
     markDateDone() {
       if (this.year != '' && this.month != '' && this.day != '') {
