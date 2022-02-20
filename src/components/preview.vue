@@ -129,13 +129,13 @@
 
 
 </div>
-    <!-- MODAL IF SENT TO FIREBASE  -->
+    <!-- MODAL IF SENT TO FIREBASE 
     <p
         class="submit-success-modal"
         v-if="submittedEvent"
     >
     Event Submitted!
-    </p>
+    </p> -->
 
 
 </template>
@@ -167,7 +167,6 @@ export default {
             setTimeout(() => {
                 this.submittedEvent = false
             }, 2000)
-                
         }
     }
 
@@ -180,13 +179,14 @@ export default {
     border: 1px solid;
     width: max-content;
     height: max-content;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 15px auto;
     position: relative;
 }
 
 .event-container {
     display: flex;
     padding: 10px 25px;
+
 }
 
 .event-details {

@@ -47,7 +47,7 @@
 
       <!-- TITLE -->
       <label for="title" >
-        <p :class="markDone(title)" style="text-align: center;">title:</p>
+        <p :class="markDone(title)" style="text-align: center;">event text:</p>
         <textarea class="textarea" v-model="title"/>
       </label>
       
@@ -190,7 +190,6 @@
           style="margin-top: 10px; overflow-wrap: break-word"
         >
           <div class="book-details" style="display: flex; flex-direction: column; align-items: flex-end; border: 1px solid">
-            <p>id: {{book.id}}</p>
             <p style="width: 207.36px; overflow-wrap: break-word">title: {{book.title}}</p>
             <img
               :src="`${book.picture}`"
@@ -291,7 +290,6 @@
           style="margin-top: 10px; overflow-wrap: break-word"
         >
           <div class="movie-details" style="display: flex; flex-direction: column; align-items: flex-end; border: 1px solid;">
-            <p>id: {{movie.id}}</p>
             <p style="width: 207.36px; overflow-wrap: break-word">title: {{movie.title}}</p>
             <img
               :src="`${movie.picture}`"
