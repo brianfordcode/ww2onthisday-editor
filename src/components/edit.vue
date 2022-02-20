@@ -335,7 +335,9 @@
     </div>
 </div>
 
-<preview/>
+
+<!-- PREVIEW COMPONENT -->
+<preview @getEventData="updateDataFromPreview"/>
 
 </template>
 
@@ -506,6 +508,7 @@ export default {
 
       }
 
+
       // TODO: TRY TO MAKE DATE INPUT THE SAME DATE
 
     },
@@ -528,6 +531,34 @@ export default {
       if (this.keywords.length > 0) {
         return 'done'
       }
+    },
+    // getDatefromHashDate(date) {
+    //   let input = date.split("-");
+    //   let dateObject = new Date(input[2] +"-"+ input[1] +"-"+ input[0]);
+    //   return dateObject
+    // },
+    updateDataFromPreview(event) {
+
+      let dateObject = this.$store.getters.getDatefromHashDate(event.date)
+
+      
+      // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
+      this.title = event.title
+      this.year = dateObject.getFullYear()
+      this.month = (dateObject.getMonth() < 10 ? '0' : '') + (dateObject.getMonth() + 1)
+      this.day = (dateObject.getDate() < 10 ? '0' : '') + (dateObject.getDate())
+      this.citation = event.citation
+      this.mainPicture = event.mainPicture
+      this.keywords = event.keywords
+      this.location.coordinates = event.location.coordinates
+      this.location.mapZoom = event.location.mapZoom
+      this.books = event.books
+      this.movies = event.movies
+
+
+// console.log(this.month)
+// console.log(this.day)
+
     }
   },
 }

@@ -8,7 +8,7 @@
     <div class="event-container">
         <div class="event-details">
             <!-- DATE -->
-            <p>date: {{$store.state.events[index].date}}</p>
+            <p>date: {{ $store.getters.getDatefromHashDate($store.state.events[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"}) }}</p>
             <!-- TITLE -->
             title: <p>{{$store.state.events[index].title}}</p>
             <!-- CITATION -->
@@ -75,7 +75,6 @@
             <!-- MOVIES -->
             <p>movies:</p>
             <div class="media-wrapper">
-                
                 <div
                     v-for="movie in $store.state.events[index].movies"
                     :key="movie"
@@ -108,7 +107,7 @@
     <div class="buttons">
         <button @click="openDeleteModal(index)">&#x2715;</button>
         <button @click="openPublishModal(index)">Publish To Site</button>
-        <button @click="editEvent(event)">
+        <button @click="editEvent(index, event)">
             <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
         </button>
     </div>
@@ -164,6 +163,7 @@
 
 <script>
 export default {
+    emits: ["getEventData"],
     data() {
         return {
             selectedIndex: null,
@@ -187,9 +187,9 @@ export default {
                 this.deletedEvent = false
             }, 2000)
         },
-        editEvent(event) {
-            console.log('edit', event)
-            // this.$store.dispatch('editEvent', event)
+        editEvent(index, event) {
+            this.$emit('getEventData', event)
+            this.$store.state.events.splice(index, 1)
         },
         openPublishModal(index) {
             this.selectedIndex = index

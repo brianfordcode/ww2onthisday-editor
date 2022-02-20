@@ -22,6 +22,23 @@ export default createStore({
   state: {
     events: []
   },
+  getters: {
+    getDatefromHashDate: (state, getters) => (date) => {
+      let input = date.split("-");
+      
+      console.log(parseInt(input[2]) + 1)
+
+      let dayNum = parseInt(input[2]) + 1
+
+      let day = (dayNum < 10 ? '0' : '') + dayNum
+
+      // console.log(fullDay)
+
+      let dateObject = new Date(input[0] +"-"+ input[1] +"-"+ day);
+      console.log(dateObject)
+      return dateObject
+    },
+  },
   mutations: {
     addEvent(state, submittedEvent) {
       state.events.push(submittedEvent)
@@ -35,14 +52,6 @@ export default createStore({
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
     },
-
-// DO I NEED THESE OR DO EVERYTHING IN PREVIEW COMPONENT???
-    // deleteEvent(context, event) {
-    //   console.log('delete', event)
-    // },
-    // editEvent(context, event) {
-    //   console.log('edit', event)
-    // }
   },
   modules: {
   }
