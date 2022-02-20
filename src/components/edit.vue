@@ -181,6 +181,8 @@
             style="margin-top: 10px;"
           >
           &#43;
+          <br>
+          <span v-if="bookDetailsNeeded">Needs title and picture!</span>
           </button>
         </div>
         <!-- LIST -->
@@ -281,6 +283,8 @@
             style="margin-top: 10px;"
           >
           &#43;
+          <br>
+          <span v-if="movieDetailsNeeded">Needs title and picture!</span>
           </button>
         </div>
         <!-- LIST -->
@@ -326,7 +330,7 @@
     >
     <span>ADD EVENT</span>
     <br>
-    <span v-if="showNeedAtLeastADate">Needs a date and title!</span>
+    <span v-if="needsDateTextPicture">Needs a date, event text and a picture!</span>
     </button>
     </div>
 </div>
@@ -354,7 +358,9 @@ export default {
   components: { preview },
   data() {
     return {
-      showNeedAtLeastADate: false,
+      needsDateTextPicture: false,
+      bookDetailsNeeded: false,
+      movieDetailsNeeded: false,
       // INPUTS:
       year: '',
       month: '',
@@ -394,8 +400,17 @@ export default {
             affiliateSource: this.bookInput.mediaLink.affiliateSource,
           }
         }
-        this.books.push(obj)
-        Object.assign(this.$data.bookInput, getInitialMediaState());
+        if (this.bookInput.title === '' || this.bookInput.picture === '') {
+          this.bookDetailsNeeded = true
+          setTimeout(() => {
+            this.bookDetailsNeeded = false;
+          }, 2000)
+        } else {
+          this.books.push(obj)
+          Object.assign(this.$data.bookInput, getInitialMediaState());
+        }
+
+
     },
     editBook(index) {
 
@@ -431,8 +446,15 @@ export default {
           affiliateSource: this.movieInput.mediaLink.affiliateSource,
         }
       }
-      this.movies.push(obj)
-      Object.assign(this.$data.movieInput, getInitialMediaState());
+      if (this.movieInput.title === '' || this.movieInput.picture === '') {
+        this.movieDetailsNeeded = true
+        setTimeout(() => {
+          this.movieDetailsNeeded = false;
+        }, 2000)
+      } else {
+        this.movies.push(obj)
+        Object.assign(this.$data.movieInput, getInitialMediaState());
+      }
     },
     editMovie(index) {
       this.movieInput.id = this.movies[index].id
@@ -461,10 +483,10 @@ export default {
         books: this.books,
         movies: this.movies
       }
-      if (this.year === '' || this.month === '' || this.day === '' || this.title === '') {
-        this.showNeedAtLeastADate = true;
+      if (this.year === '' || this.month === '' || this.day === '' || this.title === '' || this.mainPicture === '') {
+        this.needsDateTextPicture = true;
         setTimeout(() => {
-          this.showNeedAtLeastADate = false;
+          this.needsDateTextPicture = false;
         }, 2000)
       } else {
         this.$store.dispatch('addEvent', fullEvent)
@@ -475,7 +497,7 @@ export default {
         const day = this.day
 
         Object.assign(this.$data, this.$options.data.call(this));
-        this.showNeedAtLeastADate = false;
+        this.needsDateTextPicture = false;
 
         // KEEP SAME DATE FOR NEXT EVENT
         this.year = year
