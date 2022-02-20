@@ -106,36 +106,58 @@
         
     </div>
     <div class="buttons">
-        <button @click="deleteEvent(event, index)">&#x2715;</button>
-        <button @click="openModal(index)">SUBMIT</button>
+        <button @click="openDeleteModal(index)">&#x2715;</button>
+        <button @click="openPublishModal(index)">Publish To Site</button>
         <button @click="editEvent(event)">
             <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
         </button>
     </div>
     <!-- MODAL ASKING SURE TO SEND TO FIREBASE -->
     <div
-        class="submit-warning-modal"
-        v-if="selectedIndex === index"
+        class="submit-warning modal"
+        style="background-color: rgba(3, 95, 30, 0.61);"
+        v-if="selectedIndex === index && publishPushed"
     >
-        <div>
-            <p>Publish to Site?</p>
+        <div style="width: 80%;">
             <div class="modal-btns">
-                <p @click="sendToFireBase(event, index)">yes</p>
-                <p @click="selectedIndex = null">no</p>
+                <p @click="sendToFireBase(event, index)">Publish to Site</p>
+                <p @click="selectedIndex = null, publishPushed = false">Do Not Publish</p>
                 
+            </div>
+        </div>
+    </div>
+    <!-- DELETE MODAL -->
+    <div
+        class="delete-warning modal"
+        style="background-color: rgba(95, 0, 0, 0.61);"
+        v-if="selectedIndex === index && deletePushed"
+    >
+        <div style="width: 80%;">
+            <div class="modal-btns">
+                <p @click="deleteEvent(event, index)">Delete this Event</p>
+                <p @click="selectedIndex = null, deletePushed = false">Do Not Delete</p>
             </div>
         </div>
     </div>
 
 
 </div>
-    <!-- MODAL IF SENT TO FIREBASE 
+    <!-- MODAL IF EVENT SENT TO FIREBASE -->
     <p
-        class="submit-success-modal"
+        class="action-modal"
+        style="background-color: green;"
         v-if="submittedEvent"
     >
     Event Submitted!
-    </p> -->
+    </p>
+    <!-- MODAL IF EVENT DELETED -->
+    <p
+        class="action-modal"
+        style="background-color: red;"
+        v-if="deletedEvent"
+    >
+    Event Deleted!
+    </p>
 
 
 </template>
@@ -145,25 +167,40 @@ export default {
     data() {
         return {
             selectedIndex: null,
+            publishPushed: false,
             submittedEvent: false,
+            deletePushed: false,
+            deletedEvent: false,
         }
     },
     methods: {
+        openDeleteModal(index) {
+            this.selectedIndex = index
+            this.deletePushed = true
+        },
         deleteEvent(index) {
             this.$store.state.events.splice(index, 1)
+            this.deletedEvent = true
+            this.selectedIndex = null
+            this.deletePushed = false
+            setTimeout(() => {
+                this.deletedEvent = false
+            }, 2000)
         },
         editEvent(event) {
             console.log('edit', event)
             // this.$store.dispatch('editEvent', event)
         },
-        openModal(index) {
+        openPublishModal(index) {
             this.selectedIndex = index
+            this.publishPushed = true
         },
         sendToFireBase(event, index) {
             this.$store.dispatch('sendToFirebase', event)
             this.submittedEvent = true
             this.selectedIndex = null
-            this.deleteEvent(index)
+            this.publishPushed = false
+            this.$store.state.events.splice(index, 1)
             setTimeout(() => {
                 this.submittedEvent = false
             }, 2000)
@@ -228,7 +265,7 @@ a {
     cursor: pointer;
 }
 
-.submit-warning-modal {
+.modal {
     position: absolute;
     top: 0;
     justify-content: space-around;
@@ -236,13 +273,12 @@ a {
     height: 100%;
     width: 100%;
     display: flex;
-    background-color: rgba(95, 0, 0, 0.61);
     color: white;
 }
 
 .modal-btns {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .modal-btns > * {
@@ -251,7 +287,7 @@ a {
     cursor: pointer;
 }
 
-.submit-success-modal {
+.action-modal {
     background-color: green;
     padding: 10px 0;
     opacity: 0.80;

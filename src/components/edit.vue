@@ -6,9 +6,9 @@
     <div class="details">
       <!-- DATE -->
       <label for="date">
-        <span :class="markDateDone()">date: </span>
+        <span :class="markDateDone()">date:</span>
         <!-- YEAR -->
-        <select v-model="year">
+        <select style="margin-left: 2px;" v-model="year">
           <option disabled selected>YEAR</option>
           <option
             v-for="year in 7"
@@ -69,12 +69,13 @@
       <label for="keywords">
         <span :class="markKeywordsDone()">keywords:</span>
         <input
+          style="width: 125px;"
           v-model="keywordInput"
           type="text"
           @keyup.enter="addKeyword(keywordInput)"
         >
         <button 
-          style="height: 20px; width: 20px"
+          style="height: 24px; width: 20px"
           @click="addKeyword(keywordInput)"
         >
         &#43;
@@ -330,9 +331,12 @@
     </div>
 </div>
 
+<preview/>
+
 </template>
 
 <script>
+import preview from './preview.vue'
 
 const getInitialMediaState = () => ({
   id: '',
@@ -347,6 +351,7 @@ const getInitialMediaState = () => ({
 })
 
 export default {
+  components: { preview },
   data() {
     return {
       showNeedAtLeastADate: false,
@@ -541,6 +546,7 @@ label {
 }
 
 input {
+  padding-left: 2px;
   height: 20px;
   margin-left: 2px;
 }
