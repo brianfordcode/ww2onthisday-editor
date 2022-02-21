@@ -97,7 +97,7 @@
       <br>
 
       <!-- LOCATION -->
-      <label for="coordinates">
+      <!-- <label for="coordinates">
         <span :class="markDone(location.coordinates)">coordinates:</span>
         <input v-model="location.coordinates" type="text">
       </label>
@@ -113,16 +113,19 @@
         :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
         ${location.coordinates}&zoom=${location.mapZoom}
         &maptype=satellite`"
-      />
-      <br>
+      /> -->
+
+      <!-- <mapEditor location: "location" /> -->
+      <mapEditor :locationInput="location"/>
 
     </div>
 
+    <br>
     <!-- MEDIA -->
 
     <div class="media" style="display: flex;">
-      <editMedia :media="books" title='Books' />
-      <editMedia :media="movies" title='Movies'/>
+      <mediaEditor :media="books" title='Books' />
+      <mediaEditor :media="movies" title='Movies'/>
     </div>
 
     <!-- ENTER BUTTON -->
@@ -145,10 +148,11 @@
 
 <script>
 import preview from './preview.vue'
-import editMedia from './edit-components/media-editor.vue'
+import mediaEditor from './edit-components/media-editor.vue'
+import mapEditor from './edit-components/map-editor.vue'
 
 export default {
-  components: { preview, editMedia },
+  components: { preview, mediaEditor, mapEditor },
   data() {
     return {
       needsDateTextPicture: false,
@@ -235,7 +239,7 @@ export default {
       }
     },
     markKeywordsDone() {
-      if (this.keywords.length > 0) {
+      if (this.keywords.length) {
         return 'done'
       }
     },
