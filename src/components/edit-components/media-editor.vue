@@ -40,12 +40,13 @@
             >
             </label>
             <!-- AFFILIATE SOURCE -->
-            <label for="affiliateSource">
+            <label v-if="input.mediaLink.affiliate">
                 <span :class="markDone(input.mediaLink.affiliateSource)">affiliate source:</span>
             <!-- AMAZON -->
             <select
                 style="margin-left:2px;"
                 v-model="input.mediaLink.affiliateSource"
+                value="None"
             >
                 <option selected>None</option>
                 <option>Amazon</option>
@@ -53,8 +54,8 @@
                 <option>Walmart</option>
                 <option>Other</option>
             </select>
-            <br>
             </label>
+            <!-- <br> -->
             <!-- ENTER BUTTON -->
             <button
                 @click="enterItem()"
@@ -95,8 +96,8 @@
                     </a>
                 </p>
                 <!-- AFFILIATE -->
-                <p>affiliate: {{item.mediaLink.affiliate}}</p>
-                <p>affiliate source: {{item.mediaLink.affiliateSource}}</p>
+                <p>affiliate: {{item.mediaLink.affiliate ? '&#10003;' : '&#x2715;'}}</p>
+                <p v-if="item.mediaLink.affiliateSource">affiliate source: {{item.mediaLink.affiliateSource}}</p>
                 <!-- BUTTONS -->
                 <div
                     style="

@@ -67,8 +67,8 @@
                             &#10003;
                             </a>
                         </p>
-                        <p>affiliate: {{book.mediaLink.affiliate}}</p>
-                        <p>affiliate source: {{book.mediaLink.affiliateSource}}</p>
+                        <p>affiliate: {{book.mediaLink.affiliate ? '&#10003;' : '&#x2715;'}}</p>
+                        <p v-if="book.mediaLink.affiliateSource">affiliate source: {{book.mediaLink.affiliateSource}}</p>
                     </div>
                 </div>
             </div>
@@ -96,8 +96,9 @@
                             &#10003;
                             </a>
                         </p>
-                        <p>affiliate: {{movie.mediaLink.affiliate}}</p>
-                        <p>affiliate source: {{movie.mediaLink.affiliateSource}}</p>
+                        <p>affiliate: {{movie.mediaLink.affiliate ? '&#10003;' : '&#x2715;'}}</p>
+                        <p v-if="movie.mediaLink.affiliateSource">affiliate source: {{movie.mediaLink.affiliateSource}}</p>
+                    
                     </div>
                 </div>
             </div>
