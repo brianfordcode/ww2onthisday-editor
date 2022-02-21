@@ -118,210 +118,15 @@
 
     </div>
 
-    <div class="media" style="display: flex;">
-      
-      <!-- BOOKS -->
-      <div class="books" style="display: flex; flex-direction: column;">
-        <div class="book-input-fields" style="display: flex; flex-direction: column;">
-          <p style="text-align: center;">Books:</p>
-          <!-- BOOK TITLE -->
-          <label for="bookTitle">
-            <span :class="markDone(bookInput.title)">title:</span><input v-model="bookInput.title" type="text">
-          </label>
-          <!-- BOOK PICTURE -->
-          <div class="book-picture" style="display: flex; flex-direction: column; align-items: flex-end;">
-            <label for="bookPicture" >
-              <span :class="markDone(bookInput.picture)">picture:</span>
-              <input v-model="bookInput.picture" type="text">
-            </label>
-            <img
-              :src="`${bookInput.picture}`"
-              :alt="`${bookInput.picture}`"
-              style="width: 75px; "
-            />
-          </div>
-          <!-- BOOK YEAR -->
-          <label for="bookYear">
-            <span :class="markDone(bookInput.year)">year:</span>
-            <input v-model="bookInput.year" type="text">
-          </label>
-          <!-- BOOK LINK -->
-          <label for="bookLink">
-            <span :class="markDone(bookInput.mediaLink.link)">link:</span>
-            <input v-model="bookInput.mediaLink.link" type="text">
-          </label>
-          <!-- AFFILIATE? -->
-          <label for="affiliate" style="display: flex; align-items: center; justify-content: flex-end">
-            <span :class="markDone(bookInput.mediaLink.affiliate)">affiliate:</span>
-            <input
-              style="margin-left: 5px;"
-              type="checkbox"
-              v-model="bookInput.mediaLink.affiliate"
-            >
-          </label>
-          <!-- AFFILIATE SOURCE -->
-          <label for="affiliateSource">
-            <span :class="markDone(bookInput.mediaLink.affiliateSource)">affiliate source:</span>
-            <!-- AMAZON -->
-            <select
-              style="margin-left:2px;"
-              v-model="bookInput.mediaLink.affiliateSource"
-            >
-              <option selected>None</option>
-              <option>Amazon</option>
-              <option>Ebay</option>
-              <option>Walmart</option>
-              <option>Other</option>
-            </select>
-            <br>
-          </label>
-          <!-- ENTER BUTTON -->
-          <button
-            @click="enterBook()"
-            style="margin-top: 10px;"
-          >
-          &#43;
-          <br>
-          <span v-if="bookDetailsNeeded">Needs title and picture!</span>
-          </button>
-        </div>
-        <!-- LIST -->
-        <div
-          class="book-list"
-          v-for="(book, index) in books"
-          :key="book"
-          style="margin-top: 10px; overflow-wrap: break-word"
-        >
-          <div class="book-details" style="display: flex; flex-direction: column; align-items: flex-end; border: 1px solid">
-            <p style="width: 207.36px; overflow-wrap: break-word">title: {{book.title}}</p>
-            <img
-              :src="`${book.picture}`"
-              :alt="`${book.picture}`"
-              style="width: 75px;"
-            />
-            <p>year: {{book.year}}</p>
-            <p style="width: 207.36px; overflow-wrap: break-word">link:{{book.mediaLink.link}}</p>
-            <p>affiliate: {{book.mediaLink.affiliate}}</p>
-            <p>affiliate source: {{book.mediaLink.affiliateSource}}</p>
-            <div class="buttons">
-              <!-- DELETE BOOK -->
-              <button
-                @click="books.splice(index, 1)"
-              >
-              &#x2715;
-              </button>
-              <!-- EDIT BOOK -->
-              <button
-                @click="editBook(index)"
-              >
-                <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- MEDIA -->
 
-      <!-- MOVIES -->
-      <div id="movies" class="movies" style="display: flex; flex-direction: column;">
-        <div class="movie-input-fields" style="display: flex; flex-direction: column;">
-          <p style="text-align: center;">Movies:</p>
-          <!-- MOVIE TITLE -->
-          <label for="movieTitle">
-            <span :class="markDone(movieInput.title)">title:</span>
-            <input v-model="movieInput.title" type="text">
-          </label>
-          <!-- MOVIE PICTURE -->
-          <div class="movie-picture" style="display: flex; flex-direction: column; align-items: flex-end;">
-            <label for="moviePicture" >
-              <span :class="markDone(movieInput.picture)">picture:</span>
-              <input v-model="movieInput.picture" type="text">
-            </label>
-            <img
-              :src="`${movieInput.picture}`"
-              :alt="`${movieInput.picture}`"
-              style="width: 75px; "
-            />
-          </div>
-          <!-- MOVIE YEAR -->
-          <label for="movieYear">
-            <span :class="markDone(movieInput.year)">year:</span>
-            <input v-model="movieInput.year" type="text">
-          </label>
-          <!-- MOVIE LINK -->
-          <label for="movieLink">
-           <span :class="markDone(movieInput.mediaLink.link)">link:</span>
-           <input v-model="movieInput.mediaLink.link" type="text">
-          </label>
-          <!-- AFFILIATE? -->
-          <label for="affiliate" style="display: flex; align-items: center; justify-content: flex-end">
-            <span :class="markDone(movieInput.mediaLink.affiliate)">affiliate:</span>
-            <input
-              style="margin-left: 5px;"
-              type="checkbox"
-              v-model="movieInput.mediaLink.affiliate"
-            >
-          </label>
-          <!-- AFFILIATE SOURCE -->
-          <label for="affiliateSource">
-            <span :class="markDone(movieInput.mediaLink.affiliateSource)">affiliate source:</span>
-            <!-- AMAZON -->
-            <select
-              style="margin-left:2px;"
-              v-model="movieInput.mediaLink.affiliateSource"
-            >
-              <option selected>None</option>
-              <option>Amazon</option>
-              <option>Ebay</option>
-              <option>Walmart</option>
-              <option>Other</option>
-            </select>
-            <br>
-          </label>
-          <!-- ENTER MOVIE BUTTON -->
-          <button
-            @click="enterMovie()" 
-            style="margin-top: 10px;"
-          >
-          &#43;
-          <br>
-          <span v-if="movieDetailsNeeded">Needs title and picture!</span>
-          </button>
-        </div>
-        <!-- LIST -->
-        <div
-          class="movie-list"
-          v-for="(movie, index) in movies"
-          :key="movie"
-          style="margin-top: 10px; overflow-wrap: break-word"
-        >
-          <div class="movie-details" style="display: flex; flex-direction: column; align-items: flex-end; border: 1px solid;">
-            <p style="width: 207.36px; overflow-wrap: break-word">title: {{movie.title}}</p>
-            <img
-              :src="`${movie.picture}`"
-              :alt="`${movie.picture}`"
-              style="width: 75px;"
-            />
-            <p>year: {{movie.year}}</p>
-            <p style="width: 207.36px; overflow-wrap: break-word">link:{{movie.mediaLink.link}}</p>
-            <p>affiliate: {{movie.mediaLink.affiliate}}</p>
-            <p>affiliate source: {{movie.mediaLink.affiliateSource}}</p>
-            <div class="buttons">
-              <!-- DELETE MOVIE -->
-              <button
-                @click="movies.splice(index, 1)"
-              >
-              &#x2715;
-              </button>
-              <!-- EDIT BOOK -->
-              <button
-                @click="editMovie(index)"
-              >
-                <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="media" style="display: flex;">
+    
+      <media :media="books" :title="'Books'"/>
+
+      <media :media="movies" :title="'Movies'"/>
+
+
     </div>
     <!-- ENTER BUTTON -->
     <button
@@ -343,6 +148,7 @@
 
 <script>
 import preview from './preview.vue'
+import media from './edit-components/media.vue'
 
 const getInitialMediaState = () => ({
   id: '',
@@ -357,7 +163,7 @@ const getInitialMediaState = () => ({
 })
 
 export default {
-  components: { preview },
+  components: { preview, media },
   data() {
     return {
       needsDateTextPicture: false,
@@ -390,85 +196,6 @@ export default {
       this.keywords.push(this.keywordInput)
       this.keywordInput = ''
     },
-    enterBook() {
-        const obj = {
-          id: "book-" + Date.now(),
-          title: this.bookInput.title,
-          picture: this.bookInput.picture,
-          year: this.bookInput.year,
-          mediaLink: {
-            link: this.bookInput.mediaLink.link,
-            affiliate: this.bookInput.mediaLink.affiliate ? this.bookInput.mediaLink.affiliate : false,
-            affiliateSource: this.bookInput.mediaLink.affiliateSource,
-          }
-        }
-        if (this.bookInput.title === '' || this.bookInput.picture === '') {
-          this.bookDetailsNeeded = true
-          setTimeout(() => {
-            this.bookDetailsNeeded = false;
-          }, 2000)
-        } else {
-          this.books.push(obj)
-          Object.assign(this.$data.bookInput, getInitialMediaState());
-        }
-
-
-    },
-    editBook(index) {
-
-      //TODO: TRY TO MAKE A COOLER FUNCTION
-      // const attributes = Object.keys(getInitialMediaState())
-      // let firstAttributes = attributes.filter(e => e != 'id' && e != 'mediaLink');
-      // console.log(firstAttributes)
-      // for (let i = 0; i < firstAttributes.length; i++) {
-      //   let element = firstAttributes[i];
-      //   this.bookInput.element = this.books[index].element
-      // }
-
-      this.bookInput.id = this.books[index].id
-      this.bookInput.title = this.books[index].title
-      this.bookInput.picture = this.books[index].picture
-      this.bookInput.year = this.books[index].year
-      this.bookInput.mediaLink.link = this.books[index].mediaLink.link
-      this.bookInput.mediaLink.affiliate = this.books[index].mediaLink.affiliate
-      this.bookInput.mediaLink.affiliateSource = this.books[index].mediaLink.affiliateSource
-
-      this.books.splice(index, 1)
-
-    },
-    enterMovie() {
-      const obj = {
-        id: "movie-" + Date.now(),
-        title: this.movieInput.title,
-        picture: this.movieInput.picture,
-        year: this.movieInput.year,
-        mediaLink: {
-          link: this.movieInput.mediaLink.link,
-          affiliate: this.movieInput.mediaLink.affiliate ? this.movieInput.mediaLink.affiliate : false,
-          affiliateSource: this.movieInput.mediaLink.affiliateSource,
-        }
-      }
-      if (this.movieInput.title === '' || this.movieInput.picture === '') {
-        this.movieDetailsNeeded = true
-        setTimeout(() => {
-          this.movieDetailsNeeded = false;
-        }, 2000)
-      } else {
-        this.movies.push(obj)
-        Object.assign(this.$data.movieInput, getInitialMediaState());
-      }
-    },
-    editMovie(index) {
-      this.movieInput.id = this.movies[index].id
-      this.movieInput.title = this.movies[index].title
-      this.movieInput.picture = this.movies[index].picture
-      this.movieInput.year = this.movies[index].year
-      this.movieInput.mediaLink.link = this.movies[index].mediaLink.link
-      this.movieInput.mediaLink.affiliate = this.movies[index].mediaLink.affiliate
-      this.movieInput.mediaLink.affiliateSource = this.movies[index].mediaLink.affiliateSource
-
-      this.movies.splice(index, 1)
-    },
     addEvent() {
       const fullEvent = {
         date: this.year + "-" + this.month + "-" + this.day,
@@ -492,7 +219,7 @@ export default {
         }, 2000)
       } else {
         this.$store.dispatch('addEvent', fullEvent)
-        
+
         // SAVE DATE
         const year = this.year
         const month = this.month
@@ -507,10 +234,7 @@ export default {
         this.day = day
 
       }
-
-
       // TODO: TRY TO MAKE DATE INPUT THE SAME DATE
-
     },
     clearDate() {
       this.year = ''
@@ -532,16 +256,10 @@ export default {
         return 'done'
       }
     },
-    // getDatefromHashDate(date) {
-    //   let input = date.split("-");
-    //   let dateObject = new Date(input[2] +"-"+ input[1] +"-"+ input[0]);
-    //   return dateObject
-    // },
     updateDataFromPreview(event) {
 
       let dateObject = this.$store.getters.getDatefromHashDate(event.date)
 
-      
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
       this.title = event.title
       this.year = dateObject.getFullYear()
@@ -555,14 +273,19 @@ export default {
       this.books = event.books
       this.movies = event.movies
 
-
-// console.log(this.month)
-// console.log(this.day)
-
     }
   },
 }
 </script>
+
+<style>
+
+.done {
+  background-color: green;
+  color: white;
+}
+
+</style>
 
 <style scoped>
 
@@ -604,23 +327,8 @@ input {
   margin-left: 2px;
 }
 
-button {
-  cursor: pointer;
-}
-
-.books {
-  margin-right: 50px;
-}
-
-.buttons {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.done {
-  background-color: green;
-  color: white;
+.media > * {
+  margin: 0 20px;
 }
 
 @media screen and (max-width:550px) {

@@ -25,17 +25,12 @@ export default createStore({
   getters: {
     getDatefromHashDate: (state, getters) => (date) => {
       let input = date.split("-");
-      
-      console.log(parseInt(input[2]) + 1)
 
       let dayNum = parseInt(input[2]) + 1
-
       let day = (dayNum < 10 ? '0' : '') + dayNum
 
-      // console.log(fullDay)
-
       let dateObject = new Date(input[0] +"-"+ input[1] +"-"+ day);
-      console.log(dateObject)
+      
       return dateObject
     },
   },

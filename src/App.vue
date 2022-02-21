@@ -1,5 +1,12 @@
 <template>
+  <h2>WW2 on this day Editor</h2>
+
+<!-- <div class="nav-bar">
+  <router-link to="/about">About</router-link>
+</div> -->
+
   <router-view/>
+
 </template>
 
 <style>
@@ -17,6 +24,11 @@
   height: 100%;
 }
 
+h2 {
+  text-align: center;
+  margin: 10px 0;
+}
+
 #nav {
   padding: 30px;
 }
@@ -27,6 +39,7 @@
 }
 
 #nav a.router-link-exact-active {
+
   color: #42b983;
 }
 </style>
