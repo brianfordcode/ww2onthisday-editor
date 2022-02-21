@@ -1,4 +1,5 @@
 <template>
+
     <div style="display: flex; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
             <p style="text-align: center;">{{ title }}:</p>
@@ -61,7 +62,7 @@
             >
             &#43;
             <br>
-                <span v-if="detailsNeeded">Needs title and picture!</span>
+                <span v-if="detailsNeeded">Needs title, picture and link!</span>
             </button>
         </div>
         <!-- LIST -->
@@ -71,31 +72,47 @@
             style="margin-top: 10px; overflow-wrap: break-word"
         >
             <div style="display: flex; flex-direction: column; align-items: flex-end; border: 1px solid">
-            <p style="width: 207.36px; overflow-wrap: break-word">title: {{item.title}}</p>
-            <img
-                :src="`${item.picture}`"
-                :alt="`${item.picture}`"
-                style="width: 75px;"
-            />
-            <p>year: {{item.year}}</p>
-            <p style="width: 207.36px; overflow-wrap: break-word">link:{{item.mediaLink.link}}</p>
-            <p>affiliate: {{item.mediaLink.affiliate}}</p>
-            <p>affiliate source: {{item.mediaLink.affiliateSource}}</p>
-            <div style="width: 100%; display: flex; justify-content: space-between;">
-                <!-- DELETE ITEM -->
-                <button @click="media.splice(index, 1)">&#x2715;</button>
-                <!-- EDIT ITEM -->
-                <button @click="editItem(index)">
-                    <img
-                        style="width: 15px;"
-                        src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png"
-                        alt="edit-icon"
+                <!-- TITLE -->
+                <p style="width: 207.36px; overflow-wrap: break-word">title: {{item.title}}</p>
+                <!-- PICTURE -->
+                <img
+                    :src="`${item.picture}`"
+                    :alt="`${item.picture}`"
+                    style="width: 75px;"
+                />
+                <!-- YEAR -->
+                <p>year: {{item.year}}</p>
+                <!-- LINK -->
+                <p style="width: 207.36px; overflow-wrap: break-word">
+                link:
+                    <a
+                        style="text-decoration: none; color: black"
+                        v-if="item.mediaLink.link"
+                        :href="item.mediaLink.link"
+                        target="_blank"
                     >
-                </button>
+                    &#10003;
+                    </a>
+                </p>
+                <!-- AFFILIATE -->
+                <p>affiliate: {{item.mediaLink.affiliate}}</p>
+                <p>affiliate source: {{item.mediaLink.affiliateSource}}</p>
+                <!-- BUTTONS -->
+                <div style="width: 100%; display: flex; justify-content: space-between;">
+                    <!-- DELETE ITEM -->
+                    <button @click="media.splice(index, 1)">&#x2715;</button>
+                    <!-- EDIT ITEM -->
+                    <button @click="editItem(index)">
+                        <img
+                            style="width: 15px;"
+                            src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png"
+                            alt="edit-icon"
+                        >
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 </template>
 
@@ -149,7 +166,7 @@ export default {
                     affiliateSource: this.input.mediaLink.affiliateSource,
                 }
             }
-            if (this.input.title === '' || this.input.picture === '') {
+            if (this.input.title === '' || this.input.picture === '' || this.input.mediaLink.link === '') {
                 this.detailsNeeded = true
                 setTimeout(() => {
                     this.detailsNeeded = false;
@@ -184,21 +201,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-
-label {
-  margin: 3px 0;
-}
-
-input {
-  padding-left: 2px;
-  height: 20px;
-  margin-left: 2px;
-}
-
-button {
-  cursor: pointer;
-}
-
-</style>

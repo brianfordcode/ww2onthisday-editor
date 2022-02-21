@@ -150,18 +150,6 @@
 import preview from './preview.vue'
 import media from './edit-components/media.vue'
 
-const getInitialMediaState = () => ({
-  id: '',
-  title: '',
-  picture: '',
-  year: '',
-  mediaLink: {
-    link: '',
-    affiliate: null,
-    affiliateSource: ''
-  }
-})
-
 export default {
   components: { preview, media },
   data() {
@@ -183,9 +171,7 @@ export default {
       keywordInput: '',
       keywords: [],
       books: [],
-      bookInput: getInitialMediaState(),
       movies: [],
-      movieInput: getInitialMediaState(),
       // DATA:
       events: []
     }
@@ -285,6 +271,20 @@ export default {
   color: white;
 }
 
+label {
+  margin: 3px 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  padding-left: 2px;
+  height: 20px;
+  margin-left: 2px;
+}
+
 </style>
 
 <style scoped>
@@ -319,12 +319,6 @@ export default {
 
 label {
   margin: 3px 0;
-}
-
-input {
-  padding-left: 2px;
-  height: 20px;
-  margin-left: 2px;
 }
 
 .media > * {
