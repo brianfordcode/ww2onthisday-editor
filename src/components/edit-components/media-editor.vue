@@ -69,7 +69,7 @@
         <div
             v-for="(item, index) in media"
             :key="item"
-            style="margin-top: 10px; overflow-wrap: break-word"
+            style="margin-top: 10px; overflow-wrap: break-word;"
         >
             <div style="display: flex; flex-direction: column; align-items: flex-end; border: 1px solid">
                 <!-- TITLE -->
@@ -98,7 +98,11 @@
                 <p>affiliate: {{item.mediaLink.affiliate}}</p>
                 <p>affiliate source: {{item.mediaLink.affiliateSource}}</p>
                 <!-- BUTTONS -->
-                <div style="width: 100%; display: flex; justify-content: space-between;">
+                <div
+                    style="
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between">
                     <!-- DELETE ITEM -->
                     <button @click="media.splice(index, 1)">&#x2715;</button>
                     <!-- EDIT ITEM -->

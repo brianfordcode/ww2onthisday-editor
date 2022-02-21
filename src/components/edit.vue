@@ -121,13 +121,10 @@
     <!-- MEDIA -->
 
     <div class="media" style="display: flex;">
-    
-      <media :media="books" :title="'Books'"/>
-
-      <media :media="movies" :title="'Movies'"/>
-
-
+      <editMedia :media="books" title='Books' />
+      <editMedia :media="movies" title='Movies'/>
     </div>
+
     <!-- ENTER BUTTON -->
     <button
       @click="addEvent()"
@@ -135,7 +132,7 @@
     >
     <span>ADD EVENT</span>
     <br>
-    <span v-if="needsDateTextPicture">Needs a date, event text and a picture!</span>
+    <span v-if="needsDateTextPicture">Needs a date, event text and picture!</span>
     </button>
     </div>
 </div>
@@ -148,10 +145,10 @@
 
 <script>
 import preview from './preview.vue'
-import media from './edit-components/media.vue'
+import editMedia from './edit-components/media-editor.vue'
 
 export default {
-  components: { preview, media },
+  components: { preview, editMedia },
   data() {
     return {
       needsDateTextPicture: false,
