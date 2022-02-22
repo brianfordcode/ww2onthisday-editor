@@ -4,7 +4,8 @@
         <span :class="markDone(locationInput.coordinates)">coordinates:</span>
         <input v-model="locationInput.coordinates" type="text">
     </label>
-    <label for="mapZoom">
+    <!-- MAP ZOOM -->
+    <label v-if="locationInput.coordinates">
         map zoom: <input style="width: 30px;" v-model="locationInput.mapZoom" type="number" min="1" max="21">
     </label>
     <iframe

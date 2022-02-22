@@ -122,7 +122,6 @@
             <div class="modal-btns">
                 <p @click="sendToFireBase(event, index)">Publish to Site</p>
                 <p @click="selectedIndex = null, publishPushed = false">Do Not Publish Yet</p>
-                
             </div>
         </div>
     </div>
@@ -163,6 +162,7 @@
 </template>
 
 <script>
+
 export default {
     emits: ["getEventData"],
     data() {

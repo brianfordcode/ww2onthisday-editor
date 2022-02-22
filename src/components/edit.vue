@@ -62,60 +62,15 @@
         <span :class="markDone(mainPicture)">main picture link:</span>
         <input v-model="mainPicture" type="text">
         <img
+          v-if="mainPicture"
           style="width: 200px;" :src="`${mainPicture}`" :alt="`${mainPicture}`">
       </label>
-        
+
+
       <!-- KEYWORDS -->
-      <label for="keywords">
-        <span :class="markKeywordsDone()">keywords:</span>
-        <input
-          style="width: 125px;"
-          v-model="keywordInput"
-          type="text"
-          @keyup.enter="addKeyword(keywordInput)"
-        >
-        <button 
-          style="height: 24px; width: 20px"
-          @click="addKeyword(keywordInput)"
-        >
-        &#43;
-        </button>
-      </label>
-      <div
-        v-for="(keyword, index) in keywords"
-        :key="keyword"
-      >
-        <p>
-          {{ keyword }}
-          <button
-            @click="keywords.splice(index, 1)"
-          >
-          &#x2715;
-          </button>
-        </p>
-      </div>
+      <keywordEditor @add="addKeywords" :keywords="keywords"/>
       <br>
-
       <!-- LOCATION -->
-      <!-- <label for="coordinates">
-        <span :class="markDone(location.coordinates)">coordinates:</span>
-        <input v-model="location.coordinates" type="text">
-      </label>
-      <label for="mapZoom">
-        map zoom: <input style="width: 30px;" v-model="location.mapZoom" type="number" min="1" max="21">
-      </label>
-      <iframe
-        class="map"
-        v-if="location.coordinates"
-        style="border:0;"
-        loading="lazy"
-        allowfullscreen
-        :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
-        ${location.coordinates}&zoom=${location.mapZoom}
-        &maptype=satellite`"
-      /> -->
-
-      <!-- <mapEditor location: "location" /> -->
       <mapEditor :locationInput="location"/>
 
     </div>
@@ -150,9 +105,10 @@
 import preview from './preview.vue'
 import mediaEditor from './edit-components/media-editor.vue'
 import mapEditor from './edit-components/map-editor.vue'
+import keywordEditor from './edit-components/keyword-editor.vue'
 
 export default {
-  components: { preview, mediaEditor, mapEditor },
+  components: { preview, mediaEditor, mapEditor, keywordEditor },
   data() {
     return {
       needsDateTextPicture: false,
@@ -178,10 +134,8 @@ export default {
     }
   },
   methods: {
-    addKeyword() {
-      if (this.keywordInput === '') { return }
-      this.keywords.push(this.keywordInput)
-      this.keywordInput = ''
+    addKeywords(keyword) {
+      this.keywords.push(keyword)
     },
     addEvent() {
       const fullEvent = {
@@ -221,7 +175,6 @@ export default {
         this.day = day
 
       }
-      // TODO: TRY TO MAKE DATE INPUT THE SAME DATE
     },
     clearDate() {
       this.year = ''
@@ -235,11 +188,6 @@ export default {
     },
     markDone(data) {
       if (data && data != 'keywordInput') {
-        return 'done'
-      }
-    },
-    markKeywordsDone() {
-      if (this.keywords.length) {
         return 'done'
       }
     },

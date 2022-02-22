@@ -48,7 +48,6 @@
                 v-model="input.mediaLink.affiliateSource"
                 value="None"
             >
-                <option selected>None</option>
                 <option>Amazon</option>
                 <option>Ebay</option>
                 <option>Walmart</option>
