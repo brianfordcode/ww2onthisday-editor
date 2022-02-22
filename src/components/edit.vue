@@ -68,8 +68,10 @@
 
 
       <!-- KEYWORDS -->
-      <keywordEditor @add="addKeywords" :keywords="keywords"/>
+      <keywordEditor @addKeyword="addKeywords" :keywords="keywords"/>
+      
       <br>
+
       <!-- LOCATION -->
       <mapEditor :locationInput="location"/>
 
@@ -112,8 +114,6 @@ export default {
   data() {
     return {
       needsDateTextPicture: false,
-      bookDetailsNeeded: false,
-      movieDetailsNeeded: false,
       // INPUTS:
       year: '',
       month: '',
@@ -125,7 +125,6 @@ export default {
         coordinates: '',
         mapZoom: 6,
       },
-      keywordInput: '',
       keywords: [],
       books: [],
       movies: [],

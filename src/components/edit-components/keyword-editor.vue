@@ -5,17 +5,18 @@
         <input
           type="text"
           style="width: 125px;"
+          @blur="addKeyword()"
           v-model="keywordInput"
-          
           @keyup.enter="addKeyword()"
         >
-        <button 
+        <button
           style="height: 24px; width: 20px"
           @click="addKeyword()"
         >
         &#43;
         </button>
     </label>
+    <!-- LIST OF KEYWORDS -->
       <div
         v-for="(keyword, index) in keywords"
         :key="keyword"
@@ -34,7 +35,7 @@
 
 <script>
 export default {
-    emits: ["add"],
+    emits: ["addKeyword"],
     props: {
         keywords: {
             type: Array,
@@ -54,9 +55,9 @@ export default {
         },
         addKeyword() {
             if (this.keywordInput === '') { return }
-            this.$emit('add', this.keywordInput)
+            this.$emit('addKeyword', this.keywordInput)
             this.keywordInput =  ''
-        }
+        },
     }
 }
 </script>
