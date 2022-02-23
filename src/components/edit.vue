@@ -68,7 +68,7 @@
 
 
       <!-- KEYWORDS -->
-      <keywordEditor @addKeywords="addKeywords"/>
+      <keywordEditor @addKeywords="addKeywords" :keywords="keywords"/>
       
       <br>
 

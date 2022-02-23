@@ -1,7 +1,7 @@
 <template>
 
     <label for="keywords">
-        <span :class="{'done':keywords.length ? true : false}">keywords:</span>
+        <span :class="{'done': $props.keywords.length ? true : false}">keywords:</span>
         <input
           type="text"
           style="width: 125px;"
@@ -17,7 +17,7 @@
     </label>
     <!-- LIST OF KEYWORDS -->
       <div
-        v-for="(keyword, index) in keywords"
+        v-for="(keyword, index) in $props.keywords"
         :key="keyword"
       >
         <p>
@@ -34,21 +34,28 @@
 
 export default {
     emits: ["addKeywords"],
+    props: {
+      keywords: {
+        type: Array,
+        required: true,
+      }
+    },
     data() {
         return {
-          keywords: [],
+          allInputs: [],
           input: '',
         }
     },
     methods: {
         addKeywords() {
             if (this.input === '') { return }
-            this.keywords.push(this.input)
+            this.allInputs.push(this.input)
             this.input =  ''
-            this.$emit('addKeywords', this.keywords)
+
+            this.$emit('addKeywords', this.allInputs)
         },
         deleteKeyword(index) {
-          this.keywords.splice(index, 1)
+            this.$props.keywords.splice(index, 1)
         }
     }
 }
