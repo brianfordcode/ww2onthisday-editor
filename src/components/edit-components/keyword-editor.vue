@@ -1,17 +1,16 @@
 <template>
 
     <label for="keywords">
-        <span :class="markKeywordsDone()">keywords:</span>
+        <span :class="{'done':keywords.length ? true : false}">keywords:</span>
         <input
           type="text"
           style="width: 125px;"
-          @blur="addKeyword()"
-          v-model="keywordInput"
-          @keyup.enter="addKeyword()"
+          v-model="input"
+          @keyup.enter="addKeywords()"
         >
         <button
           style="height: 24px; width: 20px"
-          @click="addKeyword()"
+          @click="addKeywords()"
         >
         &#43;
         </button>
@@ -23,9 +22,7 @@
       >
         <p>
           {{ keyword }}
-          <button
-            @click="keywords.splice(index, 1)"
-          >
+          <button @click="deleteKeyword(index)">
           &#x2715;
           </button>
         </p>
@@ -34,30 +31,25 @@
 </template>
 
 <script>
+
 export default {
-    emits: ["addKeyword"],
-    props: {
-        keywords: {
-            type: Array,
-            required: true,
-        }
-    },
+    emits: ["addKeywords"],
     data() {
         return {
-            keywordInput: '',
+          keywords: [],
+          input: '',
         }
     },
     methods: {
-        markKeywordsDone() {
-            if (this.$props.keywords.length) {
-                return 'done'
-            }
+        addKeywords() {
+            if (this.input === '') { return }
+            this.keywords.push(this.input)
+            this.input =  ''
+            this.$emit('addKeywords', this.keywords)
         },
-        addKeyword() {
-            if (this.keywordInput === '') { return }
-            this.$emit('addKeyword', this.keywordInput)
-            this.keywordInput =  ''
-        },
+        deleteKeyword(index) {
+          this.keywords.splice(index, 1)
+        }
     }
 }
 </script>

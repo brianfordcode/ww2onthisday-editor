@@ -1,39 +1,40 @@
 <template>
     <!-- LOCATION -->
     <label for="coordinates">
-        <span :class="markDone(locationInput.coordinates)">coordinates:</span>
-        <input v-model="locationInput.coordinates" type="text">
+        <span :class="{'done': input.coordinates ? true : false}">coordinates:</span>
+        <input @blur="addMapDetails()" v-model="input.coordinates" type="text">
     </label>
     <!-- MAP ZOOM -->
-    <label v-if="locationInput.coordinates">
-        map zoom: <input style="width: 30px;" v-model="locationInput.mapZoom" type="number" min="1" max="21">
+    <label v-if="input.coordinates">
+        map zoom: <input @blur="addMapDetails()" style="width: 30px;" v-model="input.mapZoom" type="number" min="1" max="21">
     </label>
     <iframe
         class="map"
-        v-if="locationInput.coordinates"
+        v-if="input.coordinates"
         style="border:0;"
         loading="lazy"
         allowfullscreen
         :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
-        ${locationInput.coordinates}&zoom=${locationInput.mapZoom}
+        ${input.coordinates}&zoom=${input.mapZoom}
         &maptype=satellite`"
     />
 </template>
 
 <script>
 export default {
-    props: {
-        locationInput: {
-            type: Object,
-            required: true,
-        },
+    emits: ["addMapDetails"],
+    data() {
+        return {
+            input: {
+                coordinates: '',
+                mapZoom: 6
+            }
+        }
     },
     methods: {
-        markDone(data) {
-            if (data) {
-                return 'done'
-            }
-        },
+        addMapDetails() {
+            this.$emit('addMapDetails', this.input)
+        }
     }
 }
 </script>

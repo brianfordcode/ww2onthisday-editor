@@ -6,7 +6,7 @@
     <div class="details">
       <!-- DATE -->
       <label for="date">
-        <span :class="markDateDone()">date:</span>
+        <span :class="{'done': this.year && this.month && this.day ? true : false}">date:</span>
         <!-- YEAR -->
         <select style="margin-left: 2px;" v-model="year">
           <option disabled selected>YEAR</option>
@@ -47,19 +47,19 @@
 
       <!-- TITLE -->
       <label for="title" >
-        <p :class="markDone(title)" style="text-align: center;">event text:</p>
+        <p :class="{'done': title ? true : false}" style="text-align: center;">event text:</p>
         <textarea class="textarea" v-model="title"/>
       </label>
       
       <!-- CITATION -->
       <label for="citation">
-       <span :class="markDone(citation)">citation:</span>
+       <span :class="{'done': citation ? true : false}">citation:</span>
        <input v-model="citation" type="text">
       </label>
       
       <!-- MAIN PICTURE -->
       <label for="mainPicture">
-        <span :class="markDone(mainPicture)">main picture link:</span>
+        <span :class="{'done': mainPicture ? true : false}">main picture link:</span>
         <input v-model="mainPicture" type="text">
         <img
           v-if="mainPicture"
@@ -68,12 +68,12 @@
 
 
       <!-- KEYWORDS -->
-      <keywordEditor @addKeyword="addKeywords" :keywords="keywords"/>
+      <keywordEditor @addKeywords="addKeywords"/>
       
       <br>
 
       <!-- LOCATION -->
-      <mapEditor :locationInput="location"/>
+      <mapEditor @addMapDetails="addMapDetails"/>
 
     </div>
 
@@ -121,10 +121,7 @@ export default {
       title: '',
       citation: '',
       mainPicture: '',
-      location: {
-        coordinates: '',
-        mapZoom: 6,
-      },
+      location: {},
       keywords: [],
       books: [],
       movies: [],
@@ -133,8 +130,11 @@ export default {
     }
   },
   methods: {
-    addKeywords(keyword) {
-      this.keywords.push(keyword)
+    addKeywords(keywords) {
+      this.keywords = keywords
+    },
+    addMapDetails(mapDetails) {
+      this.location = mapDetails
     },
     addEvent() {
       const fullEvent = {
@@ -179,16 +179,6 @@ export default {
       this.year = ''
       this.month = ''
       this.day = ''
-    },
-    markDateDone() {
-      if (this.year != '' && this.month != '' && this.day != '') {
-        return 'done'
-      }
-    },
-    markDone(data) {
-      if (data && data != 'keywordInput') {
-        return 'done'
-      }
     },
     updateDataFromPreview(event) {
 
