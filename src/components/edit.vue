@@ -4,46 +4,8 @@
 
   <div class="input-fields">
     <div class="details">
-      <!-- DATE -->
-      <label for="date">
-        <span :class="{'done': this.year && this.month && this.day ? true : false}">date:</span>
-        <!-- YEAR -->
-        <select style="margin-left: 2px;" v-model="year">
-          <option disabled selected>YEAR</option>
-          <option
-            v-for="year in 7"
-            :key="year">
-            {{year ? year + 1938 : year}}
-          </option>
-        <!-- MONTH -->
-        </select>
-        <select v-model="month">
-          <option disabled selected>MONTH</option>
-          <option value="01">January</option>
-          <option value="02">February</option>
-          <option value="03">March</option>
-          <option value="04">April</option>
-          <option value="05">May</option>
-          <option value="06">June</option>
-          <option value="07">July</option>
-          <option value="08">August</option>
-          <option value="09">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
-        </select>
-        <!-- DAY -->
-        <select v-model="day">
-          <option disabled selected>DAY</option>
-          <option
-            v-for="day in 31"
-            :key="day"
-          >
-          {{ (day < 10 ? '0' : '') + day }}
-          </option>
-        </select>
-        <button @click="clearDate()">&#x2715;</button>
-      </label>
+
+      <dateEditor @addDate="addDate"/>
 
       <!-- TITLE -->
       <label for="title" >
@@ -65,7 +27,6 @@
           v-if="mainPicture"
           style="width: 200px;" :src="`${mainPicture}`" :alt="`${mainPicture}`">
       </label>
-
 
       <!-- KEYWORDS -->
       <keywordEditor @addKeywords="addKeywords" :keywords="keywords"/>
@@ -108,16 +69,15 @@ import preview from './preview.vue'
 import mediaEditor from './edit-components/media-editor.vue'
 import mapEditor from './edit-components/map-editor.vue'
 import keywordEditor from './edit-components/keyword-editor.vue'
+import dateEditor from './edit-components/date-editor.vue'
 
 export default {
-  components: { preview, mediaEditor, mapEditor, keywordEditor },
+  components: { preview, mediaEditor, mapEditor, keywordEditor, dateEditor },
   data() {
     return {
       needsDateTextPicture: false,
       // INPUTS:
-      year: '',
-      month: '',
-      day: '',
+      date: '',
       title: '',
       citation: '',
       mainPicture: '',
@@ -136,9 +96,15 @@ export default {
     addMapDetails(mapDetails) {
       this.location = mapDetails
     },
+    addDate(date) {
+      this.date = date
+    },
     addEvent() {
+      console.log(this.date)
+
+
       const fullEvent = {
-        date: this.year + "-" + this.month + "-" + this.day,
+        date: this.date,
         id: "event-" + Date.now(),
         timeEventSubmitted: new Date(),
         title: this.title,
@@ -152,7 +118,7 @@ export default {
         books: this.books,
         movies: this.movies
       }
-      if (this.year === '' || this.month === '' || this.day === '' || this.title === '' || this.mainPicture === '') {
+      if (this.date === '' || this.title === '' || this.mainPicture === '') {
         this.needsDateTextPicture = true;
         setTimeout(() => {
           this.needsDateTextPicture = false;
@@ -160,35 +126,24 @@ export default {
       } else {
         this.$store.dispatch('addEvent', fullEvent)
 
-        // SAVE DATE
-        const year = this.year
-        const month = this.month
-        const day = this.day
-
         Object.assign(this.$data, this.$options.data.call(this));
         this.needsDateTextPicture = false;
 
-        // KEEP SAME DATE FOR NEXT EVENT
-        this.year = year
-        this.month = month
-        this.day = day
-
       }
-    },
-    clearDate() {
-      this.year = ''
-      this.month = ''
-      this.day = ''
     },
     updateDataFromPreview(event) {
 
-      let dateObject = this.$store.getters.getDatefromHashDate(event.date)
+      console.log(event.date)
 
-      // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
-      this.title = event.title
+      let dateObject = this.$store.getters.getDatefromHashDate(event.date)
       this.year = dateObject.getFullYear()
       this.month = (dateObject.getMonth() < 10 ? '0' : '') + (dateObject.getMonth() + 1)
       this.day = (dateObject.getDate() < 10 ? '0' : '') + (dateObject.getDate())
+
+      // TODO: GET DATE TO REPOPULATE INTO DATEEDITOR CHILD COMPONENT
+
+      // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
+      this.title = event.title
       this.citation = event.citation
       this.mainPicture = event.mainPicture
       this.keywords = event.keywords

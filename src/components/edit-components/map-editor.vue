@@ -1,9 +1,9 @@
 <template>
     <!-- LOCATION -->
-    <label for="coordinates">
+    <div>
         <span :class="{'done': input.coordinates ? true : false}">coordinates:</span>
         <input @blur="addMapDetails()" v-model="input.coordinates" type="text">
-    </label>
+    </div>
     <!-- MAP ZOOM -->
     <label v-if="input.coordinates">
         map zoom: <input @blur="addMapDetails()" style="width: 30px;" v-model="input.mapZoom" type="number" min="1" max="21">
