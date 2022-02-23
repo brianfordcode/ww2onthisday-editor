@@ -5,7 +5,7 @@
   <div class="input-fields">
     <div class="details">
 
-      <dateEditor @addDate="addDate"/>
+      <dateEditor @update="d => date = d" :dateString="date"/>
 
       <!-- TITLE -->
       <label for="title" >
@@ -71,8 +71,11 @@ import mapEditor from './edit-components/map-editor.vue'
 import keywordEditor from './edit-components/keyword-editor.vue'
 import dateEditor from './edit-components/date-editor.vue'
 
+
+
 export default {
   components: { preview, mediaEditor, mapEditor, keywordEditor, dateEditor },
+  
   data() {
     return {
       needsDateTextPicture: false,
@@ -95,9 +98,6 @@ export default {
     },
     addMapDetails(mapDetails) {
       this.location = mapDetails
-    },
-    addDate(date) {
-      this.date = date
     },
     addEvent() {
       console.log(this.date)
@@ -132,18 +132,9 @@ export default {
       }
     },
     updateDataFromPreview(event) {
-
-      console.log(event.date)
-
-      let dateObject = this.$store.getters.getDatefromHashDate(event.date)
-      this.year = dateObject.getFullYear()
-      this.month = (dateObject.getMonth() < 10 ? '0' : '') + (dateObject.getMonth() + 1)
-      this.day = (dateObject.getDate() < 10 ? '0' : '') + (dateObject.getDate())
-
-      // TODO: GET DATE TO REPOPULATE INTO DATEEDITOR CHILD COMPONENT
-
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
       this.title = event.title
+      this.date = event.date
       this.citation = event.citation
       this.mainPicture = event.mainPicture
       this.keywords = event.keywords

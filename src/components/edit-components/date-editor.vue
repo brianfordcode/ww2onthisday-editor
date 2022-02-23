@@ -3,7 +3,7 @@
     <div>
         <span :class="{'done': year && month && day ? true : false}">date:</span>
         <!-- YEAR -->
-        <select style="margin-left: 2px;" v-model="year" @blur="addDate()">
+        <select style="margin-left: 2px;" v-model="year">
             <option selected disabled>YEAR</option>
             <option
             v-for="year in 7"
@@ -12,7 +12,7 @@
             </option>
         </select>
         <!-- MONTH -->
-        <select v-model="month" @blur="addDate()">
+        <select v-model="month">
             <option selected disabled>Month</option>
             <option
                 v-for="(month, index) in months"
@@ -23,7 +23,7 @@
             </option>
         </select>
         <!-- DAY -->
-        <select v-model="day" @blur="addDate()">
+        <select v-model="day">
             <option disabled selected>DAY</option>
             <option
             v-for="day in 31"
@@ -40,33 +40,44 @@
 <script>
 
 export default {
+    props: {
+        dateString: {
+            type: String,
+            default: '--'
+        }
+    },
     data() {
+        const [year, month, day] = this.dateString.split('-')
         return {
-            year: '',
-            month: '',
-            day: '',
+            year,
+            month,
+            day,
             months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December',],
             fullDate: '',
-            date: '',
+        }
+    },
+    computed: {
+        date() {
+            return `${this.year}-${this.month}-${this.day}`
+        }
+    },
+    watch: {
+        dateString() {
+            const [year, month, day] = this.dateString.split('-')
+            this.year = year
+            this.month = month
+            this.day = day
+        },
+        date() {
+            this.$emit('update', this.date)
         }
     },
     methods: {
-
-        addDate() {
-            this.fullDate = this.year + '-' + this.month + '-' + this.day
-            if (this.fullDate === '') { return }
-            this.$emit('addDate', this.fullDate)
-        },
         clearDate() {
             this.year = ''
             this.month = ''
             this.day = ''
         },
     }
-
 }
 </script>
-
-<style>
-
-</style>
