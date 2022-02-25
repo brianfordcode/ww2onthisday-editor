@@ -29,12 +29,12 @@
       </label>
 
       <!-- KEYWORDS -->
-      <keywordEditor @addKeywords="addKeywords" :keywords="keywords"/>
+      <keywordEditor @addKeywords="k => keywords = k" :keywords="keywords"/>
       
       <br>
 
       <!-- LOCATION -->
-      <mapEditor @addMapDetails="addMapDetails"/>
+      <mapEditor @addMapDetails="m => location = m"/>
 
     </div>
 
@@ -93,16 +93,7 @@ export default {
     }
   },
   methods: {
-    addKeywords(keywords) {
-      this.keywords = keywords
-    },
-    addMapDetails(mapDetails) {
-      this.location = mapDetails
-    },
     addEvent() {
-      console.log(this.date)
-
-
       const fullEvent = {
         date: this.date,
         id: "event-" + Date.now(),
