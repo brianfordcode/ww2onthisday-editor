@@ -2,11 +2,11 @@
     <!-- LOCATION -->
     <div>
         <span :class="{'done': input.coordinates ? true : false}">coordinates:</span>
-        <input @blur="addMapDetails()" v-model="input.coordinates" type="text">
+        <input @blur="update()" v-model="input.coordinates" type="text">
     </div>
     <!-- MAP ZOOM -->
     <label v-if="input.coordinates">
-        map zoom: <input @blur="addMapDetails()" style="width: 30px;" v-model="input.mapZoom" type="number" min="1" max="21">
+        map zoom: <input @blur="update()" style="width: 30px;" v-model="input.mapZoom" type="number" min="1" max="21">
     </label>
     <iframe
         class="map"
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-    emits: ["addMapDetails"],
+    emits: ["update"],
     data() {
         return {
             input: {
@@ -32,8 +32,8 @@ export default {
         }
     },
     methods: {
-        addMapDetails() {
-            this.$emit('addMapDetails', this.input)
+        update() {
+            this.$emit('update', this.input)
         }
     }
 }

@@ -34,7 +34,7 @@
       <br>
 
       <!-- LOCATION -->
-      <mapEditor @addMapDetails="m => location = m"/>
+      <mapEditor @update="m => location = m"/>
 
     </div>
 
@@ -118,6 +118,7 @@ export default {
         this.$store.dispatch('addEvent', fullEvent)
 
         Object.assign(this.$data, this.$options.data.call(this));
+        console.log(this.location)
         this.needsDateTextPicture = false;
 
       }
