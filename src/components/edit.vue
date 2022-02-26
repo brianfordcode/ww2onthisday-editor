@@ -34,7 +34,7 @@
       <br>
 
       <!-- LOCATION -->
-      <mapEditor @update="m => location = m"/>
+      <mapEditor @update:modelValue="l => location = l" :modelValue="location" />
 
     </div>
 
@@ -84,7 +84,10 @@ export default {
       title: '',
       citation: '',
       mainPicture: '',
-      location: {},
+      location: {
+        coordinates: '',
+        mapZoom: 6
+      },
       keywords: [],
       books: [],
       movies: [],
@@ -116,7 +119,7 @@ export default {
         }, 2000)
       } else {
         this.$store.dispatch('addEvent', fullEvent)
-
+        console.log(this.location)
         Object.assign(this.$data, this.$options.data.call(this));
         console.log(this.location)
         this.needsDateTextPicture = false;
