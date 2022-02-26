@@ -4,21 +4,18 @@
 
   <div class="input-fields">
     <div class="details">
-
+      <!-- DATE -->
       <dateEditor @update="d => date = d" :dateString="date"/>
-
       <!-- TITLE -->
       <label for="title" >
         <p :class="{'done': title ? true : false}" style="text-align: center;">event text:</p>
         <textarea class="textarea" v-model="title"/>
       </label>
-      
       <!-- CITATION -->
       <label for="citation">
        <span :class="{'done': citation ? true : false}">citation:</span>
        <input v-model="citation" type="text">
       </label>
-      
       <!-- MAIN PICTURE -->
       <label for="mainPicture">
         <span :class="{'done': mainPicture ? true : false}">main picture link:</span>
@@ -27,25 +24,18 @@
           v-if="mainPicture"
           style="width: 200px;" :src="`${mainPicture}`" :alt="`${mainPicture}`">
       </label>
-
       <!-- KEYWORDS -->
       <keywordEditor @addKeywords="k => keywords.push(k)" :keywords="keywords"/>
-      
       <br>
-
       <!-- LOCATION -->
       <mapEditor @update:modelValue="l => location = l" :modelValue="location" />
-
     </div>
-
     <br>
     <!-- MEDIA -->
-
     <div class="media" style="display: flex;">
       <mediaEditor :media="books" title='Books' />
       <mediaEditor :media="movies" title='Movies'/>
     </div>
-
     <!-- ENTER BUTTON -->
     <button
       @click="addEvent()"
@@ -119,11 +109,8 @@ export default {
         }, 2000)
       } else {
         this.$store.dispatch('addEvent', fullEvent)
-        console.log(this.location)
         Object.assign(this.$data, this.$options.data.call(this));
-        console.log(this.location)
         this.needsDateTextPicture = false;
-
       }
     },
     updateDataFromPreview(event) {

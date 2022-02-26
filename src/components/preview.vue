@@ -47,61 +47,10 @@
         <div class="media-container">
             <!-- BOOKS -->
             <p>books:</p>
-            <div class="media-wrapper">
-                
-                <div
-                    v-for="book in $store.state.events[index].books"
-                    :key="book"
-                    class="book media"
-                >
-                    <img class="media-pic" :src="`${book.picture}`" :alt="`${book.picture}`">
-                    <div>
-                        <p>title: {{book.title}}</p>
-                        <p>year: {{book.year}}</p>
-                        <p>link:
-                            <a 
-                                v-if="book.mediaLink.link"
-                                :href="`${book.mediaLink.link}`"
-                                target="_blank"
-                            >
-                            &#10003;
-                            </a>
-                        </p>
-                        <p>affiliate: {{book.mediaLink.affiliate ? '&#10003;' : '&#x2715;'}}</p>
-                        <p v-if="book.mediaLink.affiliateSource">affiliate source: {{book.mediaLink.affiliateSource}}</p>
-                    </div>
-                </div>
-            </div>
+            <previewMediaList :media="$store.state.events[index].books"/>
             <!-- MOVIES -->
             <p>movies:</p>
-            <div class="media-wrapper">
-                <div
-                    v-for="movie in $store.state.events[index].movies"
-                    :key="movie"
-                    class="movie media"
-                >
-                    <img
-                    class="media-pic"
-                    :src="`${movie.picture}`"
-                    :alt="`${movie.picture}`">
-                    <div>
-                        <p>title: {{movie.title}}</p>
-                        <p>year: {{movie.year}}</p>
-                        <p>link:
-                            <a 
-                                v-if="movie.mediaLink.link"
-                                :href="`${movie.mediaLink.link}`"
-                                target="_blank"
-                            >
-                            &#10003;
-                            </a>
-                        </p>
-                        <p>affiliate: {{movie.mediaLink.affiliate ? '&#10003;' : '&#x2715;'}}</p>
-                        <p v-if="movie.mediaLink.affiliateSource">affiliate source: {{movie.mediaLink.affiliateSource}}</p>
-                    
-                    </div>
-                </div>
-            </div>
+            <previewMediaList :media="$store.state.events[index].movies"/>
         </div>
         
     </div>
@@ -109,7 +58,10 @@
         <button @click="openDeleteModal(index)">&#x2715;</button>
         <button @click="openPublishModal(index)">Publish To Site</button>
         <button @click="editEvent(index, event)">
-            <img style="width: 15px;" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png" alt="edit-icon">
+            <img
+                style="width: 15px;"
+                src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png"
+                alt="edit-icon">
         </button>
     </div>
     <!-- MODAL ASKING SURE TO SEND TO FIREBASE -->
@@ -162,9 +114,11 @@
 </template>
 
 <script>
+import previewMediaList from './edit-components/preview-media-list.vue'
 
 export default {
     emits: ["getEventData"],
+    components: { previewMediaList },
     data() {
         return {
             selectedIndex: null,
@@ -232,32 +186,8 @@ export default {
     overflow: hidden;
 }
 
-a {
-    color: black;
-    text-decoration: none;
-}
-
 .media-container {
     margin-left: 50px;
-}
-
-.media-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.media {
-    border: 1px solid;
-    margin: 5px;
-    padding: 2px;
-    max-width: 150px;
-    overflow: hidden;
-}
-
-.media-pic {
-    width: auto;
-    height: 70px;
-    padding-right: 2px;
 }
 
 .buttons {

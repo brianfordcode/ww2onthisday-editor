@@ -5,12 +5,12 @@
             <p style="text-align: center;">{{ title }}:</p>
             <!-- TITLE -->
             <label for="title">
-                <span :class="markDone(input.title)">title:</span><input v-model="input.title" type="text">
+                <span :class="{'done': input.title ? true : false}">title:</span><input v-model="input.title" type="text">
             </label>
             <!-- PICTURE -->
             <div style="display: flex; flex-direction: column; align-items: flex-end;">
             <label for="picture" >
-                <span :class="markDone(input.picture)">picture:</span>
+                <span :class="{'done': input.picture ? true : false}">picture:</span>
                 <input v-model="input.picture" type="text">
             </label>
             <img
@@ -22,17 +22,17 @@
             </div>
             <!-- YEAR -->
             <label for="year">
-                <span :class="markDone(input.year)">year:</span>
+                <span :class="{'done': input.year ? true : false}">year:</span>
                 <input v-model="input.year" type="text">
             </label>
             <!-- LINK -->
             <label for="link">
-                <span :class="markDone(input.mediaLink.link)">link:</span>
+                <span :class="{'done': input.mediaLink.link ? true : false}">link:</span>
                 <input v-model="input.mediaLink.link" type="text">
             </label>
             <!-- AFFILIATE? -->
             <label for="affiliate" style="display: flex; align-items: center; justify-content: flex-end">
-                <span :class="markDone(input.mediaLink.affiliate)">affiliate:</span>
+                <span :class="{'done': input.mediaLink.affiliate ? true : false}">affiliate:</span>
             <input
                 style="margin-left: 5px;"
                 type="checkbox"
@@ -41,7 +41,7 @@
             </label>
             <!-- AFFILIATE SOURCE -->
             <label v-if="input.mediaLink.affiliate">
-                <span :class="markDone(input.mediaLink.affiliateSource)">affiliate source:</span>
+                <span :class="{'done': input.mediaLink.affiliateSource ? true : false}">affiliate source:</span>
             <!-- AMAZON -->
             <select
                 style="margin-left:2px;"
@@ -135,7 +135,6 @@ const getInitialMediaState = () => ({
 })
 
 export default {
-    
     props: {
         media: {
             type: Array,
@@ -153,11 +152,6 @@ export default {
         }
     },
     methods: {
-        markDone(data) {
-            if (data) {
-                return 'done'
-            }
-        },
         enterItem() {
             const obj = {
                 id: `${this.$props.title}`.toLowerCase().slice(0, -1) + '-' + Date.now(),

@@ -40,7 +40,6 @@ export default {
         },
         mapZoom: {
             get() {
-                // return this.modelValue.mapZoom
                 return this.modelValue.mapZoom ? this.modelValue.mapZoom : 6
             },
             set(mapZoom) {
