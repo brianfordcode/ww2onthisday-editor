@@ -29,7 +29,7 @@
       </label>
 
       <!-- KEYWORDS -->
-      <keywordEditor @addKeywords="k => keywords = k" :keywords="keywords"/>
+      <keywordEditor @addKeywords="k => keywords.push(k)" :keywords="keywords"/>
       
       <br>
 
