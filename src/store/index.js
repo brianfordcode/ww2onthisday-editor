@@ -38,27 +38,26 @@ export default createStore({
     },
     addEventFromFB(state, eventsOnDate) {
       state.events.push(eventsOnDate)
-      console.log(state.events)
     }
   },
   actions: {
-    async addEvent(context, submittedEvent) {
+    addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
 
-      // add firebase events to store events based on submitted event date
+    },
+    async getFBEvents(context, date) {
 
-      const q = query(collection(db, "development"), where("date", "==", submittedEvent.date));
-      
+      // add firebase events to store events based on submitted event date
+      const q = query(collection(db, "development"), where("date", "==", date));
+
       const querySnapshot = await getDocs(q);
+
       querySnapshot.forEach((doc) => {
         const eventsOnDate = doc.data()
-        // console.log(eventsOnDate)
 
         context.commit('addEventFromFB', eventsOnDate)
+
       });
-      
-
-
 
     },
     async sendToFirebase(context, submittedEvent) {
@@ -66,7 +65,5 @@ export default createStore({
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
     },
-  },
-  modules: {
   }
 })

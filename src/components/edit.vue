@@ -115,6 +115,8 @@ export default {
     },
     getDateString(d) {
       this.date = d
+      this.$store.dispatch('getFBEvents', this.date)
+
     },
     updateDataFromPreview(event) {
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
