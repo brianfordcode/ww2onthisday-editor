@@ -1,10 +1,6 @@
 <template>
   <h2>WW2 on this day Editor</h2>
 
-<!-- <div class="nav-bar">
-  <router-link to="/about">About</router-link>
-</div> -->
-
   <router-view/>
 
 </template>

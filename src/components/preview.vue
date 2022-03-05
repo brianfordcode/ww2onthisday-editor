@@ -1,21 +1,33 @@
 <template>
 
+
+<!-- PUBLISHED EVENTS -->
+<button class="published-btns"
+    @click="toggleFBEvents"
+    v-if="$store.state.events[0]"
+>
+{{FBEventsShown ? '' : 'Not'}} Published (click for {{FBEventsShown ? 'un' : ''}}published events)
+</button>
+
+
+
 <div
     class="main-container"
-    v-for="(event, index) in $store.state.events"
+    v-for="(event, index) in eventsToShow"
     :key="event"
 >
+    <p>on firebase: {{eventsToShow[index].published}}</p>
     <div class="event-container">
         <div class="event-details">
             <!-- DATE -->
-            <p>date: {{ $store.getters.getDatefromHashDate($store.state.events[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"}) }}</p>
+            <p>date: {{ $store.getters.getDatefromHashDate(eventsToShow[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"}) }}</p>
             <!-- TITLE -->
-            title: <p>{{$store.state.events[index].title}}</p>
+            title: <p>{{event.title}}</p>
             <!-- CITATION -->
             <p>citation: 
                 <a 
-                    v-if="$store.state.events[index].citation"
-                    :href="`${$store.state.events[index].citation}`"
+                    v-if="eventsToShow[index].citation"
+                    :href="`${eventsToShow[index].citation}`"
                     target="_blank"
                 >
                 &#10003;
@@ -25,34 +37,33 @@
             <div style="display: flex; align-items: center">
                 <p>main picture:</p>
                 <img
-                    :src="`${$store.state.events[index].mainPicture}`"
-                    :alt="`${$store.state.events[index].mainPicture}`"
+                    :src="`${event.mainPicture}`"
+                    :alt="`${event.mainPicture}`"
                     style="width: 100px;"
                 >
             </div>
             <!-- KEYWORDS -->
-            <p>keywords: {{$store.state.events[index].keywords}}</p>
+            <p>keywords: {{eventsToShow[index].keywords}}</p>
             <!-- MAP -->
             <iframe
                 class="map"
-                v-if="$store.state.events[index].location.coordinates"
+                v-if="eventsToShow[index].location.coordinates"
                 style="border:0; width: 250px; height: 150px;"
                 loading="lazy"
                 allowfullscreen
                 :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
-                ${$store.state.events[index].location.coordinates}&zoom=${$store.state.events[index].location.mapZoom}
+                ${eventsToShow[index].location.coordinates}&zoom=${eventsToShow[index].location.mapZoom}
                 &maptype=satellite`"
             />
         </div>
         <div class="media-container">
             <!-- BOOKS -->
             <p>books:</p>
-            <previewMediaList :media="$store.state.events[index].books"/>
+            <previewMediaList :media="eventsToShow[index].books"/>
             <!-- MOVIES -->
             <p>movies:</p>
-            <previewMediaList :media="$store.state.events[index].movies"/>
+            <previewMediaList :media="eventsToShow[index].movies"/>
         </div>
-        
     </div>
     <div class="buttons">
         <button @click="openDeleteModal(index)">&#x2715;</button>
@@ -91,7 +102,6 @@
         </div>
     </div>
 
-
 </div>
     <!-- MODAL IF EVENT SENT TO FIREBASE -->
     <p
@@ -110,7 +120,6 @@
     Event Deleted!
     </p>
 
-
 </template>
 
 <script>
@@ -126,6 +135,14 @@ export default {
             submittedEvent: false,
             deletePushed: false,
             deletedEvent: false,
+            FBEventsShown: false,
+        }
+    },
+    computed: {
+        eventsToShow() {
+            let rv = this.$store.state.events.filter(event => event.published === this.FBEventsShown)
+            console.log(rv)
+            return rv;
         }
     },
     methods: {
@@ -150,6 +167,9 @@ export default {
             this.selectedIndex = index
             this.publishPushed = true
         },
+        toggleFBEvents() {
+            this.FBEventsShown = !this.FBEventsShown
+        },
         sendToFireBase(event, index) {
             this.$store.dispatch('sendToFirebase', event)
             this.submittedEvent = true
@@ -166,6 +186,14 @@ export default {
 </script>
 
 <style scoped>
+
+.published-btns {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto 20px auto;
+    width: max-content;
+    padding: 5px;
+}
 
 .main-container {
     border: 1px solid;

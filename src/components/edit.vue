@@ -2,10 +2,11 @@
 
 <div class="main-container">
 
-  <div class="input-fields">
+  <!-- DATE -->
+  <dateEditor @update="getDateString" :dateString="date"/>
+
+  <div class="input-fields" v-if="this.$route.name === 'Home'">
     <div class="details">
-      <!-- DATE -->
-      <dateEditor @update="d => date = d" :dateString="date"/>
       <!-- TITLE -->
       <label for="title" >
         <p :class="{'done': title ? true : false}" style="text-align: center;">event text:</p>
@@ -39,7 +40,7 @@
     <!-- ENTER BUTTON -->
     <button
       @click="addEvent()"
-      style="margin: 50px 0; padding: 10px;"
+      style="margin: 50px 0 20px 0; padding: 10px;"
     >
     <span>ADD EVENT</span>
     <br>
@@ -61,8 +62,6 @@ import mapEditor from './edit-components/map-editor.vue'
 import keywordEditor from './edit-components/keyword-editor.vue'
 import dateEditor from './edit-components/date-editor.vue'
 
-
-
 export default {
   components: { preview, mediaEditor, mapEditor, keywordEditor, dateEditor },
   
@@ -81,8 +80,6 @@ export default {
       keywords: [],
       books: [],
       movies: [],
-      // DATA:
-      events: []
     }
   },
   methods: {
@@ -100,7 +97,8 @@ export default {
         },
         keywords: this.keywords,
         books: this.books,
-        movies: this.movies
+        movies: this.movies,
+        published: false
       }
       if (this.date === '' || this.title === '' || this.mainPicture === '') {
         this.needsDateTextPicture = true;
@@ -108,10 +106,15 @@ export default {
           this.needsDateTextPicture = false;
         }, 2000)
       } else {
+        const keepDate = this.date
         this.$store.dispatch('addEvent', fullEvent)
         Object.assign(this.$data, this.$options.data.call(this));
+        this.date = keepDate
         this.needsDateTextPicture = false;
       }
+    },
+    getDateString(d) {
+      this.date = d
     },
     updateDataFromPreview(event) {
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
@@ -124,7 +127,6 @@ export default {
       this.location.mapZoom = event.location.mapZoom
       this.books = event.books
       this.movies = event.movies
-
     }
   },
 }

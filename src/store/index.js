@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 // FIREBASE
 import { initializeApp } from "firebase/app";
-import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore"; 
+import { doc, getDocs, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
@@ -25,10 +25,8 @@ export default createStore({
   getters: {
     getDatefromHashDate: (state, getters) => (date) => {
       let input = date.split("-");
-
       let dayNum = parseInt(input[2]) + 1
       let day = (dayNum < 10 ? '0' : '') + dayNum
-
       let dateObject = new Date(input[0] +"-"+ input[1] +"-"+ day);
       
       return dateObject
@@ -37,13 +35,34 @@ export default createStore({
   mutations: {
     addEvent(state, submittedEvent) {
       state.events.push(submittedEvent)
+    },
+    addEventFromFB(state, eventsOnDate) {
+      state.events.push(eventsOnDate)
+      console.log(state.events)
     }
   },
   actions: {
-    addEvent(context, submittedEvent) {
+    async addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
+
+      // add firebase events to store events based on submitted event date
+
+      const q = query(collection(db, "development"), where("date", "==", submittedEvent.date));
+      
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const eventsOnDate = doc.data()
+        // console.log(eventsOnDate)
+
+        context.commit('addEventFromFB', eventsOnDate)
+      });
+      
+
+
+
     },
     async sendToFirebase(context, submittedEvent) {
+      submittedEvent.published = true
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
     },
