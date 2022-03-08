@@ -39,17 +39,13 @@ export default createStore({
 
 
     addEventFromFB(state, eventsOnDate) {
-
         state.events.push(eventsOnDate)
-
     }
   },
   actions: {
     addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
-
     },
-
 
     async getFBEvents(context, date) {
 

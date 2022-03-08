@@ -6,17 +6,21 @@
     @click="toggleFBEvents"
     v-if="$store.state.events[0]"
 >
-{{FBEventsShown ? '' : 'Not'}} Published (click for {{FBEventsShown ? 'un' : ''}}published events)
+(click for {{FBEventsShown ? 'un' : ''}}published events)
 </button>
 
-
+<p
+    v-if="$store.state.events[0]"
+    style="text-align: center; padding-bottom: 10px;"
+>
+{{FBEventsShown ? '' : 'Not'}} Published
+</p>
 
 <div
     class="main-container"
     v-for="(event, index) in eventsToShow"
     :key="event"
 >
-    <p>on firebase: {{eventsToShow[index].published}}</p>
     <div class="event-container">
         <div class="event-details">
             <!-- DATE -->
@@ -136,6 +140,7 @@ export default {
             deletePushed: false,
             deletedEvent: false,
             FBEventsShown: false,
+            mainIndex: null
         }
     },
     computed: {
@@ -145,17 +150,29 @@ export default {
     },
     methods: {
         openDeleteModal(index) {
+
+            this.mainIndex = this.$store.state.events.indexOf(this.eventsToShow[index])
+
             this.selectedIndex = index
             this.deletePushed = true
+
+            console.log(this.$store.state.events)
+            
         },
         deleteEvent(index) {
-            this.$store.state.events.splice(index, 1)
+
+            let indexToBeDeleted = this.$store.state.events.indexOf(this.eventsToShow[this.mainIndex])
+            
+            this.$store.state.events.splice(indexToBeDeleted, 1)
+
             this.deletedEvent = true
             this.selectedIndex = null
             this.deletePushed = false
             setTimeout(() => {
                 this.deletedEvent = false
             }, 2000)
+
+            console.log(this.$store.state.events)
         },
         editEvent(index, event) {
             this.$emit('getEventData', event)
@@ -166,6 +183,7 @@ export default {
             this.publishPushed = true
         },
         toggleFBEvents() {
+            this.deletePushed = false
             this.FBEventsShown = !this.FBEventsShown
         },
         sendToFireBase(event, index) {
