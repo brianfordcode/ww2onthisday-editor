@@ -53,9 +53,10 @@ export default createStore({
 
     async getFBEvents(context, date) {
 
-      for (let i=0; i< this.state.events.length; i++) {
+      for (let i=0; i<this.state.events.length; i++) {
         if (this.state.events[i].published) {
-          this.state.events.splice(i, this.state.events.length)
+          this.state.events.splice(i, 1)
+          i--
         }
       }
       
