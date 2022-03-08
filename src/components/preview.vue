@@ -76,6 +76,8 @@
                 alt="edit-icon">
         </button>
     </div>
+
+<!-- MODALS -->
     <!-- MODAL ASKING SURE TO SEND TO FIREBASE -->
     <div
         class="submit-warning modal"
@@ -137,7 +139,8 @@ export default {
             deletePushed: false,
             deletedEvent: false,
             FBEventsShown: false,
-            mainIndex: null
+            mainIndex: null,
+            editPushed: false,
         }
     },
     computed: {
@@ -168,9 +171,18 @@ export default {
                 this.deletedEvent = false
             }, 2000)
         },
-        editEvent(index, event) {
-            this.$emit('getEventData', event)
-            this.$store.state.events.splice(index, 1)
+        editEvent(event) {
+
+            let indexToBeUpdated = this.$store.state.events.indexOf(this.eventsToShow[this.mainIndex])
+
+            if (event.published === false) {
+                this.$emit('getEventData', event)
+                this.$store.state.events.splice(indexToBeUpdated, 1)
+            } else {
+                this.$store.dispatch('updateEventOnFirebase', event)
+            }
+
+
         },
         openPublishModal(index) {
             this.selectedIndex = index
@@ -202,7 +214,7 @@ export default {
 }
 
 .main-container {
-    border: 1px solid;
+    border: 1px solid black;
     width: max-content;
     height: max-content;
     margin: 0 auto 15px auto;

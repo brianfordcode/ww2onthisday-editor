@@ -37,7 +37,6 @@ export default createStore({
       state.events.push(submittedEvent)
     },
 
-
     addEventFromFB(state, eventsOnDate) {
         state.events.push(eventsOnDate)
     }
@@ -47,6 +46,7 @@ export default createStore({
       context.commit('addEvent', submittedEvent)
     },
 
+    // EDITING FIREBASE EVENTS
     async getFBEvents(context, date) {
 
       for (let i=0; i<this.state.events.length; i++) {
@@ -69,15 +69,12 @@ export default createStore({
       });
     },
 
-
-
     deleteFromFirebase(context, event) {
       console.log('delete from firebase', event)
     },
     updateEventOnFirebase(context, event) {
       console.log('update from firebase', event)
     },
-
 
     async sendToFirebase(context, submittedEvent) {
       submittedEvent.published = true
