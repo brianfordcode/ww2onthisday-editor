@@ -42,7 +42,7 @@
       @click="addEvent()"
       style="margin: 50px 0 20px 0; padding: 10px;"
     >
-    <span>ADD EVENT</span>
+    <span>{{published ? 'UPDATE' : 'ADD'}} EVENT</span>
     <br>
     <span v-if="needsDateTextPicture">Needs a date, event text and picture!</span>
     </button>
@@ -80,13 +80,14 @@ export default {
       keywords: [],
       books: [],
       movies: [],
+      published: null
     }
   },
   methods: {
     addEvent() {
       const fullEvent = {
         date: this.date,
-        id: "event-" + Date.now(),
+        id: "event-" + this.date + '-' + Date.now(),
         timeEventSubmitted: new Date(),
         title: this.title,
         mainPicture: this.mainPicture,
@@ -107,20 +108,22 @@ export default {
         }, 2000)
       } else {
         const keepDate = this.date
-        this.$store.dispatch('addEvent', fullEvent)
+        // ADD/UPDATE DEPENDING IF ON FB OR NOT
+        if (!this.published) {
+          this.$store.dispatch('addEvent', fullEvent)
+        } else {
+          this.$store.dispatch('updateEventOnFirebase', fullEvent)
+        }
+        // CLEAR FORM
         Object.assign(this.$data, this.$options.data.call(this));
+
         this.date = keepDate
         this.needsDateTextPicture = false;
       }
     },
     getDateString(d) {
       this.date = d
-
       this.$store.dispatch('getFBEvents', this.date)
-
-      // todo - delete published events here???
-      // reset fb events on date change
-
     },
     updateDataFromPreview(event) {
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
@@ -133,6 +136,9 @@ export default {
       this.location.mapZoom = event.location.mapZoom
       this.books = event.books
       this.movies = event.movies
+      this.published = event.published
+
+      console.log(this.published)
     }
   },
 }

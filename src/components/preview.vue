@@ -68,7 +68,7 @@
     </div>
     <div class="buttons">
         <button @click="openDeleteModal(index)">&#x2715;</button>
-        <button @click="openPublishModal(index)">Publish To Site</button>
+        <button @click="openPublishModal(index)" v-if="event.published === false">Publish To Site</button>
         <button @click="editEvent(index, event)">
             <img
                 style="width: 15px;"
@@ -140,7 +140,6 @@ export default {
             deletedEvent: false,
             FBEventsShown: false,
             mainIndex: null,
-            editPushed: false,
         }
     },
     computed: {
@@ -163,6 +162,7 @@ export default {
                 this.$store.state.events.splice(indexToBeDeleted, 1)
             } else {
                 this.$store.dispatch('deleteFromFirebase', event)
+                this.$store.state.events.splice(indexToBeDeleted, 1)
             }
             this.deletedEvent = true
             this.selectedIndex = null
@@ -171,7 +171,7 @@ export default {
                 this.deletedEvent = false
             }, 2000)
         },
-        editEvent(event) {
+        editEvent(index, event) {
 
             let indexToBeUpdated = this.$store.state.events.indexOf(this.eventsToShow[this.mainIndex])
 
@@ -179,10 +179,10 @@ export default {
                 this.$emit('getEventData', event)
                 this.$store.state.events.splice(indexToBeUpdated, 1)
             } else {
-                this.$store.dispatch('updateEventOnFirebase', event)
+                this.$emit('getEventData', event)
             }
 
-
+            
         },
         openPublishModal(index) {
             this.selectedIndex = index

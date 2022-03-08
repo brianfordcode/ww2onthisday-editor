@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 // FIREBASE
 import { initializeApp } from "firebase/app";
-import { doc, getDocs, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
+import { doc, getDocs, deleteDoc, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
@@ -49,6 +49,7 @@ export default createStore({
     // EDITING FIREBASE EVENTS
     async getFBEvents(context, date) {
 
+      // CLEAR published events from state events first
       for (let i=0; i<this.state.events.length; i++) {
         if (this.state.events[i].published) {
           this.state.events.splice(i, 1)
@@ -69,9 +70,17 @@ export default createStore({
       });
     },
 
-    deleteFromFirebase(context, event) {
-      console.log('delete from firebase', event)
+    async deleteFromFirebase(context, event) {
+      let eventToBeDeleted
+      // add firebase events to store events based on submitted event date
+      const q = query(collection(db, "development"), where("id", "==", event.id));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        eventToBeDeleted = doc.id
+      });
+      deleteDoc(doc(db, "development", eventToBeDeleted));
     },
+
     updateEventOnFirebase(context, event) {
       console.log('update from firebase', event)
     },
