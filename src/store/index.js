@@ -55,7 +55,7 @@ export default createStore({
           i--
         }
       }
-      
+
       // add firebase events to store events based on submitted event date
       const q = query(collection(db, "development"), where("date", "==", date));
 
@@ -67,11 +67,18 @@ export default createStore({
         context.commit('addEventFromFB', eventsOnDate)
 
       });
-
-      
-
-
     },
+
+
+
+    deleteFromFirebase(context, event) {
+      console.log('delete from firebase', event)
+    },
+    updateEventOnFirebase(context, event) {
+      console.log('update from firebase', event)
+    },
+
+
     async sendToFirebase(context, submittedEvent) {
       submittedEvent.published = true
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS

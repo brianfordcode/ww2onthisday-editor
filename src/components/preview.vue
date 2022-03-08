@@ -1,20 +1,17 @@
 <template>
 
-
-<!-- PUBLISHED EVENTS -->
-<button class="published-btns"
-    @click="toggleFBEvents"
-    v-if="$store.state.events[0]"
->
-(click for {{FBEventsShown ? 'un' : ''}}published events)
-</button>
-
-<p
-    v-if="$store.state.events[0]"
-    style="text-align: center; padding-bottom: 10px;"
->
-{{FBEventsShown ? '' : 'Not'}} Published
-</p>
+<!-- PUBLISHED/UNPUBLISHED FILTER -->
+<div style="display: flex; align-items: center; margin: 0 auto 15px auto; width: max-content;">
+    <h4 v-if="$store.state.events[0]" style="padding-right: 5px;">
+    {{FBEventsShown ? '' : 'Not'}} Published
+    </h4>
+    <button class="published-btns"
+        @click="toggleFBEvents"
+        v-if="$store.state.events[0]"
+    >
+    click for {{FBEventsShown ? 'un' : ''}}published events
+    </button>
+</div>
 
 <div
     class="main-container"
@@ -100,7 +97,7 @@
     >
         <div style="width: 80%;">
             <div class="modal-btns">
-                <p @click="deleteEvent(event, index)">Delete this Event</p>
+                <p @click="deleteEvent(event)">Delete this Event</p>
                 <p @click="selectedIndex = null, deletePushed = false">Do Not Delete</p>
             </div>
         </div>
@@ -155,24 +152,21 @@ export default {
 
             this.selectedIndex = index
             this.deletePushed = true
-
-            console.log(this.$store.state.events)
-            
         },
-        deleteEvent(index) {
-
+        deleteEvent(event) {
             let indexToBeDeleted = this.$store.state.events.indexOf(this.eventsToShow[this.mainIndex])
-            
-            this.$store.state.events.splice(indexToBeDeleted, 1)
 
+            if (event.published === false) {
+                this.$store.state.events.splice(indexToBeDeleted, 1)
+            } else {
+                this.$store.dispatch('deleteFromFirebase', event)
+            }
             this.deletedEvent = true
             this.selectedIndex = null
             this.deletePushed = false
             setTimeout(() => {
                 this.deletedEvent = false
             }, 2000)
-
-            console.log(this.$store.state.events)
         },
         editEvent(index, event) {
             this.$emit('getEventData', event)
@@ -204,10 +198,6 @@ export default {
 <style scoped>
 
 .published-btns {
-    display: flex;
-    justify-content: space-around;
-    margin: 0 auto 20px auto;
-    width: max-content;
     padding: 5px;
 }
 
