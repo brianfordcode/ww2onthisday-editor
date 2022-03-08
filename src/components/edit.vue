@@ -115,7 +115,11 @@ export default {
     },
     getDateString(d) {
       this.date = d
+
       this.$store.dispatch('getFBEvents', this.date)
+
+      // todo - delete published events here???
+      // reset fb events on date change
 
     },
     updateDataFromPreview(event) {

@@ -140,9 +140,7 @@ export default {
     },
     computed: {
         eventsToShow() {
-            let rv = this.$store.state.events.filter(event => event.published === this.FBEventsShown)
-            console.log(rv)
-            return rv;
+            return this.$store.state.events.filter(event => event.published === this.FBEventsShown)
         }
     },
     methods: {
