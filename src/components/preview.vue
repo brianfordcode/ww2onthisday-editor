@@ -180,7 +180,11 @@ export default {
                 this.$store.state.events.splice(indexToBeUpdated, 1)
             } else {
                 this.$emit('getEventData', event)
+                // this.$store.dispatch('updateEventOnFirebase', event)
             }
+
+            // this.$emit('getEventData', event)
+            // this.$store.state.events.splice(index, 1)
 
             
         },

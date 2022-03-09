@@ -137,8 +137,6 @@ export default {
       this.books = event.books
       this.movies = event.movies
       this.published = event.published
-
-      console.log(this.published)
     }
   },
 }

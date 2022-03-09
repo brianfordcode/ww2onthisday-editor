@@ -59,30 +59,37 @@ export default createStore({
 
       // add firebase events to store events based on submitted event date
       const q = query(collection(db, "development"), where("date", "==", date));
-
       const querySnapshot = await getDocs(q);
-
       querySnapshot.forEach((doc) => {
         const eventsOnDate = doc.data()
-
         context.commit('addEventFromFB', eventsOnDate)
-
       });
     },
 
     async deleteFromFirebase(context, event) {
       let eventToBeDeleted
-      // add firebase events to store events based on submitted event date
       const q = query(collection(db, "development"), where("id", "==", event.id));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         eventToBeDeleted = doc.id
       });
+      console.log(eventToBeDeleted)
       deleteDoc(doc(db, "development", eventToBeDeleted));
     },
 
-    updateEventOnFirebase(context, event) {
-      console.log('update from firebase', event)
+    async updateEventOnFirebase(context, event) {
+
+      console.log(event.id)
+
+      let eventToBeUpdated
+      const q = query(collection(db, "development"), where("id", "==", event.id));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        eventToBeUpdated = doc.id
+      });
+      console.log(eventToBeUpdated)
+      setDoc(doc(db, "development", eventToBeUpdated), event);
+
     },
 
     async sendToFirebase(context, submittedEvent) {
