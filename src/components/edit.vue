@@ -108,12 +108,8 @@ export default {
         }, 2000)
       } else {
         const keepDate = this.date
-        // ADD/UPDATE DEPENDING IF ON FB OR NOT
-        if (!this.published) {
-          this.$store.dispatch('addEvent', fullEvent)
-        } else {
-          this.$store.dispatch('updateEventOnFirebase', fullEvent)
-        }
+
+        this.$store.dispatch('addEvent', fullEvent)
         // CLEAR FORM
         Object.assign(this.$data, this.$options.data.call(this));
 

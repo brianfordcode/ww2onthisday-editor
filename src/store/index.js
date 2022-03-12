@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 // FIREBASE
 import { initializeApp } from "firebase/app";
-import { doc, getDocs, deleteDoc, collection, query, where, setDoc, getFirestore, startAfter } from "firebase/firestore"; 
+import { doc, getDocs, deleteDoc, updateDoc, collection, query, where, setDoc, getFirestore, startAfter } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
@@ -57,12 +57,22 @@ export default createStore({
     },
     deleteEvent(state, id) {
       delete state.events[id]
+    },
+    publishEvent(state, id) {
+      state.events[id].published = true
     }
   },
   actions: {
     addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
+      console.log(submittedEvent)
+      setDoc(doc(db, "development", submittedEvent.id), submittedEvent);
     },
+    deleteEvent(context, id) {
+      context.commit('deleteEvent', id)
+      deleteDoc(doc(db, "development", id));
+    },
+
 
     // EDITING FIREBASE EVENTS
     async getFBEvents(context, date) {
@@ -84,10 +94,7 @@ export default createStore({
       });
     },
 
-    deleteEvent(context, id) {
-      context.commit('deleteEvent', id)
-      deleteDoc(doc(db, "development", id));
-    },
+    
 
     async deleteFromFirebase(context, event) {
       let eventToBeDeleted
@@ -100,25 +107,10 @@ export default createStore({
       deleteDoc(doc(db, "development", eventToBeDeleted));
     },
 
-    async updateEventOnFirebase(context, event) {
-
-      console.log(event.id)
-
-      let eventToBeUpdated
-      const q = query(collection(db, "development"), where("id", "==", event.id));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        eventToBeUpdated = doc.id
-      });
-      console.log(eventToBeUpdated)
-      setDoc(doc(db, "development", eventToBeUpdated), event);
-
-    },
-
-    async sendToFirebase(context, submittedEvent) {
-      submittedEvent.published = true
+    async publishEvent(context, id) {
+      context.commit('publishEvent', id)
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
-      await setDoc(doc(db, "development", 'event-'+`${submittedEvent.date}`+'-'+Date.now()+''), submittedEvent);
+      await updateDoc(doc(db, "development", id), { published: true });
     },
   }
 })

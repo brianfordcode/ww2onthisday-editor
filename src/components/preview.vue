@@ -66,8 +66,8 @@
         </div>
     </div>
     <div class="buttons">
-        <button @click="openDeleteModal(index)">&#x2715;</button>
-        <button @click="openPublishModal(index)" v-if="getEvent(id).published === false">Publish To Site</button>
+        <button @click="openDeleteModal(id)">&#x2715;</button>
+        <button @click="openPublishModal(id)" v-if="getEvent(id).published === false">Publish To Site</button>
         <button @click="editEvent(id)">
             <img
                 style="width: 15px;"
@@ -81,12 +81,12 @@
     <div
         class="submit-warning modal"
         style="background-color: rgba(3, 95, 30, 0.61);"
-        v-if="selectedIndex === index && publishPushed"
+        v-if="selectedId === id && publishPushed"
     >
         <div style="width: 80%;">
             <div class="modal-btns">
-                <p @click="sendToFireBase(getEvent(id), index)">Publish to Site</p>
-                <p @click="selectedIndex = null, publishPushed = false">Do Not Publish Yet</p>
+                <p @click="publishEvent(id)">Publish to Site</p>
+                <p @click="publishPushed = false">Do Not Publish Yet</p>
             </div>
         </div>
     </div>
@@ -94,12 +94,12 @@
     <div
         class="delete-warning modal"
         style="background-color: rgba(95, 0, 0, 0.61);"
-        v-if="selectedIndex === index && deletePushed"
+        v-if="selectedId === id && deletePushed"
     >
         <div style="width: 80%;">
             <div class="modal-btns">
                 <p @click="deleteEvent(id)">Delete this Event</p>
-                <p @click="selectedIndex = null, deletePushed = false">Do Not Delete</p>
+                <p @click="deletePushed = false">Do Not Delete</p>
             </div>
         </div>
     </div>
@@ -163,44 +163,38 @@ export default {
             this.deletePushed = true
         },
         deleteEvent(id) {
-
             this.$store.dispatch('deleteEvent', id)
-
             this.deletedEvent = true
             this.deletePushed = false
             setTimeout(() => {
                 this.deletedEvent = false
             }, 2000)
         },
+
+
         editEvent(index, event) {
-
             let indexToBeUpdated = this.$store.state.events.indexOf(this.eventsToShow[this.mainIndex])
-
             if (event.published === false) {
                 this.$emit('getEventData', event)
                 this.$store.state.events.splice(indexToBeUpdated, 1)
             } else {
                 this.$emit('getEventData', event)
-                // this.$store.dispatch('updateEventOnFirebase', event)
             }
-
-            // this.$emit('getEventData', event)
-            // this.$store.state.events.splice(index, 1)
         },
-        openPublishModal(index) {
-            this.selectedIndex = index
+
+
+        openPublishModal(id) {
+            this.selectedId = id
             this.publishPushed = true
         },
         toggleFBEvents() {
             this.deletePushed = false
             this.FBEventsShown = !this.FBEventsShown
         },
-        sendToFireBase(event, index) {
-            this.$store.dispatch('sendToFirebase', event)
+        publishEvent(id) {
+            this.$store.dispatch('publishEvent', id)
             this.submittedEvent = true
-            this.selectedIndex = null
             this.publishPushed = false
-            this.$store.state.events.splice(index, 1)
             setTimeout(() => {
                 this.submittedEvent = false
             }, 2000)
