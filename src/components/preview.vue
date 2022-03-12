@@ -2,12 +2,11 @@
 
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
 <div style="display: flex; align-items: center; margin: 0 auto 15px auto; width: max-content;">
-    <h4 v-if="$store.state.events[0]" style="padding-right: 5px;">
+    <h4 style="padding-right: 5px;">
     {{FBEventsShown ? '' : 'Not'}} Published
     </h4>
     <button class="published-btns"
         @click="toggleFBEvents"
-        v-if="$store.state.events[0]"
     >
     click for {{FBEventsShown ? 'un' : ''}}published events
     </button>
@@ -15,20 +14,20 @@
 
 <div
     class="main-container"
-    v-for="(event, index) in eventsToShow"
-    :key="event"
+    v-for="id in $store.getters.filteredEvents(date, FBEventsShown)"
+    :key="id"
 >
     <div class="event-container">
         <div class="event-details">
             <!-- DATE -->
-            <p>date: {{ $store.getters.getDatefromHashDate(eventsToShow[index].date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"}) }}</p>
+            <p>date: {{ $store.getters.getDatefromHashDate(getEvent(id).date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"}) }}</p>
             <!-- TITLE -->
-            title: <p>{{event.title}}</p>
+            title: <p>{{getEvent(id).title}}</p>
             <!-- CITATION -->
             <p>citation: 
                 <a 
-                    v-if="eventsToShow[index].citation"
-                    :href="`${eventsToShow[index].citation}`"
+                    v-if="getEvent(id).citation"
+                    :href="`${getEvent(id).citation}`"
                     target="_blank"
                 >
                 &#10003;
@@ -38,38 +37,38 @@
             <div style="display: flex; align-items: center">
                 <p>main picture:</p>
                 <img
-                    :src="`${event.mainPicture}`"
-                    :alt="`${event.mainPicture}`"
+                    :src="`${getEvent(id).mainPicture}`"
+                    :alt="`${getEvent(id).mainPicture}`"
                     style="width: 100px;"
                 >
             </div>
             <!-- KEYWORDS -->
-            <p>keywords: {{eventsToShow[index].keywords}}</p>
+            <p>keywords: {{getEvent(id).keywords}}</p>
             <!-- MAP -->
             <iframe
                 class="map"
-                v-if="eventsToShow[index].location.coordinates"
+                v-if="getEvent(id).location.coordinates"
                 style="border:0; width: 250px; height: 150px;"
                 loading="lazy"
                 allowfullscreen
                 :src="`https://www.google.com/maps/embed/v1/view?key=AIzaSyAzuMuGU3ynDz4KU87IzdKY_pXzhUyILoQ&center=
-                ${eventsToShow[index].location.coordinates}&zoom=${eventsToShow[index].location.mapZoom}
+                ${getEvent(id).location.coordinates}&zoom=${getEvent(id).location.mapZoom}
                 &maptype=satellite`"
             />
         </div>
         <div class="media-container">
             <!-- BOOKS -->
             <p>books:</p>
-            <previewMediaList :media="eventsToShow[index].books"/>
+            <previewMediaList :media="getEvent(id).books"/>
             <!-- MOVIES -->
             <p>movies:</p>
-            <previewMediaList :media="eventsToShow[index].movies"/>
+            <previewMediaList :media="getEvent(id).movies"/>
         </div>
     </div>
     <div class="buttons">
         <button @click="openDeleteModal(index)">&#x2715;</button>
-        <button @click="openPublishModal(index)" v-if="event.published === false">Publish To Site</button>
-        <button @click="editEvent(index, event)">
+        <button @click="openPublishModal(index)" v-if="getEvent(id).published === false">Publish To Site</button>
+        <button @click="editEvent(id)">
             <img
                 style="width: 15px;"
                 src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png"
@@ -86,7 +85,7 @@
     >
         <div style="width: 80%;">
             <div class="modal-btns">
-                <p @click="sendToFireBase(event, index)">Publish to Site</p>
+                <p @click="sendToFireBase(getEvent(id), index)">Publish to Site</p>
                 <p @click="selectedIndex = null, publishPushed = false">Do Not Publish Yet</p>
             </div>
         </div>
@@ -99,7 +98,7 @@
     >
         <div style="width: 80%;">
             <div class="modal-btns">
-                <p @click="deleteEvent(event)">Delete this Event</p>
+                <p @click="deleteEvent(id)">Delete this Event</p>
                 <p @click="selectedIndex = null, deletePushed = false">Do Not Delete</p>
             </div>
         </div>
@@ -133,39 +132,41 @@ export default {
     components: { previewMediaList },
     data() {
         return {
-            selectedIndex: null,
+            selectedId: null,
             publishPushed: false,
             submittedEvent: false,
             deletePushed: false,
             deletedEvent: false,
             FBEventsShown: false,
-            mainIndex: null,
+        }
+    },
+    props: {
+        date: {
+            type: String,
+            required: true,
         }
     },
     computed: {
+        eventIdsToShow() {
+            return this.$store.getters.eventsToShow(this.FBEventsShown)
+        },
         eventsToShow() {
-            return this.$store.state.events.filter(event => event.published === this.FBEventsShown)
+            return this.eventIdsToShow.map(id => this.$store.getters.event(id))
         }
     },
     methods: {
-        openDeleteModal(index) {
-
-            this.mainIndex = this.$store.state.events.indexOf(this.eventsToShow[index])
-
-            this.selectedIndex = index
+        getEvent(id) {
+            return this.$store.getters.event(id)
+        },
+        openDeleteModal(id) {
+            this.selectedId = id
             this.deletePushed = true
         },
-        deleteEvent(event) {
-            let indexToBeDeleted = this.$store.state.events.indexOf(this.eventsToShow[this.mainIndex])
+        deleteEvent(id) {
 
-            if (event.published === false) {
-                this.$store.state.events.splice(indexToBeDeleted, 1)
-            } else {
-                this.$store.dispatch('deleteFromFirebase', event)
-                this.$store.state.events.splice(indexToBeDeleted, 1)
-            }
+            this.$store.dispatch('deleteEvent', id)
+
             this.deletedEvent = true
-            this.selectedIndex = null
             this.deletePushed = false
             setTimeout(() => {
                 this.deletedEvent = false
@@ -185,8 +186,6 @@ export default {
 
             // this.$emit('getEventData', event)
             // this.$store.state.events.splice(index, 1)
-
-            
         },
         openPublishModal(index) {
             this.selectedIndex = index

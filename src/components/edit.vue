@@ -51,7 +51,7 @@
 
 
 <!-- PREVIEW COMPONENT -->
-<preview @getEventData="updateDataFromPreview"/>
+<preview @getEventData="updateDataFromPreview" :date="date"/>
 
 </template>
 

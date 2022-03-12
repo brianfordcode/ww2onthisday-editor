@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 // FIREBASE
 import { initializeApp } from "firebase/app";
-import { doc, getDocs, deleteDoc, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
+import { doc, getDocs, deleteDoc, collection, query, where, setDoc, getFirestore, startAfter } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
@@ -20,7 +20,7 @@ const db = getFirestore();
 
 export default createStore({
   state: {
-    events: []
+    events: {}
   },
   getters: {
     getDatefromHashDate: (state, getters) => (date) => {
@@ -31,14 +31,32 @@ export default createStore({
       
       return dateObject
     },
+    eventsToShow: (state) => (showPublished) => {
+      const events = state.events
+      const eventIds = Object.keys(events)
+      console.log(eventIds)
+      return eventIds.filter(id => events[id].published === showPublished)
+    },
+    event: (state) => (id) => {
+      return state.events[id]
+    },
+    filteredEvents: (state) => (date, published) => {
+      const events = state.events
+      const eventIds = Object.keys(events)
+      console.log(events)
+      return eventIds.filter(id => events[id].date === date && events[id].published === published)
+    }
   },
   mutations: {
     addEvent(state, submittedEvent) {
-      state.events.push(submittedEvent)
+      const id = submittedEvent.id
+      state.events[id] = submittedEvent
     },
-
-    addEventFromFB(state, eventsOnDate) {
-        state.events.push(eventsOnDate)
+    addEventFromFB(state, params) {
+        state.events[params.id] = params.event
+    },
+    deleteEvent(state, id) {
+      delete state.events[id]
     }
   },
   actions: {
@@ -61,9 +79,14 @@ export default createStore({
       const q = query(collection(db, "development"), where("date", "==", date));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        const eventsOnDate = doc.data()
-        context.commit('addEventFromFB', eventsOnDate)
+        const event = doc.data()
+        context.commit('addEventFromFB', { id: doc.id, event })
       });
+    },
+
+    deleteEvent(context, id) {
+      context.commit('deleteEvent', id)
+      deleteDoc(doc(db, "development", id));
     },
 
     async deleteFromFirebase(context, event) {
