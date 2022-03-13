@@ -40,18 +40,18 @@
     <!-- ENTER BUTTON -->
     <button
       @click="addEvent()"
-      style="margin: 50px 0 20px 0; padding: 10px;"
+      style="padding: 10px; margin-top: 30px;"
+      v-if="!editEventId"
     >
-    <span>{{published ? 'UPDATE' : 'ADD'}} EVENT</span>
+    ADD NEW EVENT
     <br>
     <span v-if="needsDateTextPicture">Needs a date, event text and picture!</span>
     </button>
     </div>
 </div>
 
-
 <!-- PREVIEW COMPONENT -->
-<preview @editEvent="editEvent" :date="date" @clearForm="clearForm"/>
+<preview @editEvent="editEvent" :date="date" @clearForm="clearForm" @updateEvent="addEvent"/>
 
 </template>
 
@@ -113,6 +113,9 @@ export default {
         this.clearForm()
       }
     },
+    updateEvent() {
+      console.log('update')
+    },
     clearForm() {
         const keepDate = this.date
         Object.assign(this.$data, this.$options.data.call(this));
@@ -123,8 +126,8 @@ export default {
       this.$store.dispatch('getFBEvents', this.date)
     },
     editEvent(event) {
-      this.editEventId = event.id
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
+      this.editEventId = event.id
       this.title = event.title
       this.date = event.date
       this.citation = event.citation

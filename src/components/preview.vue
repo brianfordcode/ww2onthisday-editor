@@ -1,18 +1,20 @@
 <template>
 
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
-<div style="display: flex; align-items: center; margin: 0 auto 15px auto; width: max-content;">
+<div style="display: flex; align-items: center; margin: 20px auto 10px auto; width: max-content;">
     <h4 style="padding-right: 5px;">
     {{published ? '' : 'Not'}} Published
     </h4>
-    <button class="published-btns"
-        @click="toggleFBEvents"
+    <button style="padding: 5px;"
+        @click="togglePublishedEvents"
     >
     click for {{published ? 'un' : ''}}published events
     </button>
 </div>
 
-<div :style="`border: 10px solid ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'}; padding: 10px 30px; width: min-content; margin: 0 auto`">
+<div
+    class="all-events"
+    :style="`border: 10px solid ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`">
     <div
         class="main-container"
         v-for="id in $store.getters.filteredEvents(date, published)"
@@ -112,7 +114,7 @@
             style="background-color: rgba(16, 0, 161, 0.5);"
             v-if="selectedId === id && editPushed"
         >
-            <p class="overlay-btn">This Event is Being Edited</p>
+            <p class="overlay-btn" @click="updateEvent()">Update Event</p>
             <div
                 class="closeBtn"
                 @click="resetAndClearForm()"
@@ -140,6 +142,14 @@
     >
     Event Deleted!
     </p>
+    <!-- OVERLAY IF EVENT UPDATED -->
+    <p
+        class="action-overlay"
+        style="background-color: blue;"
+        v-if="updatedEvent"
+    >
+    Event Updated!
+    </p>
 
 </template>
 
@@ -153,11 +163,12 @@ function overlayInitialState() {
     deletePushed: false,
     deletedEvent: false,
     editPushed: false,
+    updatedEvent: false,
   }
 }
 
 export default {
-    emits: ["editEvent", "clearForm"],
+    emits: ["editEvent", "clearForm", "updateEvent"],
     components: { previewMediaList },
     data() {
         return {
@@ -217,6 +228,15 @@ export default {
             this.deletePushed = false
             this.publishPushed = true
         },
+        updateEvent() {
+            this.$emit('updateEvent');
+            this.resetAndClearForm()
+            this.updatedEvent = true
+            setTimeout(() => {
+                this.updatedEvent = false
+            }, 2000)
+            
+        },
         publishEvent(id) {
             this.$store.dispatch('publishEvent', id)
             this.resetOverlays()
@@ -225,7 +245,9 @@ export default {
                 this.submittedEvent = false
             }, 2000)
         },
-        toggleFBEvents() {
+        togglePublishedEvents() {
+            this.resetOverlays()
+            this.$emit('clearForm')
             this.deletePushed = false
             this.published = !this.published
         },
@@ -236,8 +258,13 @@ export default {
 
 <style scoped>
 
-.published-btns {
-    padding: 5px;
+.all-events {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 30px;
+    width: min-content;
+    margin: 0 auto 20px auto;
 }
 
 .main-container {
