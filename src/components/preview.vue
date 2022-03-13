@@ -1,7 +1,7 @@
 <template>
 
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
-<div style="display: flex; align-items: center; margin: 20px auto 10px auto; width: max-content;">
+<div v-if="!editPushed" style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;">
     <h4 style="padding-right: 5px;">
     {{published ? '' : 'Not'}} Published
     </h4>
@@ -17,13 +17,13 @@
     :style="`border: 10px solid ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`">
     <div
         class="main-container"
-        v-for="id in $store.getters.filteredEvents(date, published)"
+        v-for="id in events(date, published)"
         :key="id"
     >
         <div class="event-container">
             <div class="event-details">
                 <!-- DATE -->
-                <p>date: {{ $store.getters.getDatefromHashDate(getEvent(id).date).toLocaleDateString('en-us', {month:"long", day:"numeric", year: "numeric"}) }}</p>
+                <p>date: {{ getEvent(id).date }}</p>
                 <!-- TITLE -->
                 title: <p>{{getEvent(id).title}}</p>
                 <!-- CITATION -->
@@ -36,7 +36,6 @@
                     &#10003;
                     </a>
                 </p>
-                
                 <div style="display: flex; align-items: center">
                     <p>main picture:</p>
                     <img
@@ -114,10 +113,10 @@
             style="background-color: rgba(16, 0, 161, 0.5);"
             v-if="selectedId === id && editPushed"
         >
-            <p class="overlay-btn" @click="updateEvent()">Update Event</p>
+            <p class="overlay-btn" @click="updateEvent(id)">Update Event</p>
             <div
                 class="closeBtn"
-                @click="resetAndClearForm()"
+                @click="resetOverlays(editPushed)"
             >
             &#10005;
             </div>
@@ -132,7 +131,7 @@
         style="background-color: green;"
         v-if="submittedEvent"
     >
-    Event Submitted!
+    Event Published!
     </p>
     <!-- OVERLAY IF EVENT DELETED -->
     <p
@@ -184,20 +183,24 @@ export default {
         }
     },
     computed: {
-        eventIdsToShow() {
-            return this.$store.getters.eventsToShow(this.published)
-        },
-        eventsToShow() {
-            return this.eventIdsToShow.map(id => this.$store.getters.event(id))
-        }
+
     },
     methods: {
-        resetOverlays() {
-            Object.assign(this.$data, overlayInitialState());
+        events(date, published) {
+            // TODO: GET EVENTS TO STAY WHEN UPDATING EVENT AND DATE CHANGES
+
+            // if (this.editPushed) {
+            //     console.log(this.editPushed)
+            //     return this.$store.getters.event(this.selectedId)
+            // } else {
+                return this.$store.getters.filteredEvents(date, published)
+            // }
+
+            
         },
-        resetAndClearForm() {
+        resetOverlays(editPushed) {
+            if (editPushed) { this.$emit('clearForm') } 
             Object.assign(this.$data, overlayInitialState());
-            this.$emit('clearForm')
         },
         getEvent(id) {
             return this.$store.getters.event(id)
@@ -220,7 +223,7 @@ export default {
             this.$emit('editEvent', this.$store.getters.event(id))
             this.selectedId = id
             this.editPushed = true
-            console.log(this.editPushed)
+            this.eventBeingUpdated = this.$store.getters.event(id)
         },
         openPublishOverlay(id) {
             this.resetOverlays()
@@ -228,14 +231,13 @@ export default {
             this.deletePushed = false
             this.publishPushed = true
         },
-        updateEvent() {
+        updateEvent(id) {
             this.$emit('updateEvent');
-            this.resetAndClearForm()
+            this.resetOverlays()
             this.updatedEvent = true
             setTimeout(() => {
                 this.updatedEvent = false
             }, 2000)
-            
         },
         publishEvent(id) {
             this.$store.dispatch('publishEvent', id)
@@ -264,7 +266,7 @@ export default {
     align-items: center;
     padding: 10px 30px;
     width: min-content;
-    margin: 0 auto 20px auto;
+    margin: 20px auto 20px auto;
 }
 
 .main-container {

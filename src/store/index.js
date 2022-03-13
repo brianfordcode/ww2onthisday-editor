@@ -23,30 +23,13 @@ export default createStore({
     events: {}
   },
   getters: {
-    getDatefromHashDate: (state, getters) => (date) => {
-      let input = date.split("-");
-      let dayNum = parseInt(input[2]) + 1
-      let day = (dayNum < 10 ? '0' : '') + dayNum
-      let dateObject = new Date(input[0] +"-"+ input[1] +"-"+ day);
-      
-      return dateObject
-    },
-    eventsToShow: (state) => (showPublished) => {
-      const events = state.events
-      const eventIds = Object.keys(events)
-      console.log(eventIds)
-      return eventIds.filter(id => events[id].published === showPublished)
-    },
     event: (state) => (id) => {
       return state.events[id]
     },
     filteredEvents: (state) => (date, published) => {
       const events = state.events
       const eventIds = Object.keys(events)
-      console.log(state.events)
-
       return eventIds.filter(id => events[id].date === date && events[id].published === published)
-
     }
   },
   mutations: {
@@ -54,7 +37,7 @@ export default createStore({
       const id = submittedEvent.id
       state.events[id] = submittedEvent
     },
-    addEventFromFB(state, params) {
+    addEventFromDB(state, params) {
         state.events[params.id] = params.event
     },
     deleteEvent(state, id) {
@@ -67,7 +50,6 @@ export default createStore({
   actions: {
     addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
-      console.log(submittedEvent)
       setDoc(doc(db, "development", submittedEvent.id), submittedEvent);
     },
     deleteEvent(context, id) {
@@ -81,12 +63,12 @@ export default createStore({
     },
 
     // EDITING FIREBASE EVENTS
-    async getFBEvents(context, date) {
+    async getDBEvents(context, date) {
       const q = query(collection(db, "development"), where("date", "==", date));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const event = doc.data()
-        context.commit('addEventFromFB', { id: doc.id, event })
+        context.commit('addEventFromDB', { id: doc.id, event })
       });
     },
 

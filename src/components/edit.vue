@@ -113,9 +113,6 @@ export default {
         this.clearForm()
       }
     },
-    updateEvent() {
-      console.log('update')
-    },
     clearForm() {
         const keepDate = this.date
         Object.assign(this.$data, this.$options.data.call(this));
@@ -123,7 +120,7 @@ export default {
     },
     getDateString(d) {
       this.date = d
-      this.$store.dispatch('getFBEvents', this.date)
+      this.$store.dispatch('getDBEvents', this.date)
     },
     editEvent(event) {
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
