@@ -51,7 +51,7 @@
 
 
 <!-- PREVIEW COMPONENT -->
-<preview @getEventData="updateDataFromPreview" :date="date"/>
+<preview @editEvent="editEvent" :date="date"/>
 
 </template>
 
@@ -101,6 +101,7 @@ export default {
         movies: this.movies,
         published: false
       }
+      // Required details
       if (this.date === '' || this.title === '' || this.mainPicture === '') {
         this.needsDateTextPicture = true;
         setTimeout(() => {
@@ -114,14 +115,13 @@ export default {
         Object.assign(this.$data, this.$options.data.call(this));
 
         this.date = keepDate
-        this.needsDateTextPicture = false;
       }
     },
     getDateString(d) {
       this.date = d
       this.$store.dispatch('getFBEvents', this.date)
     },
-    updateDataFromPreview(event) {
+    editEvent(event) {
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
       this.title = event.title
       this.date = event.date

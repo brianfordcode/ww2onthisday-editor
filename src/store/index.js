@@ -43,8 +43,10 @@ export default createStore({
     filteredEvents: (state) => (date, published) => {
       const events = state.events
       const eventIds = Object.keys(events)
-      console.log(events)
+      console.log(state.events)
+
       return eventIds.filter(id => events[id].date === date && events[id].published === published)
+
     }
   },
   mutations: {
@@ -72,20 +74,14 @@ export default createStore({
       context.commit('deleteEvent', id)
       deleteDoc(doc(db, "development", id));
     },
-
+    async publishEvent(context, id) {
+      context.commit('publishEvent', id)
+      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
+      await updateDoc(doc(db, "development", id), { published: true });
+    },
 
     // EDITING FIREBASE EVENTS
     async getFBEvents(context, date) {
-
-      // CLEAR published events from state events first
-      for (let i=0; i<this.state.events.length; i++) {
-        if (this.state.events[i].published) {
-          this.state.events.splice(i, 1)
-          i--
-        }
-      }
-
-      // add firebase events to store events based on submitted event date
       const q = query(collection(db, "development"), where("date", "==", date));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
@@ -94,23 +90,5 @@ export default createStore({
       });
     },
 
-    
-
-    async deleteFromFirebase(context, event) {
-      let eventToBeDeleted
-      const q = query(collection(db, "development"), where("id", "==", event.id));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        eventToBeDeleted = doc.id
-      });
-      console.log(eventToBeDeleted)
-      deleteDoc(doc(db, "development", eventToBeDeleted));
-    },
-
-    async publishEvent(context, id) {
-      context.commit('publishEvent', id)
-      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
-      await updateDoc(doc(db, "development", id), { published: true });
-    },
   }
 })
