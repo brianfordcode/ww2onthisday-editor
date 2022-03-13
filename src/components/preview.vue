@@ -115,7 +115,7 @@
             <p class="overlay-btn">This Event is Being Edited</p>
             <div
                 class="closeBtn"
-                @click="resetOverlays()"
+                @click="resetAndClearForm()"
             >
             &#10005;
             </div>
@@ -153,12 +153,11 @@ function overlayInitialState() {
     deletePushed: false,
     deletedEvent: false,
     editPushed: false,
-    
-    }
   }
+}
 
 export default {
-    emits: ["editEvent"],
+    emits: ["editEvent", "clearForm"],
     components: { previewMediaList },
     data() {
         return {
@@ -184,6 +183,10 @@ export default {
     methods: {
         resetOverlays() {
             Object.assign(this.$data, overlayInitialState());
+        },
+        resetAndClearForm() {
+            Object.assign(this.$data, overlayInitialState());
+            this.$emit('clearForm')
         },
         getEvent(id) {
             return this.$store.getters.event(id)
@@ -296,7 +299,6 @@ export default {
 }
 
 .action-overlay {
-    background-color: green;
     padding: 10px 0;
     opacity: 0.80;
     position: sticky;

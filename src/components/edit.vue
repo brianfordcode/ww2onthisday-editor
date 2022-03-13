@@ -51,7 +51,7 @@
 
 
 <!-- PREVIEW COMPONENT -->
-<preview @editEvent="editEvent" :date="date"/>
+<preview @editEvent="editEvent" :date="date" @clearForm="clearForm"/>
 
 </template>
 
@@ -80,14 +80,15 @@ export default {
       keywords: [],
       books: [],
       movies: [],
-      published: null
+      published: null,
+      editEventId: null
     }
   },
   methods: {
     addEvent() {
       const fullEvent = {
         date: this.date,
-        id: "event-" + this.date + '-' + Date.now(),
+        id: this.editEventId || "event-" + this.date + '-' + Date.now(),
         timeEventSubmitted: new Date(),
         title: this.title,
         mainPicture: this.mainPicture,
@@ -99,7 +100,7 @@ export default {
         keywords: this.keywords,
         books: this.books,
         movies: this.movies,
-        published: false
+        published: this.published ? true : false
       }
       // Required details
       if (this.date === '' || this.title === '' || this.mainPicture === '') {
@@ -108,20 +109,21 @@ export default {
           this.needsDateTextPicture = false;
         }, 2000)
       } else {
-        const keepDate = this.date
-
         this.$store.dispatch('addEvent', fullEvent)
-        // CLEAR FORM
-        Object.assign(this.$data, this.$options.data.call(this));
-
-        this.date = keepDate
+        this.clearForm()
       }
+    },
+    clearForm() {
+        const keepDate = this.date
+        Object.assign(this.$data, this.$options.data.call(this));
+        this.date = keepDate
     },
     getDateString(d) {
       this.date = d
       this.$store.dispatch('getFBEvents', this.date)
     },
     editEvent(event) {
+      this.editEventId = event.id
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
       this.title = event.title
       this.date = event.date
