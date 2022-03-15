@@ -14,10 +14,10 @@
 
 <div
     class="all-events"
-    :style="`border: 10px solid ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`">
+    :style="`background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`">
     <div
         class="main-container"
-        v-for="id in events(date, published)"
+        v-for="id in events(date, published, selectedId)"
         :key="id"
     >
         <div class="event-container">
@@ -174,6 +174,7 @@ export default {
             ...overlayInitialState(),
             published: false,
             selectedId: null,
+            eventBeingUpdated: [],
         }
     },
     props: {
@@ -186,17 +187,12 @@ export default {
 
     },
     methods: {
-        events(date, published) {
-            // TODO: GET EVENTS TO STAY WHEN UPDATING EVENT AND DATE CHANGES
-
-            // if (this.editPushed) {
-            //     console.log(this.editPushed)
-            //     return this.$store.getters.event(this.selectedId)
-            // } else {
+        events(date, published, IdBeingUpdated) {
+            if (this.editPushed) {
+                return this.$store.getters.eventBeingEdited(IdBeingUpdated)
+            } else {
                 return this.$store.getters.filteredEvents(date, published)
-            // }
-
-            
+            }
         },
         resetOverlays(editPushed) {
             if (editPushed) { this.$emit('clearForm') } 
@@ -213,7 +209,7 @@ export default {
         deleteEvent(id) {
             this.$store.dispatch('deleteEvent', id)
             this.deletedEvent = true
-            this.deletePushed = false
+            this.resetOverlays()
             setTimeout(() => {
                 this.deletedEvent = false
             }, 2000)
@@ -228,7 +224,6 @@ export default {
         openPublishOverlay(id) {
             this.resetOverlays()
             this.selectedId = id
-            this.deletePushed = false
             this.publishPushed = true
         },
         updateEvent(id) {
@@ -250,7 +245,6 @@ export default {
         togglePublishedEvents() {
             this.resetOverlays()
             this.$emit('clearForm')
-            this.deletePushed = false
             this.published = !this.published
         },
     }
@@ -270,10 +264,11 @@ export default {
 }
 
 .main-container {
-    border: 1px solid black;
     width: max-content;
     height: max-content;
     position: relative;
+    background-color: white;
+    box-shadow: 0px 0px 33px -20px #000000;
 }
 .main-container:not(:last-child) {
     margin-bottom: 10px;
@@ -282,7 +277,7 @@ export default {
 .event-container {
     display: flex;
     padding: 10px 25px;
-
+    background-color: white;
 }
 
 .event-details {

@@ -30,6 +30,11 @@ export default createStore({
       const events = state.events
       const eventIds = Object.keys(events)
       return eventIds.filter(id => events[id].date === date && events[id].published === published)
+    },
+    eventBeingEdited: (state) => (IdBeingUpdated) => {
+      const events = state.events
+      const eventIds = Object.keys(events)
+      return eventIds.filter(id => events[id].id === IdBeingUpdated)
     }
   },
   mutations: {
