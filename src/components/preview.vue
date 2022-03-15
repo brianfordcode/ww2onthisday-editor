@@ -25,7 +25,7 @@
 >
     <div
         class="main-container"
-        v-for="id in events(date, published, selectedId)"
+        v-for="id in events"
         :key="id"
     >
         <div class="event-container">
@@ -76,10 +76,7 @@
             </div>
         </div>
 
-
-
         <div class="buttons">
-
             <!-- DELETE EVENT -->
             <span @click="openDeleteOverlay(id)">
                 <img style="width: 20px;" src="https://img.icons8.com/material-outlined/48/000000/trash--v1.png" alt="delete-icon">
@@ -101,8 +98,6 @@
             </span>
 
         </div>
-
-
 
     <!-- OVERLAYS -->
         <!-- PUBLISH OVERLAY -->
@@ -209,19 +204,18 @@ export default {
         }
     },
     computed: {
-
-    },
-    methods: {
-        events(date, published, IdBeingUpdated) {
+        events() {
             if (this.editPushed) {
-                return this.$store.getters.eventBeingEdited(IdBeingUpdated)
+                return [ this.selectedId ]
             }
-            if (this.published) {
-                return this.$store.getters.publishedEvents(date, published)
+            else if (this.published) {
+                return this.$store.getters.publishedEvents(this.date)
             } else {
-                return this.$store.getters.nonPublishedEvents(published)
+                return this.$store.getters.nonPublishedEvents(this.published)
             }
         },
+    },
+    methods: {
         resetOverlays(editPushed) {
             if (editPushed) { this.$emit('clearForm') } 
             Object.assign(this.$data, overlayInitialState());

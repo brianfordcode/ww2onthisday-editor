@@ -31,15 +31,10 @@ export default createStore({
       const eventIds = Object.keys(events)
       return eventIds.filter(id => events[id].published === published)
     },
-    publishedEvents: (state) => (date, published) => {
+    publishedEvents: (state) => (date) => {
       const events = state.events
       const eventIds = Object.keys(events)
-      return eventIds.filter(id => events[id].date === date && events[id].published === published)
-    },
-    eventBeingEdited: (state) => (IdBeingUpdated) => {
-      const events = state.events
-      const eventIds = Object.keys(events)
-      return eventIds.filter(id => events[id].id === IdBeingUpdated)
+      return eventIds.filter(id => events[id].date === date)
     }
   },
   mutations: {
@@ -72,7 +67,7 @@ export default createStore({
       await updateDoc(doc(db, "development", id), { published: true });
     },
 
-    // EDITING FIREBASE EVENTS
+    // FIREBASE EVENTS
     async getDBEvents(context, date) {
       const q = query(collection(db, "development"), where("date", "==", date));
       const querySnapshot = await getDocs(q);
