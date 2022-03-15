@@ -26,7 +26,12 @@ export default createStore({
     event: (state) => (id) => {
       return state.events[id]
     },
-    filteredEvents: (state) => (date, published) => {
+    nonPublishedEvents: (state) => (published) => {
+      const events = state.events
+      const eventIds = Object.keys(events)
+      return eventIds.filter(id => events[id].published === published)
+    },
+    publishedEvents: (state) => (date, published) => {
       const events = state.events
       const eventIds = Object.keys(events)
       return eventIds.filter(id => events[id].date === date && events[id].published === published)

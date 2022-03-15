@@ -33,14 +33,14 @@
     </div>
     <br>
     <!-- MEDIA -->
-    <div class="media" style="display: flex;">
+    <div class="media" style="display: flex; margin-bottom: 20px;">
       <mediaEditor :media="books" title='Books' />
       <mediaEditor :media="movies" title='Movies'/>
     </div>
     <!-- ENTER BUTTON -->
     <button
       @click="addEvent()"
-      style="padding: 10px; margin-top: 30px;"
+      style="padding: 10px;"
       v-if="!editEventId"
     >
     ADD NEW EVENT

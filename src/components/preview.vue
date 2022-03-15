@@ -1,20 +1,28 @@
 <template>
 
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
-<div v-if="!editPushed" style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;">
-    <h4 style="padding-right: 5px;">
-    {{published ? '' : 'Not'}} Published
-    </h4>
-    <button style="padding: 5px;"
+<div
+    v-if="!editPushed"
+    style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;"
+>
+    <h4
+        :style="`padding: 10px; background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
         @click="togglePublishedEvents"
     >
-    click for {{published ? 'un' : ''}}published events
-    </button>
+    Published
+    </h4>
+    <h4
+        :style="`padding: 10px; background-color: ${!published ? 'rgba(95, 0, 0, 0.5)': 'white'}; cursor: pointer;`"
+        @click="togglePublishedEvents"
+    >
+    Unpublished
+    </h4>
 </div>
 
 <div
     class="all-events"
-    :style="`background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`">
+    :style="`background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`"
+>
     <div
         class="main-container"
         v-for="id in events(date, published, selectedId)"
@@ -67,16 +75,34 @@
                 <previewMediaList :media="getEvent(id).movies"/>
             </div>
         </div>
+
+
+
         <div class="buttons">
-            <button @click="openDeleteOverlay(id)">&#x2715;</button>
-            <button @click="openPublishOverlay(id)" v-if="getEvent(id).published === false">Publish To Site</button>
-            <button @click="editEvent(id)">
+
+            <!-- DELETE EVENT -->
+            <span @click="openDeleteOverlay(id)">
+                <img style="width: 20px;" src="https://img.icons8.com/material-outlined/48/000000/trash--v1.png" alt="delete-icon">
+            </span>
+            <!-- PUBLIST TO SITE -->
+            <span
+                style="background-color: rgba(0,0,0,.1); padding: 3px 5px 2px 5px; opacity: 1;"
+                @click="openPublishOverlay(id)"
+                v-if="getEvent(id).published === false"
+            >
+            Publish To Site
+            </span>
+            <!-- EDIT EVENT -->
+            <span @click="editEvent(id)">
                 <img
-                    style="width: 15px;"
+                    style="width: 20px;"
                     src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png"
                     alt="edit-icon">
-            </button>
+            </span>
+
         </div>
+
+
 
     <!-- OVERLAYS -->
         <!-- PUBLISH OVERLAY -->
@@ -174,7 +200,6 @@ export default {
             ...overlayInitialState(),
             published: false,
             selectedId: null,
-            eventBeingUpdated: [],
         }
     },
     props: {
@@ -190,8 +215,11 @@ export default {
         events(date, published, IdBeingUpdated) {
             if (this.editPushed) {
                 return this.$store.getters.eventBeingEdited(IdBeingUpdated)
+            }
+            if (this.published) {
+                return this.$store.getters.publishedEvents(date, published)
             } else {
-                return this.$store.getters.filteredEvents(date, published)
+                return this.$store.getters.nonPublishedEvents(published)
             }
         },
         resetOverlays(editPushed) {
@@ -238,6 +266,7 @@ export default {
             this.$store.dispatch('publishEvent', id)
             this.resetOverlays()
             this.submittedEvent = true
+            this.published = true
             setTimeout(() => {
                 this.submittedEvent = false
             }, 2000)
@@ -260,7 +289,8 @@ export default {
     align-items: center;
     padding: 10px 30px;
     width: min-content;
-    margin: 20px auto 20px auto;
+    min-width: 146px;
+    margin: 0 auto 20px auto;
 }
 
 .main-container {
@@ -292,7 +322,18 @@ export default {
 .buttons {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.buttons > * {
     cursor: pointer;
+    opacity: .5;
+    font-size: 12px;
+}
+
+.buttons > *:hover {
+    opacity: 1;
 }
 
 .overlay {
@@ -329,10 +370,6 @@ export default {
     bottom: 0;
     color: white;
     text-align: center;
-}
-
-button {
-  cursor: pointer;
 }
 
 @media screen and (max-width: 550px ) {
