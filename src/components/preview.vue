@@ -1,5 +1,4 @@
 <template>
-
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
 <div
     v-if="!editPushed"
@@ -146,6 +145,7 @@
     </div>
 
 </div>
+
     <!-- OVERLAY IF EVENT SENT TO FIREBASE -->
     <p
         class="action-overlay"
@@ -205,14 +205,9 @@ export default {
     },
     computed: {
         events() {
-            if (this.editPushed) {
-                return [ this.selectedId ]
-            }
-            else if (this.published) {
-                return this.$store.getters.publishedEvents(this.date)
-            } else {
-                return this.$store.getters.nonPublishedEvents(this.published)
-            }
+            const getters = this.$store.getters
+            if (this.editPushed) { return [ this.selectedId ] }
+            return this.published ? getters.publishedEvents(this.date) : getters.nonPublishedEvents(this.published)
         },
     },
     methods: {

@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 // FIREBASE
 import { initializeApp } from "firebase/app";
-import { doc, getDocs, deleteDoc, updateDoc, collection, query, where, setDoc, getFirestore, startAfter } from "firebase/firestore"; 
+import { doc, getDocs, deleteDoc, updateDoc, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
@@ -55,21 +55,21 @@ export default createStore({
   actions: {
     addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
-      setDoc(doc(db, "development", submittedEvent.id), submittedEvent);
+      setDoc(doc(db, "submitted-events", submittedEvent.id), submittedEvent);
     },
     deleteEvent(context, id) {
       context.commit('deleteEvent', id)
-      deleteDoc(doc(db, "development", id));
+      deleteDoc(doc(db, "submitted-events", id));
     },
     async publishEvent(context, id) {
       context.commit('publishEvent', id)
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
-      await updateDoc(doc(db, "development", id), { published: true });
+      await updateDoc(doc(db, "submitted-events", id), { published: true });
     },
 
     // FIREBASE EVENTS
     async getDBEvents(context, date) {
-      const q = query(collection(db, "development"), where("date", "==", date));
+      const q = query(collection(db, "submitted-events"), where("date", "==", date));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const event = doc.data()
