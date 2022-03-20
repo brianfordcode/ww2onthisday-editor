@@ -1,7 +1,6 @@
 <template>
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
 <div
-    v-if="!editPushed"
     style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;"
 >
     <h4

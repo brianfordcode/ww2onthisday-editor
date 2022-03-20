@@ -9,7 +9,7 @@
           @keyup.enter="addKeywords()"
         >
         <button
-          style="height: 24px; width: 20px"
+          style="height: 22px; width: 20px; border-left: none;"
           @click="addKeywords()"
         >
         &#43;
@@ -22,7 +22,7 @@
       >
         <p>
           {{ keyword }}
-          <button @click="deleteKeyword(index)">
+          <button style="padding: 1px;" @click="deleteKeyword(index)">
           &#x2715;
           </button>
         </p>

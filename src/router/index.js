@@ -6,7 +6,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: "Editor | WW2 on this day"
+    }
   },
   {
     path: '/about',
@@ -22,6 +25,11 @@ const router = createRouter({
   scrollBehavior (to, from, savedPosition) {
     return { top: 0 }
   },
+})
+
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title}`
+  next();
 })
 
 export default router

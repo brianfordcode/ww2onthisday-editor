@@ -32,7 +32,7 @@
             {{ (day < 10 ? '0' : '') + day }}
             </option>
         </select>
-        <button @click="clearDate()">&#x2715;</button>
+        <button style="height: 22px; padding: 2px; width: 20px;" @click="clearDate()">&#x2715;</button>
     </div>
 
 </template>
