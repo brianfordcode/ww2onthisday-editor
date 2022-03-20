@@ -1,8 +1,6 @@
 <template>
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
-<div
-    style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;"
->
+<div style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;">
     <h4
         :style="`padding: 10px; background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
         @click="showPubandUnpubEvents"
@@ -16,11 +14,12 @@
     Unpublished
     </h4>
 </div>
-
 <div
+    v-if="Object.keys($store.state.events).length > 0"
     class="all-events"
     :style="`background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`"
 >
+    
     <div
         class="main-container"
         v-for="id in events"
@@ -220,6 +219,7 @@ export default {
     },
     computed: {
         events() {
+            // TODO: ALWAYS SHOW UNPUBLISHED EVENTS EVEN WHEN NO DATE IS SELECTED
             const getters = this.$store.getters
             if (this.editPushed) { return [ this.selectedId ] }
             return this.published ? getters.publishedEvents(this.date) : getters.nonPublishedEvents(this.published)
@@ -289,10 +289,13 @@ export default {
         },
     }
 
+
 }
 </script>
 
 <style scoped>
+
+
 
 .all-events {
     display: flex;
@@ -300,7 +303,7 @@ export default {
     align-items: center;
     padding: 10px 30px;
     width: min-content;
-    min-width: 147px;
+    /* min-width: 147px; */
     margin: 0 auto 20px auto;
 }
 
@@ -394,5 +397,4 @@ export default {
         margin: 0 0 10px 0;
     }
 }
-
 </style>

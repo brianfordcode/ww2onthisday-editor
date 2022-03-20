@@ -72,7 +72,7 @@ export default createStore({
       await updateDoc(doc(db, "submitted-events", id), { published: false })
     },
 
-    // FIREBASE EVENTS
+    // DATABASE EVENTS
     async getDBEvents(context, date) {
       const q = query(collection(db, "submitted-events"), where("date", "==", date));
       const querySnapshot = await getDocs(q);

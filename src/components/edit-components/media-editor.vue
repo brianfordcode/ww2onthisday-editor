@@ -44,7 +44,7 @@
                 <span :class="{'done': input.mediaLink.affiliateSource ? true : false}">affiliate source:</span>
             <!-- AMAZON -->
             <select
-                style="margin-left:2px;"
+                style="margin-left:2px; border-right: 1px solid"
                 v-model="input.mediaLink.affiliateSource"
                 value="None"
             >
@@ -175,15 +175,6 @@ export default {
             }
         },
         editItem(index) {
-
-            //TODO: TRY TO MAKE A COOLER FUNCTION???
-            // const attributes = Object.keys(getInitialMediaState())
-            // let firstAttributes = attributes.filter(e => e != 'id' && e != 'mediaLink');
-            // for (let i = 0; i < firstAttributes.length; i++) {
-            //   let element = firstAttributes[i];
-            //   this.bookInput.element = this.books[index].element
-            // }
-
             this.input.id = this.$props.media[index].id
             this.input.title = this.$props.media[index].title
             this.input.picture = this.$props.media[index].picture
