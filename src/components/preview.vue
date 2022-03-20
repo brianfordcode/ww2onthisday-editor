@@ -84,9 +84,9 @@
             <span
                 style="background-color: rgba(0,0,0,.1); padding: 3px 5px 2px 5px; opacity: 1;"
                 @click="openPublishOverlay(id)"
-                v-if="getEvent(id).published === false"
+                
             >
-            Publish To Site
+            {{getEvent(id).published ? 'Unpublish' : 'Publish to Site'}}
             </span>
             <!-- EDIT EVENT -->
             <span @click="editEvent(id)">
@@ -99,13 +99,18 @@
         </div>
 
     <!-- OVERLAYS -->
-        <!-- PUBLISH OVERLAY -->
+        <!-- TOGGLE PUBLISH OVERLAY -->
         <div
             class="overlay"
-            style="background-color: rgba(3, 95, 30, 0.61);"
+            :style="`background-color: ${ getEvent(id).published ? 'rgba(80, 80, 80,0.61);' : 'rgba(3, 95, 30, 0.61)' };`"
             v-if="selectedId === id && publishPushed"
         >
-            <p class="overlay-btn" @click="publishEvent(id)">Publish to Site</p>
+            <p
+                class="overlay-btn"
+                @click="togglePublishEvent(id)"
+            >
+            {{getEvent(id).published ? 'Unpublish Event' : 'Publish to Site'}}
+            </p>
             <div
                 class="closeBtn"
                 @click="resetOverlays()"
@@ -146,14 +151,24 @@
 
 </div>
 
-    <!-- OVERLAY IF EVENT SENT TO FIREBASE -->
+    <!-- OVERLAY IF EVENT PUBLISHED -->
     <p
         class="action-overlay"
         style="background-color: green;"
-        v-if="submittedEvent"
+        v-if="eventPublished"
     >
     Event Published!
     </p>
+    <!-- OVERLAY IF EVENT UNPUBLISHED -->
+
+    <p
+        class="action-overlay"
+        style="background-color: grey;"
+        v-if="eventUnpublished"
+    >
+    Event Unpublished!
+    </p>
+
     <!-- OVERLAY IF EVENT DELETED -->
     <p
         class="action-overlay"
@@ -179,7 +194,8 @@ import previewMediaList from './edit-components/preview-media-list.vue'
 function overlayInitialState() {
   return {
     publishPushed: false,
-    submittedEvent: false,
+    eventPublished: false,
+    eventUnpublished: false,
     deletePushed: false,
     deletedEvent: false,
     editPushed: false,
@@ -225,8 +241,8 @@ export default {
         },
         deleteEvent(id) {
             this.$store.dispatch('deleteEvent', id)
-            this.deletedEvent = true
             this.resetOverlays()
+            this.deletedEvent = true
             setTimeout(() => {
                 this.deletedEvent = false
             }, 2000)
@@ -250,14 +266,24 @@ export default {
                 this.updatedEvent = false
             }, 2000)
         },
-        publishEvent(id) {
-            this.$store.dispatch('publishEvent', id)
-            this.resetOverlays()
-            this.submittedEvent = true
-            this.published = true
-            setTimeout(() => {
-                this.submittedEvent = false
-            }, 2000)
+        togglePublishEvent(id) {
+            if (this.$store.state.events[id].published) {
+                this.$store.dispatch('unPublishEvent', id)
+                this.resetOverlays()
+                this.eventUnpublished = true
+                // this.published = true
+                setTimeout(() => {
+                    this.eventUnpublished = false
+                }, 2000)
+            } else {
+                this.$store.dispatch('publishEvent', id)
+                this.resetOverlays()
+                this.eventPublished = true
+                // this.published = true
+                setTimeout(() => {
+                    this.eventPublished = false
+                }, 2000)
+            }
         },
         togglePublishedEvents() {
             this.resetOverlays()
@@ -277,7 +303,7 @@ export default {
     align-items: center;
     padding: 10px 30px;
     width: min-content;
-    min-width: 146px;
+    min-width: 147px;
     margin: 0 auto 20px auto;
 }
 

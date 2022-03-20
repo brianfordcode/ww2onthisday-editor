@@ -43,13 +43,13 @@ export default createStore({
       state.events[id] = submittedEvent
     },
     addEventFromDB(state, params) {
-        state.events[params.id] = params.event
+      state.events[params.id] = params.event
     },
     deleteEvent(state, id) {
       delete state.events[id]
     },
-    publishEvent(state, id) {
-      state.events[id].published = true
+    togglePublishEvent(state, id) {
+      state.events[id].published = !state.events[id].published
     }
   },
   actions: {
@@ -62,9 +62,14 @@ export default createStore({
       deleteDoc(doc(db, "submitted-events", id));
     },
     async publishEvent(context, id) {
-      context.commit('publishEvent', id)
+      context.commit('togglePublishEvent', id)
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
-      await updateDoc(doc(db, "submitted-events", id), { published: true });
+      await updateDoc(doc(db, "submitted-events", id), { published: true })
+    },
+    async unPublishEvent(context, id) {
+      context.commit('togglePublishEvent', id)
+      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
+      await updateDoc(doc(db, "submitted-events", id), { published: false })
     },
 
     // FIREBASE EVENTS
