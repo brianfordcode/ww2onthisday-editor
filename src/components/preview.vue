@@ -33,7 +33,8 @@
                 title: <p>{{getEvent(id).title}}</p>
                 <!-- CITATION -->
                 <p>citation: 
-                    <a 
+                    <a
+                        style="text-decoration: none; color: black"
                         v-if="getEvent(id).citation"
                         :href="`${getEvent(id).citation}`"
                         target="_blank"
@@ -301,10 +302,10 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 30px;
-    width: min-content;
-    /* min-width: 147px; */
-    margin: 0 auto 20px auto;
+    padding: 15px 30px;
+    /* width: min-content; */
+    min-width: 146px;
+    margin: 0 auto;
 }
 
 .main-container {
@@ -395,6 +396,15 @@ export default {
     }
     .media {
         margin: 0 0 10px 0;
+    }
+}
+
+@media screen and (max-width: 860px) {
+    .event-container {
+        flex-direction: column;
+    }
+    .media-container {
+        margin-left: 0px;
     }
 }
 </style>

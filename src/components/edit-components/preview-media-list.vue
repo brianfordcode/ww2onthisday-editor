@@ -66,5 +66,11 @@ a {
     color: black;
     text-decoration: none;
 }
+@media screen and (max-width: 500px) {
+    .media-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+}
 
 </style>
