@@ -34,7 +34,7 @@ export default createStore({
     publishedEvents: (state) => (date) => {
       const events = state.events
       const eventIds = Object.keys(events)
-      return eventIds.filter(id => events[id].date === date)
+      return eventIds.filter(id => events[id].date === date && events[id].published)
     }
   },
   mutations: {

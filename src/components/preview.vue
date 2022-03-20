@@ -236,7 +236,6 @@ export default {
             this.$emit('editEvent', this.$store.getters.event(id))
             this.selectedId = id
             this.editPushed = true
-            this.eventBeingUpdated = this.$store.getters.event(id)
         },
         openPublishOverlay(id) {
             this.resetOverlays()
