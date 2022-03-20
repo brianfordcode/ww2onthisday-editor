@@ -6,13 +6,13 @@
 >
     <h4
         :style="`padding: 10px; background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
-        @click="togglePublishedEvents"
+        @click="showPubandUnpubEvents"
     >
     Published
     </h4>
     <h4
         :style="`padding: 10px; background-color: ${!published ? 'rgba(95, 0, 0, 0.5)': 'white'}; cursor: pointer;`"
-        @click="togglePublishedEvents"
+        @click="showPubandUnpubEvents"
     >
     Unpublished
     </h4>
@@ -271,7 +271,6 @@ export default {
                 this.$store.dispatch('unPublishEvent', id)
                 this.resetOverlays()
                 this.eventUnpublished = true
-                // this.published = true
                 setTimeout(() => {
                     this.eventUnpublished = false
                 }, 2000)
@@ -279,15 +278,14 @@ export default {
                 this.$store.dispatch('publishEvent', id)
                 this.resetOverlays()
                 this.eventPublished = true
-                // this.published = true
                 setTimeout(() => {
                     this.eventPublished = false
                 }, 2000)
             }
         },
-        togglePublishedEvents() {
+        showPubandUnpubEvents() {
             this.resetOverlays()
-            this.$emit('clearForm')
+            // this.$emit('clearForm')
             this.published = !this.published
         },
     }
