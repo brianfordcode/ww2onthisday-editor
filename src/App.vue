@@ -1,7 +1,11 @@
 <template>
-  <a href="http://www.ww2onthisday.com" target="_blank" style="width: 100%; display: flex; justify-content: space-around; margin: 15px 0;">
+
+<div style="display: flex; justify-content: space-around;">
+  <a href="http://www.ww2onthisday.com" target="_blank" style="margin: 15px auto">
     <img style="width: 300px" src="./assets/ww2-on-this-day-logo.png" alt="ww2-on-this-day-logo">
   </a>
+</div>
+
   
 
   <router-view/>
@@ -21,11 +25,6 @@
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   height: 100%;
-}
-
-h2 {
-  text-align: center;
-  margin: 10px 0;
 }
 
 input {

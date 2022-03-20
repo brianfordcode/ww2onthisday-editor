@@ -35,6 +35,8 @@ export default createStore({
       const events = state.events
       const eventIds = Object.keys(events)
       return eventIds.filter(id => events[id].date === date && events[id].published)
+      // TODO: ALWAYS SHOW ALL UNPUBLISHED EVENTS
+      // (RECREATE CASE: IF ADD EVENT ON CERTAIN DATE, THEN REFRESH PAGE, AND PICK NEW RANDOM DATE, THAT EVENT NOT VISIBLE UNLESS GO TO SAME DATE AS EVENT)
     }
   },
   mutations: {

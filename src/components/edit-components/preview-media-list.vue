@@ -11,9 +11,10 @@
             :alt="`${item.picture}`"
         >
         <div>
-            <p>title: {{item.title}}</p>
-            <p>year: {{item.year}}</p>
-            <p>link:
+            <p><span style="font-weight: bold">title:</span> {{item.title}}</p>
+            <p><span style="font-weight: bold">year:</span> {{item.year}}</p>
+            <p>
+                <span style="font-weight: bold">link:</span>
                 <a 
                     v-if="item.mediaLink.link"
                     :href="`${item.mediaLink.link}`"
@@ -22,8 +23,16 @@
                 &#10003;
                 </a>
             </p>
-            <p>affiliate: {{item.mediaLink.affiliate ? '&#10003;' : '&#x2715;'}}</p>
-            <p v-if="item.mediaLink.affiliateSource">affiliate source: {{item.mediaLink.affiliateSource}}</p>
+            <p>
+                <span style="font-weight: bold">affiliate:</span>
+                {{item.mediaLink.affiliate ? '&#10003;' : '&#x2715;'}}
+            </p>
+            <p 
+                v-if="item.mediaLink.affiliateSource"
+            >
+            <span style="font-weight: bold">affiliate source:</span>
+            {{item.mediaLink.affiliateSource}}
+            </p>
         
         </div>
     </div>

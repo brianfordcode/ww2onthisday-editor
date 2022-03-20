@@ -28,11 +28,11 @@
         <div class="event-container">
             <div class="event-details">
                 <!-- DATE -->
-                <p>date: {{ getEvent(id).date }}</p>
+                <p><span style="font-weight: bold">date:</span> {{ getEvent(id).date }}</p>
                 <!-- TITLE -->
-                title: <p>{{getEvent(id).title}}</p>
+                <p><span style="font-weight: bold">title:</span> {{getEvent(id).title}}</p>
                 <!-- CITATION -->
-                <p>citation: 
+                <p><span style="font-weight: bold">citation:</span>
                     <a
                         style="text-decoration: none; color: black"
                         v-if="getEvent(id).citation"
@@ -43,7 +43,7 @@
                     </a>
                 </p>
                 <div style="display: flex; align-items: center">
-                    <p>main picture:</p>
+                    <span style="font-weight: bold">main picture: </span>
                     <img
                         :src="`${getEvent(id).mainPicture}`"
                         :alt="`${getEvent(id).mainPicture}`"
@@ -51,7 +51,7 @@
                     >
                 </div>
                 <!-- KEYWORDS -->
-                <p>keywords: {{getEvent(id).keywords}}</p>
+                <p><span style="font-weight: bold">keywords:</span> {{getEvent(id).keywords}}</p>
                 <!-- MAP -->
                 <iframe
                     class="map"
@@ -66,10 +66,10 @@
             </div>
             <div class="media-container">
                 <!-- BOOKS -->
-                <p>books:</p>
+                <span style="font-weight: bold">books:</span>
                 <previewMediaList :media="getEvent(id).books"/>
                 <!-- MOVIES -->
-                <p>movies:</p>
+                <span style="font-weight: bold">movies:</span>
                 <previewMediaList :media="getEvent(id).movies"/>
             </div>
         </div>
@@ -101,7 +101,7 @@
         <!-- TOGGLE PUBLISH OVERLAY -->
         <div
             class="overlay"
-            :style="`background-color: ${ getEvent(id).published ? 'rgba(80, 80, 80,0.61);' : 'rgba(3, 95, 30, 0.61)' };`"
+            :style="`background-color: ${ getEvent(id).published ? 'rgba(80, 80, 80,0.75);' : 'rgba(3, 95, 30, 0.75)' };`"
             v-if="selectedId === id && publishPushed"
         >
             <p
@@ -120,7 +120,7 @@
         <!-- DELETE OVERLAY -->
         <div
             class="overlay"
-            style="background-color: rgba(95, 0, 0, 0.61);"
+            style="background-color: rgba(95, 0, 0, 0.75);"
             v-if="selectedId === id && deletePushed"
         >
             <p class="overlay-btn" @click="deleteEvent(id)">Delete this Event</p>
@@ -134,7 +134,7 @@
         <!-- EDIT OVERLAY -->
         <div
             class="overlay"
-            style="background-color: rgba(16, 0, 161, 0.5);"
+            style="background-color: rgba(16, 0, 161, 0.75);"
             v-if="selectedId === id && editPushed"
         >
             <p class="overlay-btn" @click="updateEvent(id)">Update Event</p>
@@ -289,14 +289,10 @@ export default {
             this.published = !this.published
         },
     }
-
-
 }
 </script>
 
 <style scoped>
-
-
 
 .all-events {
     display: flex;
