@@ -37,7 +37,6 @@ export default {
         formattedCoords() {
             const formattedCoords = this.coordinates.replace(' N', '').replace('°', 0).replace('°', 0).replace('E', '')
             return formattedCoords
-            // TODO: make coord suggestion disappear after selected
         },
         coordinates: {
             get() {

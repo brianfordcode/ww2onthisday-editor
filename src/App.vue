@@ -6,9 +6,8 @@
   </a>
 </div>
 
-  
 
-  <router-view/>
+<router-view/>
 
 </template>
 

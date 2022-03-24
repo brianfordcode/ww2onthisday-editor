@@ -91,11 +91,9 @@ export default createStore({
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       const q = query(collection(db, "submitted-events"), where("published", "!=", true));
       const querySnapshot = await getDocs(q);
-      console.log(q, querySnapshot)
       querySnapshot.forEach((doc) => {
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
-        console.log(event)
       });
     }
 
