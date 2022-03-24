@@ -14,6 +14,7 @@
     Unpublished
     </h4>
 </div>
+
 <div
     v-if="Object.keys($store.state.events).length > 0"
     class="all-events"
@@ -43,7 +44,7 @@
                     </a>
                 </p>
                 <div style="display: flex; align-items: center">
-                    <span style="font-weight: bold">main picture: </span>
+                    <span style="font-weight: bold">picture: </span>
                     <img
                         :src="`${getEvent(id).mainPicture}`"
                         :alt="`${getEvent(id).mainPicture}`"

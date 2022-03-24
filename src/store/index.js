@@ -57,10 +57,12 @@ export default createStore({
   actions: {
     addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
+      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       setDoc(doc(db, "submitted-events", submittedEvent.id), submittedEvent);
     },
     deleteEvent(context, id) {
       context.commit('deleteEvent', id)
+      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       deleteDoc(doc(db, "submitted-events", id));
     },
     async publishEvent(context, id) {
@@ -76,13 +78,26 @@ export default createStore({
 
     // DATABASE EVENTS
     async getDBEvents(context, date) {
+      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       const q = query(collection(db, "submitted-events"), where("date", "==", date));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
       });
+      // TODO: MAKE SURE SECURITY RULES IN FIREBASE ARE OK
     },
+    async loadNonpublishedEvents(context) {
+      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
+      const q = query(collection(db, "submitted-events"), where("published", "!=", true));
+      const querySnapshot = await getDocs(q);
+      console.log(q, querySnapshot)
+      querySnapshot.forEach((doc) => {
+        const event = doc.data()
+        context.commit('addEventFromDB', { id: doc.id, event })
+        console.log(event)
+      });
+    }
 
   }
 })
