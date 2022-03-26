@@ -35,7 +35,7 @@ export default {
     },
     computed: {
         formattedCoords() {
-            const formattedCoords = this.coordinates.replace(' N', '').replace('°', 0).replace('°', 0).replace('E', '')
+            const formattedCoords = this.coordinates.replace(' N', '').replace('°', 0).replace('°', 0).replace('E', '').replace('W', '')
             return formattedCoords
         },
         coordinates: {
