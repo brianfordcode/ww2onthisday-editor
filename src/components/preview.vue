@@ -221,7 +221,6 @@ export default {
     },
     computed: {
         events() {
-            // TODO: ALWAYS SHOW UNPUBLISHED EVENTS EVEN WHEN NO DATE IS SELECTED
             const getters = this.$store.getters
             if (this.editPushed) { return [ this.selectedId ] }
             return this.published ? getters.publishedEvents(this.date) : getters.nonPublishedEvents(this.published)

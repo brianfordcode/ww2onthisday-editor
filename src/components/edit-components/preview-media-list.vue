@@ -55,6 +55,7 @@ export default {
 .media-wrapper {
     display: flex;
     flex-wrap: wrap;
+    max-width: 500px;
 }
 
 .media {
