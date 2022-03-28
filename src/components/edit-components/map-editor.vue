@@ -4,10 +4,10 @@
         <span :class="{'done': coordinates ? true : false}">coordinates:</span>
         <input v-model="coordinates" type="text">
         <!-- FORMAT COORDINATES -->
-        <div v-if="modelValue.coordinates" style="display: flex; justify-content: right;">
+        <!-- <div v-if="modelValue.coordinates" style="display: flex; justify-content: right;">
             <span>{{formattedCoords}}</span>
             <button style="width: 20px;" @click="coordinates = formattedCoords">&#43;</button>
-        </div>
+        </div> -->
     </div>
     <!-- MAP ZOOM -->
     <label v-if="coordinates">
@@ -34,10 +34,10 @@ export default {
       }
     },
     computed: {
-        formattedCoords() {
-            const formattedCoords = this.coordinates.replace(' N', '').replace('°', 0).replace('°', 0).replace('E', '').replace('W', '')
-            return formattedCoords
-        },
+        // formattedCoords() {
+        //     const formattedCoords = this.coordinates.replace(' N', '').replace('°', 0).replace('°', 0).replace('E', '').replace('W', '')
+        //     return formattedCoords
+        // },
         coordinates: {
             get() {
                 return this.modelValue.coordinates
