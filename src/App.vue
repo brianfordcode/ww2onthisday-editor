@@ -9,7 +9,28 @@
 
 <router-view/>
 
+<!-- SCROLL TO TOP -->
+<img
+    src="http://cdn.onlinewebfonts.com/svg/img_158933.png"
+    alt="to-top-icon"
+    class="to-top-icon"
+    @click="goToTop()"
+>
+
 </template>
+
+<script>
+
+export default {
+  methods: {
+    goToTop() {
+      window.scrollTo(0,0);
+    }
+  }
+}
+
+</script>
+
 
 <style>
 
@@ -23,7 +44,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  height: 100%;
 }
 
 input {
@@ -58,6 +78,20 @@ select {
   border: 1px solid;
   border-right: none;
   height: 22px;
+}
+
+.to-top-icon {
+  height: 40px;
+  opacity: .25;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.to-top-icon:hover {
+  opacity: 1;
 }
 
 </style>

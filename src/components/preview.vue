@@ -175,9 +175,7 @@
         </div>
 
     </div>
-
 </div>
-
     <!-- OVERLAY IF EVENT PUBLISHED -->
     <p
         class="action-overlay"
@@ -455,7 +453,7 @@ export default {
     text-align: center;
 }
 
-@media screen and (max-width: 550px ) {
+@media screen and (max-width: 575px ) {
     .container {
         flex-direction: column;
     }
@@ -467,7 +465,7 @@ export default {
     }
 }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 925px) {
     .event-container {
         flex-direction: column;
     }
