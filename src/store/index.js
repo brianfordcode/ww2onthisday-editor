@@ -26,10 +26,19 @@ export default createStore({
     event: (state) => (id) => {
       return state.events[id]
     },
-    allPubEvents: (state) => () => {
+    allPubEvents: (state) => (searchTerm) => {
       const events = state.events
       const eventIds = Object.keys(events)
-      return eventIds.filter(id => events[id].published)
+      const publishedEvents = eventIds.filter(id => events[id].published)
+      if (searchTerm) {
+        return publishedEvents.filter(id => {
+          const string = JSON.stringify(events[id]).toLowerCase()
+          return string.includes(searchTerm.toLowerCase())
+        })
+      }
+      else {
+        return publishedEvents
+      }
     },
     datePubEvents: (state) => (date) => {
       const events = state.events
@@ -45,7 +54,7 @@ export default createStore({
       const events = state.events
       const eventIds = Object.keys(events)
       return eventIds.filter(id => events[id].date === date && events[id].published === false)
-    }
+    },
   },
   mutations: {
     addEvent(state, submittedEvent) {
@@ -116,5 +125,3 @@ export default createStore({
 
   }
 })
-
-// TODO: add "All nonPublished" and "All nonpublished on this date" tabs"

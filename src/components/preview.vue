@@ -27,11 +27,27 @@
     </h5>
 </div>
 
+
+
 <div
     v-if="Object.keys($store.state.events).length > 0"
     class="all-events"
     :style="`background-color: ${backgroundColor()};`"
 >
+    <!-- SEARCH THROUGH EVENTS -->
+    <div
+        v-if="allPub"
+        style="display: flex; align-items: center; height: 25px; margin-bottom: 10px;"
+    >
+        <img style="height: 25px;" src="https://img.icons8.com/search" alt="search-icon">
+        <input
+            type="text"
+            style="height: 25px; border: none;"
+            v-model="searchTerm"
+        >
+    </div>
+
+
     <div
         class="main-container"
         v-for="id in events"
@@ -230,8 +246,8 @@ export default {
         return {
             ...overlayInitialState(),
             ...filtersInitialState(),
-            published: false,
             selectedId: null,
+            searchTerm: ''
         }
     },
     props: {
@@ -242,15 +258,20 @@ export default {
     },
     watch: {
         allPub() {
-            if (this.allPub) this.$store.dispatch('loadPublishedEvents')
+            this.$store.dispatch('loadPublishedEvents')
+        },
+        allNonpub() {
+            this.$store.dispatch('loadNonpublishedEvents')
         }
     },
     computed: {
         events() {
             const getters = this.$store.getters
+
             if (this.editPushed) { return [ this.selectedId ] }
+
             if (this.allPub) {
-                return getters.allPubEvents()
+                return getters.allPubEvents(this.searchTerm)
             } else if (this.datePub) {
                 return getters.datePubEvents(this.date, this.datePub)
             } else if (this.dateNonpub) {
@@ -319,11 +340,6 @@ export default {
                     this.eventPublished = false
                 }, 2000)
             }
-        },
-        showPubandUnpubEvents() {
-            this.resetOverlays()
-            // this.$emit('clearForm')
-            this.published = !this.published
         },
         filterEvents(filter) {
             this.resetFilters()
