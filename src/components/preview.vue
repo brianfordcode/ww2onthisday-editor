@@ -91,7 +91,7 @@
             <span @click="openDeleteOverlay(id)">
                 <img style="width: 20px;" src="https://img.icons8.com/material-outlined/48/000000/trash--v1.png" alt="delete-icon">
             </span>
-            <!-- PUBLIST TO SITE -->
+            <!-- PUBLISH TO SITE -->
             <span
                 style="background-color: rgba(0,0,0,.1); padding: 3px 5px 2px 5px; opacity: 1;"
                 @click="openPublishOverlay(id)"
@@ -331,27 +331,9 @@ export default {
             if (filter === 'datePub') { this.datePub = true }
             if (filter === 'allNonpub') { this.allNonpub = true }
             if (filter === 'dateNonpub') { this.dateNonpub = true }
-
-
-            console.log(
-                'allPub: ', this.allPub,
-                'datePub: ', this.datePub,
-                'allNonpub: ', this.allNonpub,
-                'dateNonpub: ', this.dateNonpub,
-            )
-
-
-
         },
-
-
-
-
         backgroundColor() {
-            if (this.datePub) {
-                return 'rgba(3, 95, 30, 0.5)'
-            }
-            // published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'
+            return this.datePub || this.allPub ? 'rgba(3, 95, 30, 0.5)' : 'rgba(95, 0, 0, 0.5)'
         }
     }
 }
