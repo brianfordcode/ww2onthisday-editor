@@ -1,26 +1,37 @@
 <template>
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
 <div style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;">
-    <h4
-        :style="`padding: 10px; background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
-        @click="showPubandUnpubEvents"
+    <h5
+        :style="`padding: 10px; background-color: ${allPub ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
+        @click="filterEvents('allPub')"
     >
-    Published
-    </h4>
-    <h4
-        :style="`padding: 10px; background-color: ${!published ? 'rgba(95, 0, 0, 0.5)': 'white'}; cursor: pointer;`"
-        @click="showPubandUnpubEvents"
+    All Published
+    </h5>
+    <h5
+        :style="`padding: 10px; background-color: ${datePub ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
+        @click="filterEvents('datePub')"
     >
-    Unpublished
-    </h4>
+    Published On Date
+    </h5>
+    <h5
+        :style="`padding: 10px; background-color: ${dateNonpub ? 'rgba(95, 0, 0, 0.5)': 'white'}; cursor: pointer;`"
+        @click="filterEvents('dateNonpub')"
+    >
+    Unpublished On Date
+    </h5>
+    <h5
+        :style="`padding: 10px; background-color: ${allNonpub ? 'rgba(95, 0, 0, 0.5)': 'white'}; cursor: pointer;`"
+        @click="filterEvents('allNonpub')"
+    >
+    All Unpublished
+    </h5>
 </div>
 
 <div
     v-if="Object.keys($store.state.events).length > 0"
     class="all-events"
-    :style="`background-color: ${published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'};`"
+    :style="`background-color: ${backgroundColor()};`"
 >
-    
     <div
         class="main-container"
         v-for="id in events"
@@ -202,6 +213,15 @@ function overlayInitialState() {
     updatedEvent: false,
   }
 }
+function filtersInitialState() {
+  return {
+    allPub: false,
+    datePub: false,
+    allNonpub: false,
+    dateNonpub: false,
+  }
+}
+
 
 export default {
     emits: ["editEvent", "clearForm", "updateEvent"],
@@ -209,6 +229,7 @@ export default {
     data() {
         return {
             ...overlayInitialState(),
+            ...filtersInitialState(),
             published: false,
             selectedId: null,
         }
@@ -219,17 +240,33 @@ export default {
             required: true,
         }
     },
+    watch: {
+        allPub() {
+            if (this.allPub) this.$store.dispatch('loadPublishedEvents')
+        }
+    },
     computed: {
         events() {
             const getters = this.$store.getters
             if (this.editPushed) { return [ this.selectedId ] }
-            return this.published ? getters.publishedEvents(this.date) : getters.nonPublishedEvents(this.published)
+            if (this.allPub) {
+                return getters.allPubEvents()
+            } else if (this.datePub) {
+                return getters.datePubEvents(this.date, this.datePub)
+            } else if (this.dateNonpub) {
+                return getters.dateNonpubEvents(this.date)
+            } else if (this.allNonpub) {
+                return getters.allNonpubEvents()
+            }
         },
     },
     methods: {
         resetOverlays(editPushed) {
             if (editPushed) { this.$emit('clearForm') } 
             Object.assign(this.$data, overlayInitialState());
+        },
+        resetFilters() {
+            Object.assign(this.$data, filtersInitialState());
         },
         getEvent(id) {
             return this.$store.getters.event(id)
@@ -288,6 +325,34 @@ export default {
             // this.$emit('clearForm')
             this.published = !this.published
         },
+        filterEvents(filter) {
+            this.resetFilters()
+            if (filter === 'allPub') { this.allPub = true }
+            if (filter === 'datePub') { this.datePub = true }
+            if (filter === 'allNonpub') { this.allNonpub = true }
+            if (filter === 'dateNonpub') { this.dateNonpub = true }
+
+
+            console.log(
+                'allPub: ', this.allPub,
+                'datePub: ', this.datePub,
+                'allNonpub: ', this.allNonpub,
+                'dateNonpub: ', this.dateNonpub,
+            )
+
+
+
+        },
+
+
+
+
+        backgroundColor() {
+            if (this.datePub) {
+                return 'rgba(3, 95, 30, 0.5)'
+            }
+            // published ? 'rgba(3, 95, 30, 0.5)': 'rgba(95, 0, 0, 0.5)'
+        }
     }
 }
 </script>

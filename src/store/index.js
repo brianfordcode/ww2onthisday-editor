@@ -26,17 +26,25 @@ export default createStore({
     event: (state) => (id) => {
       return state.events[id]
     },
-    nonPublishedEvents: (state) => (published) => {
+    allPubEvents: (state) => () => {
       const events = state.events
       const eventIds = Object.keys(events)
-      return eventIds.filter(id => events[id].published === published)
+      return eventIds.filter(id => events[id].published)
     },
-    publishedEvents: (state) => (date) => {
+    datePubEvents: (state) => (date) => {
       const events = state.events
       const eventIds = Object.keys(events)
       return eventIds.filter(id => events[id].date === date && events[id].published)
-      // TODO: ALWAYS SHOW ALL UNPUBLISHED EVENTS
-      // (RECREATE CASE: IF ADD EVENT ON CERTAIN DATE, THEN REFRESH PAGE, AND PICK NEW RANDOM DATE, THAT EVENT NOT VISIBLE UNLESS GO TO SAME DATE AS EVENT)
+    },
+    allNonpubEvents: (state) => () => {
+      const events = state.events
+      const eventIds = Object.keys(events)
+      return eventIds.filter(id => events[id].published === false)
+    },
+    dateNonpubEvents: (state) => (date) => {
+      const events = state.events
+      const eventIds = Object.keys(events)
+      return eventIds.filter(id => events[id].date === date && events[id].published === false)
     }
   },
   mutations: {
@@ -95,7 +103,18 @@ export default createStore({
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
       });
-    }
+    },
+    async loadPublishedEvents(context) {
+      // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
+      const q = query(collection(db, "submitted-events"), where("published", "==", true));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const event = doc.data()
+        context.commit('addEventFromDB', { id: doc.id, event })
+      });
+    },
 
   }
 })
+
+// TODO: add "All nonPublished" and "All nonpublished on this date" tabs"
