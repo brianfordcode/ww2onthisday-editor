@@ -1,6 +1,6 @@
 <template>
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
-<div style="display: flex; align-items: center; margin: 20px auto 0 auto; width: max-content;">
+<div class="filters-wrapper">
     <h5
         :style="`padding: 10px; background-color: ${allPub ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
         @click="filterEvents('allPub')"
@@ -376,6 +376,15 @@ export default {
 }
 .main-container:not(:last-child) {
     margin-bottom: 10px;
+}
+
+.filters-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 20px auto 0 auto;
+    max-width: max-content;
 }
 
 .event-container {
