@@ -36,15 +36,16 @@
 >
     <!-- SEARCH THROUGH EVENTS -->
     <div
-        v-if="allPub"
+        v-if="allPub || allNonpub"
         style="display: flex; align-items: center; height: 25px; margin-bottom: 10px;"
     >
-        <img style="height: 25px;" src="https://img.icons8.com/search" alt="search-icon">
+        <img style="height: 100%;" src="https://img.icons8.com/search" alt="search-icon">
         <input
             type="text"
-            style="height: 25px; border: none;"
+            style="height: 100%; border: none;"
             v-model="searchTerm"
         >
+        <button style="height: 100%; padding: 2px; width: 25px; border: none;" @click="searchTerm=''">&#x2715;</button>
     </div>
 
 
@@ -233,6 +234,7 @@ function filtersInitialState() {
     datePub: false,
     allNonpub: false,
     dateNonpub: false,
+    searchTerm: ''
   }
 }
 
@@ -245,7 +247,7 @@ export default {
             ...overlayInitialState(),
             ...filtersInitialState(),
             selectedId: null,
-            searchTerm: ''
+            
         }
     },
     props: {
@@ -275,7 +277,7 @@ export default {
             } else if (this.dateNonpub) {
                 return getters.dateNonpubEvents(this.date)
             } else if (this.allNonpub) {
-                return getters.allNonpubEvents()
+                return getters.allNonpubEvents(this.searchTerm)
             }
         },
     },
@@ -340,10 +342,11 @@ export default {
             }
         },
         filterEvents(filter) {
+            const searchTerm = this.searchTerm
             this.resetFilters()
-            if (filter === 'allPub') { this.allPub = true }
+            if (filter === 'allPub') { this.allPub = true; this.searchTerm = searchTerm }
             if (filter === 'datePub') { this.datePub = true }
-            if (filter === 'allNonpub') { this.allNonpub = true }
+            if (filter === 'allNonpub') { this.allNonpub = true; this.searchTerm = searchTerm }
             if (filter === 'dateNonpub') { this.dateNonpub = true }
         },
         backgroundColor() {
@@ -351,6 +354,13 @@ export default {
         }
     }
 }
+
+// todo: add events length in preview
+// todo: remove coordinates formatter tool
+// todo: click preview picture to expand
+// todo: remove text in search bar on pub events
+
+
 </script>
 
 <style scoped>
