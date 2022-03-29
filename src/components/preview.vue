@@ -47,7 +47,6 @@
                 >
                 <button style="height: 100%; padding: 2px; width: 25px; border: none;" @click="searchTerm=''">&#x2715;</button>
         </div>
-        
         <p style="margin-left: 10px;"># of events: <span>{{numOfEvents}}</span></p>
     </div>
 
@@ -366,7 +365,6 @@ export default {
     }
 }
 
-// todo: add events length in preview
 // todo: click preview picture to expand
 
 </script>

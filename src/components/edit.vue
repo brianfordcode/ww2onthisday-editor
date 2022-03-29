@@ -46,7 +46,7 @@
     >
     ADD NEW EVENT
     <br>
-    <span v-if="needsDateTextPicture">Needs a date, event text and picture!</span>
+    <span v-if="needsDateTextPicture">Needs a date and event text!</span>
     </button>
     </div>
 </div>
@@ -104,7 +104,7 @@ export default {
         published: this.published ? true : false
       }
       // Required details
-      if (this.date === '' || this.title === '' || this.mainPicture === '') {
+      if (this.date === '' || this.title === '') {
         this.needsDateTextPicture = true;
         setTimeout(() => {
           this.needsDateTextPicture = false;
