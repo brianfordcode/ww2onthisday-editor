@@ -28,24 +28,27 @@
 </div>
 
 
-
 <div
-    v-if="Object.keys($store.state.events).length > 0"
+    
     class="all-events"
     :style="`background-color: ${backgroundColor()};`"
 >
+
     <!-- SEARCH THROUGH EVENTS -->
     <div
-        v-if="allPub || allNonpub"
-        style="display: flex; align-items: center; height: 25px; margin-bottom: 10px;"
+        style="display: flex; align-items: center; justify-content: space-between; height: 25px; margin-bottom: 10px; width: 50%; max-width: 500px; min-width: 350px;"
     >
-        <img style="height: 100%;" src="https://img.icons8.com/search" alt="search-icon">
-        <input
-            type="text"
-            style="height: 100%; border: none;"
-            v-model="searchTerm"
-        >
-        <button style="height: 100%; padding: 2px; width: 25px; border: none;" @click="searchTerm=''">&#x2715;</button>
+        <div style="height: 25px; display: flex; align-items: center;">
+            <img style="height: 100%;" src="https://img.icons8.com/search" alt="search-icon">
+                <input
+                    type="text"
+                    style="height: 100%; border: none;"
+                    v-model="searchTerm"
+                >
+                <button style="height: 100%; padding: 2px; width: 25px; border: none;" @click="searchTerm=''">&#x2715;</button>
+        </div>
+        
+        <p style="margin-left: 10px;"># of events: <span>{{numOfEvents}}</span></p>
     </div>
 
 
@@ -247,7 +250,7 @@ export default {
             ...overlayInitialState(),
             ...filtersInitialState(),
             selectedId: null,
-            
+            numOfEvents: 0
         }
     },
     props: {
@@ -271,12 +274,16 @@ export default {
             if (this.editPushed) { return [ this.selectedId ] }
 
             if (this.allPub) {
+                this.numOfEvents = getters.allPubEvents(this.searchTerm).length
                 return getters.allPubEvents(this.searchTerm)
             } else if (this.datePub) {
-                return getters.datePubEvents(this.date, this.datePub)
+                this.numOfEvents = getters.datePubEvents(this.date, this.searchTerm).length
+                return getters.datePubEvents(this.date, this.searchTerm)
             } else if (this.dateNonpub) {
-                return getters.dateNonpubEvents(this.date)
+                this.numOfEvents = getters.dateNonpubEvents(this.date, this.searchTerm).length
+                return getters.dateNonpubEvents(this.date, this.searchTerm)
             } else if (this.allNonpub) {
+                this.numOfEvents = getters.allNonpubEvents(this.searchTerm).length
                 return getters.allNonpubEvents(this.searchTerm)
             }
         },
@@ -356,10 +363,7 @@ export default {
 }
 
 // todo: add events length in preview
-// todo: remove coordinates formatter tool
 // todo: click preview picture to expand
-// todo: remove text in search bar on pub events
-
 
 </script>
 
