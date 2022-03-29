@@ -27,13 +27,10 @@
     </h5>
 </div>
 
-
 <div
-    
     class="all-events"
     :style="`background-color: ${backgroundColor()};`"
 >
-
     <!-- SEARCH THROUGH EVENTS -->
     <div
         style="display: flex; align-items: center; justify-content: space-between; height: 25px; margin-bottom: 10px; width: 50%; max-width: 500px; min-width: 350px;"
@@ -50,6 +47,11 @@
         <p style="margin-left: 10px;"># of events: <span>{{numOfEvents}}</span></p>
     </div>
 
+    <p
+        v-if="numOfEvents === 0"
+    >
+    {{date == '--' || !date ? 'Choose a Date Above' : 'No Events On This Date'}}
+    </p>
 
     <div
         class="main-container"
