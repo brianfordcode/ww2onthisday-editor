@@ -245,6 +245,9 @@ function filtersInitialState() {
 export default {
     emits: ["editEvent", "clearForm", "updateEvent"],
     components: { previewMediaList },
+    created() {
+        this.allPub = true
+    },
     data() {
         return {
             ...overlayInitialState(),
@@ -349,11 +352,12 @@ export default {
             }
         },
         filterEvents(filter) {
-            const searchTerm = this.searchTerm
+            const keepSearchTerm = this.searchTerm
             this.resetFilters()
-            if (filter === 'allPub') { this.allPub = true; this.searchTerm = searchTerm }
+            this.searchTerm = keepSearchTerm
+            if (filter === 'allPub') { this.allPub = true; }
             if (filter === 'datePub') { this.datePub = true }
-            if (filter === 'allNonpub') { this.allNonpub = true; this.searchTerm = searchTerm }
+            if (filter === 'allNonpub') { this.allNonpub = true; }
             if (filter === 'dateNonpub') { this.dateNonpub = true }
         },
         backgroundColor() {

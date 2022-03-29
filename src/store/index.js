@@ -60,29 +60,29 @@ export default createStore({
     allNonpubEvents: (state) => (searchTerm) => {
       const events = state.events
       const eventIds = Object.keys(events)
-      const publishedEvents = eventIds.filter(id => events[id].published === false)
+      const filteredEvents = eventIds.filter(id => events[id].published === false)
       if (searchTerm) {
-        return publishedEvents.filter(id => {
+        return filteredEvents.filter(id => {
           const string = JSON.stringify(events[id]).toLowerCase()
           return string.includes(searchTerm.toLowerCase())
         })
       }
       else {
-        return publishedEvents
+        return filteredEvents
       }
     },
     dateNonpubEvents: (state) => (date, searchTerm) => {
       const events = state.events
       const eventIds = Object.keys(events)
-      const publishedEvents = eventIds.filter(id => events[id].date === date && events[id].published === false)
+      const filteredEvents = eventIds.filter(id => events[id].date === date && events[id].published === false)
       if (searchTerm) {
-        return publishedEvents.filter(id => {
+        return filteredEvents.filter(id => {
           const string = JSON.stringify(events[id]).toLowerCase()
           return string.includes(searchTerm.toLowerCase())
         })
       }
       else {
-        return publishedEvents
+        return filteredEvents
       }
     },
   },
