@@ -247,7 +247,7 @@ export default {
     emits: ["editEvent", "clearForm", "updateEvent"],
     components: { previewMediaList },
     created() {
-        this.allPub = true
+        this.datePub = true
     },
     data() {
         return {
