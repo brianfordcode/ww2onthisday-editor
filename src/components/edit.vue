@@ -53,7 +53,7 @@
 </div>
 
 <!-- PREVIEW COMPONENT -->
-<preview @editEvent="editEvent" :date="date" @clearForm="clearForm" @updateEvent="addEvent"/>
+<preview @editEvent="editEvent" :date="date" @clearForm="clearForm" @updateEvent="addEvent" @clearCitation="citation = ''"/>
 
 </template>
 
@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     addEvent() {
+      console.log(this.editEventId)
       const fullEvent = {
         date: this.date,
         id: this.editEventId || "event-" + this.date + '-' + Date.now(),
@@ -112,6 +113,9 @@ export default {
         }, 2000)
       } else {
         this.$store.dispatch('addEvent', fullEvent)
+        if (this.editEventId != null) {
+          this.citation = ''
+        } 
         this.clearForm()
       }
     },

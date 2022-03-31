@@ -173,7 +173,7 @@
             <p class="overlay-btn" @click="updateEvent(id)">Update Event</p>
             <div
                 class="closeBtn"
-                @click="resetOverlays(editPushed)"
+                @click="resetOverlays(editPushed), this.$emit('clearCitation')"
             >
             &#10005;
             </div>
@@ -243,7 +243,7 @@ function filtersInitialState() {
 }
 
 export default {
-    emits: ["editEvent", "clearForm", "updateEvent"],
+    emits: ["editEvent", "clearForm", "updateEvent", "clearCitation"],
     components: { previewMediaList },
     created() {
         this.datePub = true
@@ -293,7 +293,7 @@ export default {
     },
     methods: {
         resetOverlays(editPushed) {
-            if (editPushed) { this.$emit('clearForm') } 
+            if (editPushed) { this.$emit('clearForm') }
             Object.assign(this.$data, overlayInitialState());
         },
         resetFilters() {
