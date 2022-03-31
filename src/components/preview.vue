@@ -50,7 +50,7 @@
     <p
         v-if="numOfEvents === 0"
     >
-    {{date == '--' || !date ? 'Choose a Date Above' : 'No Events On This Date'}}
+    {{ifNoEventsOrSearchTerms}}
     </p>
 
     <div
@@ -290,6 +290,10 @@ export default {
                 return getters.allNonpubEvents(this.searchTerm)
             }
         },
+        ifNoEventsOrSearchTerms() {
+            if (this.searchTerm != '') { return 'No Search Results' }
+            return this.date == '--' || !this.date ? 'Choose a Date Above' : 'No Events On This Date'
+        }
     },
     methods: {
         resetOverlays(editPushed) {
