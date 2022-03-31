@@ -242,7 +242,6 @@ function filtersInitialState() {
   }
 }
 
-
 export default {
     emits: ["editEvent", "clearForm", "updateEvent"],
     components: { previewMediaList },

@@ -17,6 +17,7 @@
       <label for="citation">
        <span :class="{'done': citation ? true : false}">citation:</span>
        <input v-model="citation" type="text">
+       <button style="height: 22px; padding: 2px; width: 20px; border-left: none;" @click="citation=''">&#x2715;</button>
       </label>
       <!-- MAIN PICTURE -->
       <label for="mainPicture">
@@ -116,8 +117,10 @@ export default {
     },
     clearForm() {
         const keepDate = this.date
+        const keepCitation = this.citation
         Object.assign(this.$data, this.$options.data.call(this));
         this.date = keepDate
+        this.citation = keepCitation
     },
     getDateString(d) {
       this.date = d
