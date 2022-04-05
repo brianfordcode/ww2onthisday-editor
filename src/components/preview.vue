@@ -475,7 +475,7 @@ export default {
     text-align: center;
 }
 
-@media screen and (max-width:500px) {
+@media screen and (max-width:450px) {
     .filters-wrapper {
         font-size: 10.95px;
     }
