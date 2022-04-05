@@ -15,9 +15,9 @@
       </label>
       <!-- CITATION -->
       <label for="citation">
-       <span :class="{'done': citation ? true : false}">citation:</span>
-       <input v-model="citation" type="text">
-       <button style="height: 22px; padding: 2px; width: 20px; border-left: none;" @click="citation=''">&#x2715;</button>
+      <span :class="{'done': citation ? true : false}">citation:</span>
+      <input v-model="citation" type="text">
+      <button style="height: 22px; padding: 2px; width: 20px; border-left: none;" @click="citation=''">&#x2715;</button>
       </label>
       <!-- MAIN PICTURE -->
       <label for="mainPicture">
@@ -35,7 +35,18 @@
     </div>
     <br>
     <!-- MEDIA -->
-    <div class="media" style="display: flex; margin-bottom: 20px;">
+    <p
+      class="mediaShowBtn"
+      @click="mediaShow = !mediaShow"
+      :style="`margin-bottom: ${mediaShow ? '0px' : '10px'}`"
+    >
+    {{ mediaShow ? 'hide' : 'show'}} media editor
+    <img
+      :style="`height: 15px; margin-left: 2px; transform: rotate( ${mediaShow ? '180deg' : '0deg'})`"
+      src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/000000/external-minimize-arrow-kmg-design-glyph-kmg-design-1.png"
+    />
+    </p>
+    <div class="media" :style="`display: ${mediaShow ? 'flex' : 'none'}; margin-bottom: 20px;`">
       <mediaEditor :media="books" title='Books' />
       <mediaEditor :media="movies" title='Movies'/>
     </div>
@@ -69,6 +80,7 @@ export default {
   
   data() {
     return {
+      mediaShow: false,
       needsDateTextPicture: false,
       // INPUTS:
       date: '',
@@ -184,6 +196,17 @@ input {
   flex-direction: column;
   width: min-content;
   margin: 0 auto;
+}
+
+.mediaShowBtn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  opacity: 0.5; 
+}
+
+.mediaShowBtn:hover {
+  opacity: 1;
 }
 
 .input-fields {
