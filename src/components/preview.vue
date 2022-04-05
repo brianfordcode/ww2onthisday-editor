@@ -404,6 +404,7 @@ export default {
     flex-wrap: wrap;
     margin: 20px auto 0 auto;
     max-width: max-content;
+    font-size: 15px;
 }
 
 .event-container {
@@ -472,6 +473,12 @@ export default {
     bottom: 0;
     color: white;
     text-align: center;
+}
+
+@media screen and (max-width:500px) {
+    .filters-wrapper {
+        font-size: 10.95px;
+    }
 }
 
 @media screen and (max-width: 575px ) {
