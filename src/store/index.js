@@ -155,3 +155,6 @@ export default createStore({
 
   }
 })
+
+
+// TODO: ERROR WHEN FIREBASE NOT CONNECTING (ERROR, TOO MANY REQUESTS, ETC.)

@@ -41,10 +41,10 @@
       :style="`margin-bottom: ${mediaShow ? '0px' : '10px'}`"
     >
     {{ mediaShow ? 'hide' : 'show'}} media editor
-    <img
-      :style="`height: 15px; margin-left: 2px; transform: rotate( ${mediaShow ? '180deg' : '0deg'})`"
-      src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/000000/external-minimize-arrow-kmg-design-glyph-kmg-design-1.png"
-    />
+      <img
+        :style="`height: 15px; margin-left: 2px; transform: rotate( ${mediaShow ? '180deg' : '0deg'})`"
+        src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/000000/external-minimize-arrow-kmg-design-glyph-kmg-design-1.png"
+      />
     </p>
     <div class="media" :style="`display: ${mediaShow ? 'flex' : 'none'}; margin-bottom: 20px;`">
       <mediaEditor :media="books" title='Books' />
@@ -202,7 +202,8 @@ input {
   cursor: pointer;
   display: flex;
   align-items: center;
-  opacity: 0.5; 
+  opacity: 0.5;
+  width: max-content;
 }
 
 .mediaShowBtn:hover {
