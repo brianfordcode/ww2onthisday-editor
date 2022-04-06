@@ -148,7 +148,7 @@ export default createStore({
     async loadNonpublishedEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       let q = query(collection(db, "submitted-events"), where("published", "!=", true));
-      if (date) q = query(q, where("date", "==", date))
+      // if (date) q = query(q, where("date", "==", date))
 
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
@@ -159,7 +159,7 @@ export default createStore({
     async loadPublishedEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       const q = query(collection(db, "submitted-events"), where("published", "==", true));
-      if (date) q = query(q, where("date", "==", date))
+      // if (date) q = query(q, where("date", "==", date))
 
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
