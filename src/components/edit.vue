@@ -100,7 +100,6 @@ export default {
   },
   methods: {
     addEvent() {
-      console.log(this.editEventId)
       const fullEvent = {
         date: this.date,
         id: this.editEventId || "event-" + this.date + '-' + Date.now(),

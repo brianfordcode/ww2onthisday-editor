@@ -4,6 +4,7 @@ import { createStore } from 'vuex'
 import { initializeApp } from "firebase/app";
 import { doc, getDocs, deleteDoc, updateDoc, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
   authDomain: "ww2-on-this-day.firebaseapp.com",
@@ -13,6 +14,17 @@ const firebaseConfig = {
   appId: "1:814949029524:web:343f2f6669b975b9fc0681",
   measurementId: "G-YTWHJZS99D"
 };
+
+// test creds
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDgJkeYFH6F6h2RBn5SZJ8hDktY3bQSito",
+//   authDomain: "ww2-development.firebaseapp.com",
+//   projectId: "ww2-development",
+//   storageBucket: "ww2-development.appspot.com",
+//   messagingSenderId: "150864423280",
+//   appId: "1:150864423280:web:be521909810e49c69e87b5",
+//   measurementId: "G-B4V4090WQW"
+// }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -132,20 +144,23 @@ export default createStore({
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
       });
-      // TODO: MAKE SURE SECURITY RULES IN FIREBASE ARE OK
     },
-    async loadNonpublishedEvents(context) {
+    async loadNonpublishedEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
-      const q = query(collection(db, "submitted-events"), where("published", "!=", true));
+      let q = query(collection(db, "submitted-events"), where("published", "!=", true));
+      if (date) q = query(q, where("date", "==", date))
+
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
       });
     },
-    async loadPublishedEvents(context) {
+    async loadPublishedEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       const q = query(collection(db, "submitted-events"), where("published", "==", true));
+      if (date) q = query(q, where("date", "==", date))
+
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const event = doc.data()
@@ -155,6 +170,3 @@ export default createStore({
 
   }
 })
-
-
-// TODO: ERROR WHEN FIREBASE NOT CONNECTING (ERROR, TOO MANY REQUESTS, ETC.)
