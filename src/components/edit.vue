@@ -4,6 +4,7 @@
 
   <!-- DATE -->
   <dateEditor @update="getDateString" :dateString="date"/>
+  <!-- test comment -->
 
   <div class="input-fields" v-if="this.$route.name === 'Home'">
 
