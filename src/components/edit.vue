@@ -1,5 +1,7 @@
 <template>
 
+<!-- START WORK AGAIN -->
+
 <div class="main-container">
 
   <!-- DATE -->
