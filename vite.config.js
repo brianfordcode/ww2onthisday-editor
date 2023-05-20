@@ -7,7 +7,7 @@ const path = require("path")
 
 // https://vitejs.dev/config/
 
-const config = defineConfig({
+export default defineConfig({
 
   plugins: [vue()],
   resolve: {
@@ -26,6 +26,4 @@ const config = defineConfig({
     },
   },
 })
-
-export default config
 

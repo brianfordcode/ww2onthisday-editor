@@ -76,7 +76,7 @@ export default {
             this.year = ''
             this.month = ''
             this.day = ''
-        },
+        }
     }
 }
 </script>

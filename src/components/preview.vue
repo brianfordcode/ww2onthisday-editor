@@ -1,5 +1,6 @@
 <template>
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
+
 <div class="filters-wrapper">
     <h5
         :style="`padding: 10px; background-color: ${allPub ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
@@ -180,7 +181,22 @@
         </div>
 
     </div>
+    
+<!-- JSON PREVIEW TO COPY -->
+<!-- <p style="width: 90%; margin-top: 50px;">{{ this.$store.state.events}}</p> -->
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
     <!-- OVERLAY IF EVENT PUBLISHED -->
     <p
         class="action-overlay"
@@ -366,7 +382,30 @@ export default {
         },
         backgroundColor() {
             return this.datePub || this.allPub ? 'rgba(3, 95, 30, 0.5)' : 'rgba(95, 0, 0, 0.5)'
-        }
+        },
+
+        copyJSONText() {
+            // Get the text field
+            var copyText = document.getElementById("json-text-to-copy");
+
+            // Select the text field
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            
+            console.log(copyText.select())
+            // // Copy the text inside the text field
+            // navigator.clipboard.writeText(copyText.value);
+
+            // // Alert the copied text
+            // alert("Copied the text: " + copyText.value);
+            }
+
+
+
+
+
+
+
     }
 }
 
