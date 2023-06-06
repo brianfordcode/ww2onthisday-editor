@@ -122,7 +122,7 @@
             {{getEvent(id).published ? 'Unpublish' : 'Publish to Site'}}
             </span>
             <!-- EDIT EVENT -->
-            <span @click="editEvent(id)">
+            <span @click="editEvent(id), runOpenAiBot(id)">
                 <img
                     style="width: 20px;"
                     src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png"
@@ -184,6 +184,7 @@
     
 <!-- JSON PREVIEW TO COPY -->
 <!-- <p style="width: 90%; margin-top: 50px;">{{ this.$store.state.events}}</p> -->
+<p v-for="title in this.$store.state.titles">{{ title }}</p>
 
 </div>
 
@@ -374,6 +375,9 @@ export default {
         backgroundColor() {
             return this.datePub || this.allPub ? 'rgba(3, 95, 30, 0.5)' : 'rgba(95, 0, 0, 0.5)'
         },
+        runOpenAiBot() {
+            // this.$store.dispatch('runOpenAiBot', id)
+        }
 
     }
 }

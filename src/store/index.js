@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 // FIREBASE
 import { initializeApp } from "firebase/app";
 import { doc, getDocs, deleteDoc, updateDoc, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
-
+import { Configuration, OpenAIApi } from "openai"
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
@@ -32,7 +32,7 @@ const db = getFirestore();
 
 export default createStore({
   state: {
-    events: {}
+    events: {},
   },
   getters: {
     event: (state) => (id) => {
@@ -111,7 +111,7 @@ export default createStore({
     },
     togglePublishEvent(state, id) {
       state.events[id].published = !state.events[id].published
-    }
+    },
   },
   actions: {
     addEvent(context, submittedEvent) {
@@ -169,6 +169,19 @@ export default createStore({
         context.commit('addEventFromDB', { id: doc.id, event })
       });
     },
+    runOpenAiBot(context) {
+      const openai = new OpenAIApi(new Configuration({
+        apikey: import.meta.env.VITE_API_KEY
+      }))
+
+      openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [ { role: "user", content: "hello"}],
+      })
+      .then(res => {
+        console.log(res)
+      })
+    }
 
   }
 })
