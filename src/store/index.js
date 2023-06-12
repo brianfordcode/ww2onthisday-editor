@@ -143,8 +143,10 @@ export default createStore({
       querySnapshot.forEach((doc) => {
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
-        // CONSOLE VIEW OF TITLES TO REWRITE WITH CHATGPT
-        console.log(event.title)
+
+        // CONSOLE VIEW OF UNPUBLISHED EVENT TITLES TO REWRITE WITH CHATGPT
+        return !event.published ? console.log(event.title) : ''
+
       });
     },
     async loadNonpublishedEvents(context, date) {
