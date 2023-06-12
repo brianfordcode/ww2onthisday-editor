@@ -69,6 +69,7 @@ export default {
         },
         date() {
             this.$emit('update', this.date)
+            console.clear()
         }
     },
     methods: {
