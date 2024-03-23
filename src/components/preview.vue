@@ -2,12 +2,12 @@
 <!-- PUBLISHED/UNPUBLISHED FILTER -->
 
 <div class="filters-wrapper">
-    <h5
+    <!-- <h5
         :style="`padding: 10px; background-color: ${allPub ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
         @click="filterEvents('allPub')"
     >
     All Published
-    </h5>
+    </h5> -->
     <h5
         :style="`padding: 10px; background-color: ${datePub ? 'rgba(3, 95, 30, 0.5)': 'white'}; cursor: pointer;`"
         @click="filterEvents('datePub')"
@@ -20,12 +20,12 @@
     >
     Unpublished On Date
     </h5>
-    <h5
+    <!-- <h5
         :style="`padding: 10px; background-color: ${allNonpub ? 'rgba(95, 0, 0, 0.5)': 'white'}; cursor: pointer;`"
         @click="filterEvents('allNonpub')"
     >
     All Unpublished
-    </h5>
+    </h5> -->
 </div>
 
 <div

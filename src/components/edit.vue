@@ -1,5 +1,5 @@
 <template>
-
+  
 <!-- START WORK AGAIN -->
 <div class="main-container">
 
@@ -12,7 +12,7 @@
       <!-- TITLE -->
       <label for="title" >
         <p :class="{'done': title ? true : false}" style="text-align: center;">event text:</p>
-        <textarea class="textarea" v-model="title"/>
+        <textarea class="textarea" v-model="title"></textarea>
       </label>
       <p
       class="showBtn"
