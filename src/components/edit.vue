@@ -1,9 +1,6 @@
 <template>
 
-  testasdf
-
 <!-- START WORK AGAIN -->
-
 <div class="main-container">
 
   <!-- DATE -->
