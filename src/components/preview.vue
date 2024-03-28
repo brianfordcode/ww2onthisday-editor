@@ -36,18 +36,21 @@ class="all-events"
 
 
 
-    <div style="display: flex;">
-        <div style="border: 1px solid; padding: 10px;">
-            <p>rewrite each event with completely new words then put in present simple tense:</p>
+    <div
+        class="reword-container"
+        v-if="dateNonpub"
+    >
+        <div class="reword-events-wrapper">
+            <p>Rewrite each event with completely new words then put in present simple tense:</p>
             <div v-for="id in events" :key="id">
                 <br>
                 "{{ getEvent(id).title }}",
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; align-items: center;">
-            <textarea v-model="textInput" style="width: 300px; height: 400px; padding: 10px; border: none; margin: 10px;" name="" id="" cols="30" rows="10"></textarea>
-            <button @click="submitChangedText()" style="padding: 5px;">submit</button>
+        <div class="reword-text-area">
+            <textarea v-model="textInput" style="resize: none; width: 300px; height: 400px; padding: 10px;" name="" cols="30" rows="10"></textarea>
+            <button @click="submitChangedText()" style="padding: 5px; margin: 5px;">Submit</button>
         </div>
 
     </div>
@@ -432,7 +435,6 @@ export default {
             }
 
             for (let i = 0; i < this.eventIds.length; i++) {
-
                 const loopEventIds = this.eventIds[i]
                 const loopeventTitlesToChange = this.eventTitlesToChange[i]
 
@@ -563,10 +565,56 @@ export default {
     text-align: center;
 }
 
+
+
+.reword-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 750px;
+}
+
+.reword-events-wrapper {
+    border: 1px solid;
+    width: 400px;
+    padding: 10px;
+}
+
+.reword-text-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-width:750px) {
+    .reword-container {
+        width: 400px;
+        flex-direction: column;
+    }
+    .reword-text-area {
+        margin-top: 10px;
+    }
+}
+
+
+
+
 @media screen and (max-width:450px) {
     .filters-wrapper {
         font-size: 10.95px;
     }
+
+    .reword-events-wrapper {
+        width: 75%;
+    }
+
+    .reword-text-area {
+        height: 300px;
+    }
+
+
+
+
 }
 
 @media screen and (max-width: 575px ) {
