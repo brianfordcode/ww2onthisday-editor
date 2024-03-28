@@ -422,12 +422,20 @@ export default {
             const eventsToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
 
             if (eventIds.length !== eventsToChange.length) {
-                console.error("Combine same events before rewriting.");
+                window.alert("Combine same events before rewriting.");
                 return;
             }
 
             for (let i = 0; i < eventIds.length; i++) {
-                console.log(eventIds[i], ':', eventsToChange[i])
+                // console.log(eventIds[i] + ':', eventsToChange[i])
+
+                const loopEventIds = eventIds[i]
+                const loopEventsToChange = eventsToChange[i]
+
+                // console.log(loopEventIds, loopEventsToChange)
+
+                this.$store.dispatch('changeText', {loopEventIds, loopEventsToChange})
+                
             }
             
 

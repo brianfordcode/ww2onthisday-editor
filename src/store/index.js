@@ -141,6 +141,21 @@ export default createStore({
       await updateDoc(doc(db, "submitted-events", id), { published: false })
     },
 
+
+
+
+
+    async changeText(context, {loopEventIds, loopEventsToChange}) {
+      await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopEventsToChange })
+      // await updateDoc(doc(db, "submitted-events", loopEventIds), { reworded: true })
+
+    },
+
+
+
+
+
+
     // DATABASE EVENTS
     async getDBEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
