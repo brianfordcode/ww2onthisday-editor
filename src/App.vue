@@ -2,7 +2,7 @@
 
 <div style="display: flex; justify-content: space-around;">
   <a href="http://www.ww2onthisday.com" target="_blank" style="margin: 15px auto">
-    <img style="width: 300px" src="./assets/ww2-on-this-day-logo.png" alt="ww2-on-this-day-logo">
+    <img style="width: 250px" src="./assets/ww2-on-this-day-logo.png" alt="ww2-on-this-day-logo">
   </a>
 </div>
 

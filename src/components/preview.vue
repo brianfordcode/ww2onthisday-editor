@@ -35,21 +35,35 @@ class="all-events"
 
 
 
+    <p
+      class="show-reword-button"
+      @click="rewordShow = !rewordShow"
+      v-if="dateNonpub"
+      >
+      {{ rewordShow ? 'hide' : 'show'}} reword editor
+        <img
+          :style="`height: 15px; margin-left: 2px; transform: rotate( ${rewordShow ? '180deg' : '0deg'})`"
+          src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/000000/external-minimize-arrow-kmg-design-glyph-kmg-design-1.png"
+        />
+    </p>
 
     <div
         class="reword-container"
-        v-if="dateNonpub"
+        v-if="this.numOfEvents > 0 && rewordShow"
+        
     >
+        
+        
         <div class="reword-events-wrapper">
-            <p>Rewrite each event with completely new words then put in present simple tense:</p>
-            <div v-for="id in events" :key="id">
+            <p>{{ !rewordedSubmitted ? 'Rewrite each event with completely new words then put in present simple tense:' : 'events reworded!' }} </p>
+            <div v-if="!rewordedSubmitted" v-for="id in events" :key="id">
                 <br>
                 "{{ getEvent(id).title }}",
             </div>
         </div>
 
-        <div class="reword-text-area">
-            <textarea v-model="textInput" style="resize: none; width: 300px; height: 400px; padding: 10px;" name="" cols="30" rows="10"></textarea>
+        <div class="reword-text-area" v-if="!rewordedSubmitted">
+            <textarea v-model="textInput" style="resize: none; width: 300px; height: max-content; padding: 10px;" name="" cols="30" rows="10"></textarea>
             <button @click="submitChangedText()" style="padding: 5px; margin: 5px;">Submit</button>
         </div>
 
@@ -297,6 +311,8 @@ export default {
             textInput: '',
             eventIds: [],
             eventTitlesToChange: [],
+            rewordShow: true,
+            rewordedSubmitted: false
 
 
         }
@@ -430,7 +446,7 @@ export default {
             this.eventTitlesToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
 
             if (this.eventIds.length !== this.eventTitlesToChange.length) {
-                window.alert("Combine same events before rewriting.");
+                window.alert("Combine same events before rewording.");
                 return;
             }
 
@@ -447,6 +463,7 @@ export default {
             this.eventIds = []
             this.eventTitlesToChange = []
             this.textInput = ''
+            this.rewordedSubmitted = true
 
             return
             
@@ -471,7 +488,6 @@ export default {
     flex-direction: column;
     align-items: center;
     padding: 15px 30px;
-    /* width: min-content; */
     min-width: 146px;
     margin: 0 auto;
 }
@@ -566,6 +582,14 @@ export default {
 }
 
 
+.show-reword-button {
+    opacity: 0.5;
+}
+
+.show-reword-button:hover {
+    opacity: 1;
+    cursor: pointer;
+}
 
 .reword-container {
     display: flex;

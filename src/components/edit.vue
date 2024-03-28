@@ -10,10 +10,25 @@
 
     <div class="details">
       <!-- TITLE -->
-      <label for="title" >
+      <p
+      class="showBtn"
+      @click="titleShow = !titleShow"
+      style="margin-top:5px"
+      >
+      {{ titleShow ? 'hide' : 'show'}} title editor
+        <img
+          :style="`height: 15px; margin-left: 2px; transform: rotate( ${titleShow ? '180deg' : '0deg'})`"
+          src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/000000/external-minimize-arrow-kmg-design-glyph-kmg-design-1.png"
+        />
+      </p>
+      <label for="title" v-if="titleShow">
         <p :class="{'done': title ? true : false}" style="text-align: center;">event text:</p>
         <textarea class="textarea" v-model="title"></textarea>
       </label>
+
+
+
+      <!-- INFO EDITOR -->
       <p
       class="showBtn"
       @click="infoShow = !infoShow"
@@ -24,7 +39,7 @@
           src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/000000/external-minimize-arrow-kmg-design-glyph-kmg-design-1.png"
         />
       </p>
-      <div :style="`display: ${infoShow ? 'flex' : 'none'}; flex-direction: column`">
+      <div :style="`display: ${infoShow ? 'flex' : 'none'}; flex-direction: column; width: max-content;`">
           <!-- CITATION -->
           <label for="citation">
           <span :class="{'done': citation ? true : false}">citation:</span>
@@ -46,12 +61,12 @@
           <mapEditor @update:modelValue="l => location = l" :modelValue="location" />
         </div>
     </div>
-    <br>
+
     <!-- MEDIA -->
     <p
       class="showBtn"
       @click="mediaShow = !mediaShow"
-      :style="`margin-bottom: ${mediaShow ? '0px' : '10px'}`"
+      style="margin-bottom: 5px;"
     >
     {{ mediaShow ? 'hide' : 'show'}} media editor
       <img
@@ -96,6 +111,7 @@ export default {
       mediaShow: false,
       infoShow: false,
       needsDateTextPicture: false,
+      titleShow: false,
       // INPUTS:
       date: '',
       title: '',
