@@ -145,9 +145,9 @@ export default createStore({
 
 
 
-    async changeText(context, {loopEventIds, loopEventsToChange}) {
-      await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopEventsToChange })
-      // await updateDoc(doc(db, "submitted-events", loopEventIds), { reworded: true })
+    async changeText(context, {loopEventIds, loopeventTitlesToChange}) {
+      await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange })
+      await updateDoc(doc(db, "submitted-events", loopEventIds), { reworded: true })
 
     },
 

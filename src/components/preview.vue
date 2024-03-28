@@ -112,6 +112,8 @@ class="all-events"
                 </div>
                 <!-- KEYWORDS -->
                 <p><span style="font-weight: bold">keywords:</span> {{getEvent(id).keywords}}</p>
+                <!-- REWORDED -->
+                <p><span style="font-weight: bold">reworded:</span>{{!getEvent(id).reworded ? " false" : getEvent(id).reworded }}</p>
                 <!-- MAP -->
                 <iframe
                     class="map"
@@ -290,6 +292,9 @@ export default {
             numOfEvents: 0,
 
             textInput: '',
+            eventIds: [],
+            eventTitlesToChange: [],
+
 
         }
     },
@@ -418,25 +423,30 @@ export default {
 
 
         submitChangedText() {
-            const eventIds = Object.keys(this.$store.state.events)
-            const eventsToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
+            this.eventIds = Object.keys(this.$store.state.events)
+            this.eventTitlesToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
 
-            if (eventIds.length !== eventsToChange.length) {
+            if (this.eventIds.length !== this.eventTitlesToChange.length) {
                 window.alert("Combine same events before rewriting.");
                 return;
             }
 
-            for (let i = 0; i < eventIds.length; i++) {
-                // console.log(eventIds[i] + ':', eventsToChange[i])
+            for (let i = 0; i < this.eventIds.length; i++) {
 
-                const loopEventIds = eventIds[i]
-                const loopEventsToChange = eventsToChange[i]
+                const loopEventIds = this.eventIds[i]
+                const loopeventTitlesToChange = this.eventTitlesToChange[i]
 
-                // console.log(loopEventIds, loopEventsToChange)
+                console.log(loopEventIds, loopeventTitlesToChange)
 
-                this.$store.dispatch('changeText', {loopEventIds, loopEventsToChange})
-                
+                this.$store.dispatch('changeText', {loopEventIds, loopeventTitlesToChange})
+
             }
+
+            this.eventIds = []
+            this.eventTitlesToChange = []
+            this.textInput = ''
+
+            return
             
 
 
