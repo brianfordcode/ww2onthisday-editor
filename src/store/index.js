@@ -112,7 +112,13 @@ export default createStore({
     togglePublishEvent(state, id) {
       state.events[id].published = !state.events[id].published
     },
+
+
   },
+
+  
+
+
   actions: {
     addEvent(context, submittedEvent) {
       context.commit('addEvent', submittedEvent)
@@ -144,8 +150,12 @@ export default createStore({
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
 
+
         // CONSOLE VIEW OF UNPUBLISHED EVENT TITLES TO REWRITE WITH CHATGPT
-        return !event.published ? console.log(event.title) : ''
+
+        // return !event.published ? console.log(event.title) : ''
+
+        // !event.published ? context.commit('makeEventTitlesIntoArray', event.title) : ''
 
       });
     },
@@ -171,6 +181,12 @@ export default createStore({
         context.commit('addEventFromDB', { id: doc.id, event })
       });
     },
+
+    
+
+
+
+
     runOpenAiBot(context) {
       const openai = new OpenAIApi(new Configuration({
         apikey: import.meta.env.VITE_API_KEY
@@ -184,6 +200,9 @@ export default createStore({
         console.log(res)
       })
     }
+
+
+
 
   }
 })

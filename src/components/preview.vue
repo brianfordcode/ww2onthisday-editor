@@ -25,16 +25,42 @@
         @click="filterEvents('allNonpub')"
     >
     All Unpublished
-    </h5> -->
+    </h5> -->   
 </div>
 
 <div
-    class="all-events"
-    :style="`background-color: ${backgroundColor()};`"
+class="all-events"
+:style="`background-color: ${backgroundColor()};`"
 >
+
+
+
+
+    <div style="display: flex;">
+        <div style="border: 1px solid; padding: 10px;">
+            <p>rewrite each event with completely new words then put in present simple tense:</p>
+            <div v-for="id in events" :key="id">
+                <br>
+                "{{ getEvent(id).title }}",
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <textarea v-model="textInput" style="width: 300px; height: 400px; padding: 10px; border: none; margin: 10px;" name="" id="" cols="30" rows="10"></textarea>
+            <button @click="submitChangedText()" style="padding: 5px;">submit</button>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
     <!-- SEARCH THROUGH EVENTS -->
     <div
-        style="display: flex; align-items: center; justify-content: space-between; height: 25px; margin-bottom: 10px; width: 50%; max-width: 500px; min-width: 350px;"
+        style="margin-top: 20px; display: flex; align-items: center; justify-content: space-between; height: 25px; margin-bottom: 10px; width: 50%; max-width: 500px; min-width: 350px;"
     >
         <div style="height: 25px; display: flex; align-items: center;">
             <img style="height: 100%;" src="https://img.icons8.com/search" alt="search-icon">
@@ -183,8 +209,7 @@
     </div>
     
 <!-- JSON PREVIEW TO COPY -->
-<!-- <p style="width: 90%; margin-top: 50px;">{{ this.$store.state.events}}</p> -->
-<p v-for="title in this.$store.state.titles">{{ title }}</p>
+<!-- <p style="width: 90%; margin-top: 50px;">{{ this.$store.state.events }}</p> -->
 
 </div>
 
@@ -246,7 +271,8 @@ function filtersInitialState() {
     datePub: false,
     allNonpub: false,
     dateNonpub: false,
-    searchTerm: ''
+    searchTerm: '',
+    
   }
 }
 
@@ -261,7 +287,10 @@ export default {
             ...overlayInitialState(),
             ...filtersInitialState(),
             selectedId: null,
-            numOfEvents: 0
+            numOfEvents: 0,
+
+            textInput: '',
+
         }
     },
     props: {
@@ -297,6 +326,9 @@ export default {
                 this.numOfEvents = getters.allNonpubEvents(this.searchTerm).length
                 return getters.allNonpubEvents(this.searchTerm)
             }
+
+
+
         },
         ifNoEventsOrSearchTerms() {
             if (this.searchTerm != '') { return 'No Search Results' }
@@ -377,7 +409,28 @@ export default {
         },
         runOpenAiBot() {
             // this.$store.dispatch('runOpenAiBot', id)
+        },
+
+
+
+
+
+
+
+        submitChangedText() {
+            const eventIds = Object.keys(this.$store.state.events)
+            const eventsToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
+
+            if (eventIds.length !== eventsToChange.length) { return; }
+
+            for (let i = 0; i < eventIds.length; i++) {
+                console.log(eventIds[i], eventsToChange[i])
+            }
+            
         }
+
+
+
 
     }
 }
