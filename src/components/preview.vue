@@ -421,12 +421,17 @@ export default {
             const eventIds = Object.keys(this.$store.state.events)
             const eventsToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
 
-            if (eventIds.length !== eventsToChange.length) { return; }
+            if (eventIds.length !== eventsToChange.length) {
+                console.error("Combine same events before rewriting.");
+                return;
+            }
 
             for (let i = 0; i < eventIds.length; i++) {
-                console.log(eventIds[i], eventsToChange[i])
+                console.log(eventIds[i], ':', eventsToChange[i])
             }
             
+
+
         }
 
 
