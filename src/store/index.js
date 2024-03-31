@@ -112,15 +112,9 @@ export default createStore({
     togglePublishEvent(state, id) {
       state.events[id].published = !state.events[id].published
     },
-
-
-
     clearStateEvents(state) {
       state.events = {}
-      console.log(state.events)
     }
-
-
   },
 
   
@@ -147,29 +141,14 @@ export default createStore({
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await updateDoc(doc(db, "submitted-events", id), { published: false })
     },
-
-
-
-
     clearStateEvents(context) {
       context.commit('clearStateEvents')
     },
-
-
-
-
-
     async changeText(context, {loopEventIds, loopeventTitlesToChange}) {
       await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange })
       await updateDoc(doc(db, "submitted-events", loopEventIds), { reworded: true })
 
     },
-
-
-
-
-
-
     // DATABASE EVENTS
     async getDBEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
@@ -178,14 +157,6 @@ export default createStore({
       querySnapshot.forEach((doc) => {
         const event = doc.data()
         context.commit('addEventFromDB', { id: doc.id, event })
-
-
-        // CONSOLE VIEW OF UNPUBLISHED EVENT TITLES TO REWRITE WITH CHATGPT
-
-        // return !event.published ? console.log(event.title) : ''
-
-        // !event.published ? context.commit('makeEventTitlesIntoArray', event.title) : ''
-
       });
     },
     async loadNonpublishedEvents(context, date) {

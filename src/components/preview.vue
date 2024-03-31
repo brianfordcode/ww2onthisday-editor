@@ -442,9 +442,6 @@ export default {
 
 
         submitChangedText() {
-
-            console.log(this.$store.state.events)
-
             this.eventIds = Object.keys(this.$store.state.events)
             this.eventTitlesToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
 
@@ -457,11 +454,8 @@ export default {
                 const loopEventIds = this.eventIds[i]
                 const loopeventTitlesToChange = this.eventTitlesToChange[i]
 
-                console.log(loopEventIds, loopeventTitlesToChange)
-
                 this.$store.dispatch('changeText', {loopEventIds, loopeventTitlesToChange})
                 this.$store.dispatch('publishEvent', loopEventIds)
-
             }
 
             this.eventIds = []
