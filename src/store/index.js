@@ -114,6 +114,13 @@ export default createStore({
     },
 
 
+
+    clearStateEvents(state) {
+      state.events = {}
+      console.log(state.events)
+    }
+
+
   },
 
   
@@ -139,6 +146,13 @@ export default createStore({
       context.commit('togglePublishEvent', id)
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await updateDoc(doc(db, "submitted-events", id), { published: false })
+    },
+
+
+
+
+    clearStateEvents(context) {
+      context.commit('clearStateEvents')
     },
 
 

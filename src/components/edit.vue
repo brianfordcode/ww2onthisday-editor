@@ -112,6 +112,7 @@ export default {
       infoShow: false,
       needsDateTextPicture: false,
       titleShow: false,
+      
       // INPUTS:
       date: '',
       title: '',
@@ -168,6 +169,11 @@ export default {
         this.citation = keepCitation
     },
     getDateString(d) {
+
+      this.$store.dispatch('clearStateEvents')
+
+
+
       this.date = d
       this.$store.dispatch('getDBEvents', this.date)
     },

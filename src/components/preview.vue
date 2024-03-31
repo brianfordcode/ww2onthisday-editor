@@ -38,7 +38,7 @@ class="all-events"
     <p
       class="show-reword-button"
       @click="rewordShow = !rewordShow"
-      v-if="dateNonpub"
+      v-if="dateNonpub && this.numOfEvents > 0"
       >
       {{ rewordShow ? 'hide' : 'show'}} reword editor
         <img
@@ -54,8 +54,8 @@ class="all-events"
     >
         
         
-        <div class="reword-events-wrapper">
-            <p>{{ !rewordedSubmitted ? 'Rewrite each event with completely new words then put in present simple tense:' : 'events reworded!' }} </p>
+        <div class="reword-events-wrapper" v-if="rewordShow">
+            <p>Rewrite each event with completely new words then put in present simple tense: </p>
             <div v-if="!rewordedSubmitted" v-for="id in events" :key="id">
                 <br>
                 "{{ getEvent(id).title }}",
@@ -76,7 +76,7 @@ class="all-events"
 
 
     <!-- SEARCH THROUGH EVENTS -->
-    <div
+    <div v-if="this.numOfEvents > 0"
         style="margin-top: 20px; display: flex; align-items: center; justify-content: space-between; height: 25px; margin-bottom: 10px; width: 50%; max-width: 500px; min-width: 350px;"
     >
         <div style="height: 25px; display: flex; align-items: center;">
@@ -356,7 +356,7 @@ export default {
         },
         ifNoEventsOrSearchTerms() {
             if (this.searchTerm != '') { return 'No Search Results' }
-            return this.date == '--' || !this.date ? 'Choose a Date Above' : 'No Events On This Date'
+            return this.date == '--' || !this.date ? 'Choose a Date Above' : 'No Events On This Date.'
         }
     },
     methods: {
@@ -442,6 +442,9 @@ export default {
 
 
         submitChangedText() {
+
+            console.log(this.$store.state.events)
+
             this.eventIds = Object.keys(this.$store.state.events)
             this.eventTitlesToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
 
@@ -457,17 +460,20 @@ export default {
                 console.log(loopEventIds, loopeventTitlesToChange)
 
                 this.$store.dispatch('changeText', {loopEventIds, loopeventTitlesToChange})
+                this.$store.dispatch('publishEvent', loopEventIds)
 
             }
 
             this.eventIds = []
             this.eventTitlesToChange = []
             this.textInput = ''
-            this.rewordedSubmitted = true
+            // this.rewordShow = false
 
-            return
+            this.updatedEvent = true
+            setTimeout(() => {
+                this.updatedEvent = false
+            }, 2000)
             
-
 
         }
 
