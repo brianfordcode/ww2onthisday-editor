@@ -11,7 +11,7 @@
 
 <!-- SCROLL TO TOP -->
 <img
-    src="http://cdn.onlinewebfonts.com/svg/img_158933.png"
+    src="https://cdn.onlinewebfonts.com/svg/img_158933.png"
     alt="to-top-icon"
     class="to-top-icon"
     @click="goToTop()"
