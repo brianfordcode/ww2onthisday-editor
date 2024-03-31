@@ -167,7 +167,7 @@ class="all-events"
             {{getEvent(id).published ? 'Unpublish' : 'Publish to Site'}}
             </span>
             <!-- EDIT EVENT -->
-            <span @click="editEvent(id), runOpenAiBot(id)">
+            <span @click="editEvent(id)">
                 <img
                     style="width: 20px;"
                     src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-1024.png"
@@ -430,9 +430,6 @@ export default {
         },
         backgroundColor() {
             return this.datePub || this.allPub ? 'rgba(3, 95, 30, 0.5)' : 'rgba(95, 0, 0, 0.5)'
-        },
-        runOpenAiBot() {
-            // this.$store.dispatch('runOpenAiBot', id)
         },
 
 

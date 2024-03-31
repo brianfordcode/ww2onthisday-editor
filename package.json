@@ -10,7 +10,6 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "firebase": "^9.6.6",
-    "openai": "^3.2.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
