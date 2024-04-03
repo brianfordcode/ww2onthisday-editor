@@ -49,7 +49,7 @@ class="all-events"
 
     <div
         class="reword-container"
-        v-if="this.numOfEvents > 0 && rewordShow"
+        v-if="this.numOfEvents > 0 && rewordShow && dateNonpub"
         
     >
         
