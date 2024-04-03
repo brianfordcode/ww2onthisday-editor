@@ -132,6 +132,7 @@ export default createStore({
     },
     async publishEvent(context, id) {
       context.commit('togglePublishEvent', id)
+      console.log(id)
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
       await updateDoc(doc(db, "submitted-events", id), { published: true })
     },

@@ -432,12 +432,6 @@ export default {
             return this.datePub || this.allPub ? 'rgba(3, 95, 30, 0.5)' : 'rgba(95, 0, 0, 0.5)'
         },
 
-
-
-
-
-
-
         submitChangedText() {
             this.eventIds = Object.keys(this.$store.state.events)
             this.eventTitlesToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
