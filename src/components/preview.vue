@@ -55,11 +55,13 @@ class="all-events"
         
         
         <div class="reword-events-wrapper" v-if="rewordShow">
-            <p>Rewrite each event with completely new words then put in simple present tense: </p>
+            <p>- Rewrite each event with completely new words then put in simple present tense: </p>
             <div v-if="!rewordedSubmitted" v-for="id in events" :key="id">
                 <br>
                 "{{ getEvent(id).title }}",
             </div>
+            <br>
+            <p>- Now, rewrite each event one by one again. </p>
         </div>
 
         <div class="reword-text-area" v-if="!rewordedSubmitted">
