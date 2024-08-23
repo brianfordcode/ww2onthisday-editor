@@ -89,6 +89,8 @@ class="all-events"
         v-if="this.numOfEvents > 0 && rewordShow && datePub"
         
     >
+
+
         <div class="reword-events-wrapper" v-if="rewordShow">
             <div v-if="!rewordedSubmitted" v-for="id in events" :key="id">
                 <br>
@@ -96,12 +98,14 @@ class="all-events"
             </div>
             <br>
         </div>
-        <button @click="openPictures()" style="padding: 5px; margin: 5px;">Open Pictures</button>
 
         <div class="reword-text-area" v-if="!rewordedSubmitted">
-            <textarea v-model="textInput" style="resize: none; width: 300px; height: max-content; padding: 10px;" name="" cols="30" rows="10"></textarea>
+            <button @click="openPictures()" style="padding: 5px; margin: 5px;">Open Pictures</button>
+
+            <textarea v-model="textInput" style="resize: none; width: 300px; height: max-content; padding: 10px;" name="" cols="30" rows="5"></textarea>
             <button @click="submitChangedText()" style="padding: 5px; margin: 5px;">Submit</button>
-        </div>
+    </div>
+        
 
     </div>
 
@@ -511,7 +515,7 @@ export default {
                 const searchUrl = `https://www.google.com/search?tbm=isch&q=${encodedSearchTerm}`;
 
                 // Use an IIFE (Immediately Invoked Function Expression) to create a closure
-                window.open(searchUrl, "_blank", "width=500,height=1000");
+                window.open(searchUrl, "_blank", 'width=500,height=700,left=' + (window.screen.width - 500) + ',top=0');
                 
             }
         },
