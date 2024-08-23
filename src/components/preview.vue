@@ -518,7 +518,6 @@ export default {
 
 
         submitPictures() {
-            console.log('submit pictures')
 
             
         },
