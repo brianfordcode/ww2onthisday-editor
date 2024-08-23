@@ -512,7 +512,7 @@ export default {
                 const searchUrl = `https://www.google.com/search?tbm=isch&q=${encodedSearchTerm}`;
 
                 // Use an IIFE (Immediately Invoked Function Expression) to create a closure
-                window.open(searchUrl, "_blank", 'width=500,height=700,left=' + (window.screen.width - 500) + ',top=0');
+                window.open(searchUrl, "_blank", 'width=500,height=1000,left=' + (window.screen.width - 500) + ',top=0');
             }
         },
 
