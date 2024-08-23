@@ -32,9 +32,8 @@
 class="all-events"
 :style="`background-color: ${backgroundColor()};`"
 >
-
-
-
+    
+    <!-- REWORD EDITOR -->
     <p
       class="show-reword-button"
       @click="rewordShow = !rewordShow"
@@ -52,8 +51,6 @@ class="all-events"
         v-if="this.numOfEvents > 0 && rewordShow && dateNonpub"
         
     >
-        
-        
         <div class="reword-events-wrapper" v-if="rewordShow">
             <p>- Rewrite each event with completely new words then put in simple present tense: </p>
             <div v-if="!rewordedSubmitted" v-for="id in events" :key="id">
@@ -72,6 +69,41 @@ class="all-events"
     </div>
 
 
+
+
+    <!-- PICTURE EDITOR -->
+    <p
+      class="show-reword-button"
+      @click="rewordShow = !rewordShow"
+      v-if="datePub && this.numOfEvents > 0"
+      >
+      {{ rewordShow ? 'hide' : 'show'}} picture editor
+        <img
+          :style="`height: 15px; margin-left: 2px; transform: rotate( ${rewordShow ? '180deg' : '0deg'})`"
+          src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/000000/external-minimize-arrow-kmg-design-glyph-kmg-design-1.png"
+        />
+    </p>
+
+    <div
+        class="reword-container"
+        v-if="this.numOfEvents > 0 && rewordShow && datePub"
+        
+    >
+        <div class="reword-events-wrapper" v-if="rewordShow">
+            <div v-if="!rewordedSubmitted" v-for="id in events" :key="id">
+                <br>
+                {{ getEvent(id).title }}
+            </div>
+            <br>
+        </div>
+        <button @click="openPictures()" style="padding: 5px; margin: 5px;">Open Pictures</button>
+
+        <div class="reword-text-area" v-if="!rewordedSubmitted">
+            <textarea v-model="textInput" style="resize: none; width: 300px; height: max-content; padding: 10px;" name="" cols="30" rows="10"></textarea>
+            <button @click="submitChangedText()" style="padding: 5px; margin: 5px;">Submit</button>
+        </div>
+
+    </div>
 
 
 
@@ -462,15 +494,38 @@ export default {
             }, 2000)
             
 
-        }
+        },
+
+        
+        openPictures() {
+
+            const eventIds = Object.keys(this.$store.state.events).reverse();; //reverse so the correct order of the events pops up
+
+            for (let i = 0; i < eventIds.length; i++) {
+                const eventToSearch = this.getEvent(eventIds[i]).title;
+
+                // Encode the search term for use in a URL
+                const encodedSearchTerm = encodeURIComponent(eventToSearch);
+
+                // Construct the Google Images search URL
+                const searchUrl = `https://www.google.com/search?tbm=isch&q=${encodedSearchTerm}`;
+
+                // Use an IIFE (Immediately Invoked Function Expression) to create a closure
+                window.open(searchUrl, "_blank", "width=500,height=1000");
+                
+            }
+        },
 
 
+        submitPictures() {
+            console.log('submit pictures')
+
+            
+        },
 
 
     }
 }
-
-// todo: click preview picture to expand
 
 </script>
 
