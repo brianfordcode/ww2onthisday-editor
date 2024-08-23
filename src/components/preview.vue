@@ -102,8 +102,8 @@ class="all-events"
         <div class="reword-text-area" v-if="!rewordedSubmitted">
             <button @click="openPictures()" style="padding: 5px; margin: 5px;">Open Pictures</button>
 
-            <textarea v-model="textInput" style="resize: none; width: 300px; height: max-content; padding: 10px;" name="" cols="30" rows="5"></textarea>
-            <button @click="submitChangedText()" style="padding: 5px; margin: 5px;">Submit</button>
+            <textarea v-model="textInput" @paste="handlePaste" style="resize: none; width: 300px; height: max-content; padding: 10px;" name="" cols="30" rows="15"></textarea>
+            <button @click="submitPictures()" style="padding: 5px; margin: 5px;">Submit</button>
     </div>
         
 
@@ -496,13 +496,10 @@ export default {
             setTimeout(() => {
                 this.updatedEvent = false
             }, 2000)
-            
 
         },
 
-        
         openPictures() {
-
             const eventIds = Object.keys(this.$store.state.events).reverse();; //reverse so the correct order of the events pops up
 
             for (let i = 0; i < eventIds.length; i++) {
@@ -516,13 +513,37 @@ export default {
 
                 // Use an IIFE (Immediately Invoked Function Expression) to create a closure
                 window.open(searchUrl, "_blank", 'width=500,height=700,left=' + (window.screen.width - 500) + ',top=0');
-                
             }
         },
 
+        handlePaste(event) {
+            setTimeout(() => {
+                this.textInput += '\n\n';
+            }, 0);
+        },
 
         submitPictures() {
+            const eventIds = Object.keys(this.$store.state.events)
+            const eventTitlesToChange = this.textInput.split('\n').filter(line => line.trim() !== '')
 
+            if (eventIds.length !== eventTitlesToChange.length) {
+                window.alert("Make sure the correct number of picture links are pasted");
+                return;
+            }
+
+            for (let i = 0; i < eventIds.length; i++) {
+                const loopEventIds = eventIds[i]
+                const loopeventPicsToAdd = eventTitlesToChange[i]
+
+                this.$store.dispatch('addPicLink', {loopEventIds, loopeventPicsToAdd})
+            }
+
+            this.textInput = ''
+            this.updatedEvent = true
+
+            setTimeout(() => {
+                this.updatedEvent = false
+            }, 2000)
             
         },
 

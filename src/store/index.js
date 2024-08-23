@@ -146,8 +146,11 @@ export default createStore({
     async changeText(context, {loopEventIds, loopeventTitlesToChange}) {
       await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange })
       await updateDoc(doc(db, "submitted-events", loopEventIds), { reworded: true })
-
     },
+    async addPicLink(context, {loopEventIds, loopeventPicsToAdd}) {
+      await updateDoc(doc(db, "submitted-events", loopEventIds), { mainPicture: loopeventPicsToAdd })
+    },
+
     // DATABASE EVENTS
     async getDBEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS
