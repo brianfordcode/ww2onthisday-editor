@@ -17,7 +17,7 @@
             <option
                 v-for="(month, index) in months"
                 :key="month"
-                :value="(index < 10 ? '0' : '') + (index + 1)"
+                :value="(index < 9 ? '0' : '') + (index + 1)"
             >
             {{month}}
             </option>
