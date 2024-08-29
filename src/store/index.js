@@ -151,6 +151,17 @@ export default createStore({
       await updateDoc(doc(db, "submitted-events", loopEventIds), { mainPicture: loopeventPicsToAdd })
     },
 
+// CHANGE ID DELETE
+    async changeId(context, {loopEventIds, newId}) {
+        await updateDoc(doc(db, "submitted-events", loopEventIds), { id: newId })
+    },
+
+
+
+
+
+
+
     // DATABASE EVENTS
     async getDBEvents(context, date) {
       // CHANGE TO "submitted-events" FOR ACTUAL EVENTS

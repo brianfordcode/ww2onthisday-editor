@@ -104,12 +104,13 @@ class="all-events"
 
             <textarea v-model="textInput" @paste="handlePaste" style="resize: none; width: 300px; height: max-content; padding: 10px;" name="" cols="30" rows="15"></textarea>
             <button @click="submitPictures()" style="padding: 5px; margin: 5px;">Submit</button>
-    </div>
+        </div>
         
 
     </div>
 
-
+<!-- CHANGE IDS DELETE-->
+    <button @click="changeIds(id)" style="padding: 5px; margin: 5px;">CHANGE ALL IDs</button>
 
 
 
@@ -142,6 +143,7 @@ class="all-events"
     >
         <div class="event-container">
             <div class="event-details">
+                <p><span style="font-weight: bold">id:</span> {{ getEvent(id).id }}</p>
                 <!-- DATE -->
                 <p><span style="font-weight: bold">date:</span> {{ getEvent(id).date }}</p>
                 <!-- TITLE -->
@@ -546,6 +548,20 @@ export default {
             }, 2000)
             
         },
+
+
+
+        // CHANGE IDS DELETE
+        changeIds(id) {
+            const eventIds = Object.keys(this.$store.state.events)
+
+            for (let i = 0; i < eventIds.length; i++) {
+                const loopEventIds = eventIds[i]
+                let newId = eventIds[i].replace("-010-", "-10-");
+
+                this.$store.dispatch('changeId', {loopEventIds, newId})
+                }
+        }
 
 
     }
