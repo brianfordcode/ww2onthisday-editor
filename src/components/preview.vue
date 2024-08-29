@@ -560,6 +560,7 @@ export default {
                 let newId = eventIds[i].replace("-010-", "-10-");
 
                 this.$store.dispatch('changeId', {loopEventIds, newId})
+                console.log('ID Changed')
                 }
         }
 

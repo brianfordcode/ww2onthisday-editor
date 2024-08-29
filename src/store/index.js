@@ -154,7 +154,6 @@ export default createStore({
 // CHANGE ID DELETE
     async changeId(context, {loopEventIds, newId}) {
         await updateDoc(doc(db, "submitted-events", loopEventIds), { id: newId })
-        console.log('ID Changed')
       },
 
 
