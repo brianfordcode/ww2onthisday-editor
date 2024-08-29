@@ -110,7 +110,7 @@ class="all-events"
     </div>
 
 <!-- CHANGE IDS DELETE-->
-    <button @click="changeIds(id)" style="padding: 5px; margin: 5px;">CHANGE ALL IDs</button>
+    <!-- <button @click="changeIds(id)" style="padding: 5px; margin: 5px;">CHANGE ALL IDs</button> -->
 
 
 
