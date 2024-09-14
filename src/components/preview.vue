@@ -159,6 +159,7 @@ class="all-events"
                     &#10003;
                     </a>
                 </p>
+                <!-- PICTURE -->
                 <div style="display: flex; align-items: center">
                     <span style="font-weight: bold">picture: </span>
                     <img
@@ -167,6 +168,7 @@ class="all-events"
                         style="width: 100px;"
                     >
                 </div>
+                <!-- <p><span style="font-weight: bold">pic submit time:</span> {{getEvent(id).picSubmitTime}}</p> -->
                 <!-- KEYWORDS -->
                 <p><span style="font-weight: bold">keywords:</span> {{getEvent(id).keywords}}</p>
                 <!-- REWORDED -->
@@ -536,8 +538,9 @@ export default {
             for (let i = 0; i < eventIds.length; i++) {
                 const loopEventIds = eventIds[i]
                 const loopeventPicsToAdd = eventTitlesToChange[i]
+                const time = Date.now()
 
-                this.$store.dispatch('addPicLink', {loopEventIds, loopeventPicsToAdd})
+                this.$store.dispatch('addPicLink', {loopEventIds, loopeventPicsToAdd, time})
             }
 
             this.textInput = ''

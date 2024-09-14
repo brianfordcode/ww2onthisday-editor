@@ -147,8 +147,8 @@ export default createStore({
       await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange })
       await updateDoc(doc(db, "submitted-events", loopEventIds), { reworded: true })
     },
-    async addPicLink(context, {loopEventIds, loopeventPicsToAdd}) {
-      await updateDoc(doc(db, "submitted-events", loopEventIds), { mainPicture: loopeventPicsToAdd })
+    async addPicLink(context, {loopEventIds, loopeventPicsToAdd, time}) {
+      await updateDoc(doc(db, "submitted-events", loopEventIds), { mainPicture: loopeventPicsToAdd, picSubmitTime: time })
     },
 
 // CHANGE ID DELETE
