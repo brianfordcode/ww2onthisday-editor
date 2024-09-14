@@ -72,6 +72,7 @@ class="all-events"
 
 
     <!-- PICTURE EDITOR -->
+     <p>{{ this.$store.state.events }}</p>
     <p
       class="show-reword-button"
       @click="rewordShow = !rewordShow"

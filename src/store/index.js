@@ -113,6 +113,20 @@ export default createStore({
     },
     clearStateEvents(state) {
       state.events = {}
+    },
+    
+    
+    updateEventTitle(state, { eventId, newTitle }) {
+      if (state.events[eventId]) {
+        state.events[eventId].title = newTitle;
+        state.events[eventId].reworded = true; // Mark as reworded if needed
+      }
+    },
+    updatePicLink(state, { eventId, picLink, time }) {
+      if (state.events[eventId]) {
+        state.events[eventId].mainPicture = picLink;
+        state.events[eventId].picSubmitTime = time;
+      }
     }
   },
 
@@ -144,23 +158,32 @@ export default createStore({
       context.commit('clearStateEvents')
     },
     async changeText(context, {loopEventIds, loopeventTitlesToChange}) {
-      await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange })
-      await updateDoc(doc(db, "submitted-events", loopEventIds), { reworded: true })
+      await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange, reworded: true  })
+
+      context.commit('updateEventTitle', { eventId: loopEventIds, newTitle: loopeventTitlesToChange });
+
     },
+
+
+
+
+
     async addPicLink(context, {loopEventIds, loopeventPicsToAdd, time}) {
       await updateDoc(doc(db, "submitted-events", loopEventIds), { mainPicture: loopeventPicsToAdd, picSubmitTime: time })
+
+      context.commit('updatePicLink', { eventId: loopEventIds, picLink: loopeventPicsToAdd, time });
     },
+
+
+
+
+
+
 
 // CHANGE ID DELETE
     async changeId(context, {loopEventIds, newId}) {
         await updateDoc(doc(db, "submitted-events", loopEventIds), { id: newId })
       },
-
-
-
-
-
-
 
     // DATABASE EVENTS
     async getDBEvents(context, date) {
