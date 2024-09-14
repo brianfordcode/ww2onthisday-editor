@@ -116,10 +116,12 @@ export default createStore({
     },
     
     
-    updateEventTitle(state, { eventId, newTitle }) {
+    updateEventTitle(state, { eventId, newTitle, oldTitle, timeTextChange }) {
       if (state.events[eventId]) {
         state.events[eventId].title = newTitle;
-        state.events[eventId].reworded = true; // Mark as reworded if needed
+        state.events[eventId].reworded = true;
+        state.events[eventId].oldTitle = oldTitle
+        state.events[eventId].rewordTime = timeTextChange
       }
     },
     updatePicLink(state, { eventId, picLink, time }) {
@@ -157,10 +159,11 @@ export default createStore({
     clearStateEvents(context) {
       context.commit('clearStateEvents')
     },
-    async changeText(context, {loopEventIds, loopeventTitlesToChange}) {
-      await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange, reworded: true  })
+    async changeText(context, {loopEventIds, loopeventTitlesToChange, loopOldTitles, timeTextChange}) {
 
-      context.commit('updateEventTitle', { eventId: loopEventIds, newTitle: loopeventTitlesToChange });
+      await updateDoc(doc(db, "submitted-events", loopEventIds), { title: loopeventTitlesToChange, reworded: true, oldTitle: loopOldTitles, rewordTime: timeTextChange  })
+
+      context.commit('updateEventTitle', { eventId: loopEventIds, newTitle: loopeventTitlesToChange, oldTitle: loopOldTitles, timeTextChange });
 
     },
 

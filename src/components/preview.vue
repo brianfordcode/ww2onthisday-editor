@@ -169,6 +169,8 @@ class="all-events"
                         style="width: 100px;"
                     >
                 </div>
+                <p><span style="font-weight: bold">old title:</span> {{getEvent(id).oldTitle}}</p>
+                <p><span style="font-weight: bold">rewordTime:</span> {{getEvent(id).rewordTime}}</p>
                 <!-- <p><span style="font-weight: bold">pic submit time:</span> {{getEvent(id).picSubmitTime}}</p> -->
                 <!-- KEYWORDS -->
                 <p><span style="font-weight: bold">keywords:</span> {{getEvent(id).keywords}}</p>
@@ -488,7 +490,12 @@ export default {
                 const loopEventIds = this.eventIds[i]
                 const loopeventTitlesToChange = this.eventTitlesToChange[i]
 
-                this.$store.dispatch('changeText', {loopEventIds, loopeventTitlesToChange})
+                const loopOldTitles = this.getEvent(this.eventIds[i]).title
+
+                const timeTextChange = Date.now()
+
+
+                this.$store.dispatch('changeText', {loopEventIds, loopeventTitlesToChange, loopOldTitles, timeTextChange})
                 this.$store.dispatch('publishEvent', loopEventIds)
             }
 
