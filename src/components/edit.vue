@@ -136,7 +136,11 @@ export default {
         id: this.editEventId || "event-" + this.date + '-' + Date.now(),
         timeEventSubmitted: new Date(),
         title: this.title,
+        oldTitle: this.oldTitle ? this.oldTitle : '',
+        reworded: this.reworded ? this.reworded : '',
+        rewordTime: this.rewordTime ? this.rewordTime : '',
         mainPicture: this.mainPicture,
+        picSubmitTime: this.picSubmitTime > 0 ? this.picSubmitTime : '',
         citation: this.citation,
         location: {
           coordinates: this.location.coordinates,
@@ -181,9 +185,12 @@ export default {
       // INJECT DATA FROM PREVIEW WHEN EDIT IS PUSHED
       this.editEventId = event.id
       this.title = event.title
+      this.oldTitle = event.oldTitle
+      this.rewordTime = event.rewordTime
       this.date = event.date
       this.citation = event.citation
       this.mainPicture = event.mainPicture
+      this.picSubmitTime = event.picSubmitTime
       this.keywords = event.keywords
       this.location.coordinates = event.location.coordinates
       this.location.mapZoom = event.location.mapZoom

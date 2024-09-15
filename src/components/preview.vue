@@ -72,7 +72,6 @@ class="all-events"
 
 
     <!-- PICTURE EDITOR -->
-     <p>{{ this.$store.state.events }}</p>
     <p
       class="show-reword-button"
       @click="rewordShow = !rewordShow"
@@ -170,8 +169,8 @@ class="all-events"
                     >
                 </div>
                 <p><span style="font-weight: bold">old title:</span> {{getEvent(id).oldTitle}}</p>
-                <p><span style="font-weight: bold">rewordTime:</span> {{getEvent(id).rewordTime}}</p>
-                <!-- <p><span style="font-weight: bold">pic submit time:</span> {{getEvent(id).picSubmitTime}}</p> -->
+                <p><span style="font-weight: bold">rewordTime:</span> {{new Date(getEvent(id).rewordTime)}}</p>
+                <p><span style="font-weight: bold">pic submit time:</span> {{new Date(getEvent(id).picSubmitTime)}}</p>
                 <!-- KEYWORDS -->
                 <p><span style="font-weight: bold">keywords:</span> {{getEvent(id).keywords}}</p>
                 <!-- REWORDED -->
