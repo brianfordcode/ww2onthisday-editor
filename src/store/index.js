@@ -134,7 +134,7 @@ export default createStore({
       if (state.events[accuratePictureIdToChange]) { 
         state.events[accuratePictureIdToChange].accuratePicture = accuratePictureStatus;
 
-        console.log(accuratePictureIdToChange, accuratePictureStatus)
+        // console.log(accuratePictureIdToChange, accuratePictureStatus)
       }
     }
   },
@@ -185,7 +185,7 @@ export default createStore({
     },
 
     async updateaccuratePictureStatus(context, {accuratePictureIdToChange, accuratePictureStatus}) {
-      console.log(accuratePictureIdToChange, accuratePictureStatus)
+      // console.log(accuratePictureIdToChange, accuratePictureStatus)
       await updateDoc(doc(db, "submitted-events", accuratePictureIdToChange), { accuratePicture: accuratePictureStatus })
 
       context.commit('updateaccuratePictureStatus', { accuratePictureIdToChange, accuratePictureStatus })
