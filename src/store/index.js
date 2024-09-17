@@ -129,6 +129,13 @@ export default createStore({
         state.events[eventId].mainPicture = picLink;
         state.events[eventId].picSubmitTime = time;
       }
+    },
+    updateaccuratePictureStatus(state, { accuratePictureIdToChange, accuratePictureStatus }) {
+      if (state.events[accuratePictureIdToChange]) { 
+        state.events[accuratePictureIdToChange].accuratePicture = accuratePictureStatus;
+
+        console.log(accuratePictureIdToChange, accuratePictureStatus)
+      }
     }
   },
 
@@ -175,6 +182,13 @@ export default createStore({
       await updateDoc(doc(db, "submitted-events", loopEventIds), { mainPicture: loopeventPicsToAdd, picSubmitTime: time })
 
       context.commit('updatePicLink', { eventId: loopEventIds, picLink: loopeventPicsToAdd, time });
+    },
+
+    async updateaccuratePictureStatus(context, {accuratePictureIdToChange, accuratePictureStatus}) {
+      console.log(accuratePictureIdToChange, accuratePictureStatus)
+      await updateDoc(doc(db, "submitted-events", accuratePictureIdToChange), { accuratePicture: accuratePictureStatus })
+
+      context.commit('updateaccuratePictureStatus', { accuratePictureIdToChange, accuratePictureStatus })
     },
 
 

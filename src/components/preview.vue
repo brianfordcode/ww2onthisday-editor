@@ -68,9 +68,6 @@ class="all-events"
 
     </div>
 
-
-
-
     <!-- PICTURE EDITOR -->
     <p
       class="show-reword-button"
@@ -84,6 +81,7 @@ class="all-events"
         />
     </p>
 
+
     <div
         class="reword-container"
         v-if="this.numOfEvents > 0 && rewordShow && datePub"
@@ -95,6 +93,19 @@ class="all-events"
             <div v-if="!rewordedSubmitted" v-for="id in events" :key="id">
                 <br>
                 {{ getEvent(id).title }}
+                <br>
+                <input 
+                    type="checkbox"
+                    v-model="accuratePictureStatus[id]"
+                    @change="recordaccuratePictureStatus(id)"
+                    :checked="getEvent(id).accuratePicture"
+                /> 
+                <span>accurate picture</span>
+
+
+
+
+
             </div>
             <br>
         </div>
@@ -111,8 +122,6 @@ class="all-events"
 
 <!-- CHANGE IDS DELETE-->
     <!-- <button @click="changeIds(id)" style="padding: 5px; margin: 5px;">CHANGE ALL IDs</button> -->
-
-
 
     <!-- SEARCH THROUGH EVENTS -->
     <div v-if="this.numOfEvents > 0"
@@ -171,6 +180,7 @@ class="all-events"
                 <p><span style="font-weight: bold">old title:</span> {{getEvent(id).oldTitle}}</p>
                 <p><span style="font-weight: bold">rewordTime:</span> {{new Date(getEvent(id).rewordTime)}}</p>
                 <p><span style="font-weight: bold">pic submit time:</span> {{new Date(getEvent(id).picSubmitTime)}}</p>
+                <p><span style="font-weight: bold">accurate picture:</span> {{getEvent(id).accuratePicture}}</p>
                 <!-- KEYWORDS -->
                 <p><span style="font-weight: bold">keywords:</span> {{getEvent(id).keywords}}</p>
                 <!-- REWORDED -->
@@ -356,9 +366,8 @@ export default {
             eventIds: [],
             eventTitlesToChange: [],
             rewordShow: true,
-            rewordedSubmitted: false
-
-
+            rewordedSubmitted: false,
+            accuratePictureStatus: {},
         }
     },
     props: {
@@ -526,6 +535,14 @@ export default {
                 window.open(searchUrl, "_blank", 'width=500,height=1000,left=' + (window.screen.width - 500) + ',top=0');
             }
         },
+        recordaccuratePictureStatus(id) {
+            const accuratePictureIdToChange = id
+            const accuratePictureStatus = this.accuratePictureStatus[id]
+
+            this.$store.dispatch('updateaccuratePictureStatus', {accuratePictureIdToChange, accuratePictureStatus})
+        },
+
+
 
         handlePaste(event) {
             setTimeout(() => {

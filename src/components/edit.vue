@@ -141,6 +141,7 @@ export default {
         rewordTime: this.rewordTime ? this.rewordTime : '',
         mainPicture: this.mainPicture,
         picSubmitTime: this.picSubmitTime > 0 ? this.picSubmitTime : '',
+        accuratePicture: this.accuratePictureStatus ? this.accuratePictureStatus : false,
         citation: this.citation,
         location: {
           coordinates: this.location.coordinates,
@@ -197,6 +198,7 @@ export default {
       this.books = event.books
       this.movies = event.movies
       this.published = event.published
+      this.accuratePicture = event.accuratePicture
     }
   },
 }
