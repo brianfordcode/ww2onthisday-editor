@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 // FIREBASE
 import { initializeApp } from "firebase/app";
-import { doc, getDocs, deleteDoc, updateDoc, collection, query, where, setDoc, getFirestore } from "firebase/firestore"; 
+import { doc, getDocs, deleteDoc, updateDoc, collection, query, where, setDoc, getFirestore, onSnapshot } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS1sZtXMnh5xFwJnRIoGCSwCiDymKO2VI",
@@ -32,6 +32,7 @@ const db = getFirestore();
 export default createStore({
   state: {
     events: {},
+    dateMark: null,
   },
   getters: {
     event: (state) => (id) => {
@@ -136,7 +137,10 @@ export default createStore({
 
         // console.log(accuratePictureIdToChange, accuratePictureStatus)
       }
-    }
+    },
+    fetchDate(state, data) {
+      state.dateMark = data.dateMarked
+    },
   },
 
   
@@ -174,7 +178,17 @@ export default createStore({
 
     },
 
-
+    fetchDate(context) {
+      const docRef = doc(db, 'dateMark', 'date');
+      
+      onSnapshot(docRef, (docSnapshot) => {
+        context.commit('fetchDate', docSnapshot.data());
+      });
+    },
+    markDate(context, input) {
+      // console.log(input)
+      updateDoc(doc(db, "dateMark", 'date'), input);
+    },
 
 
 
@@ -190,12 +204,6 @@ export default createStore({
 
       context.commit('updateaccuratePictureStatus', { accuratePictureIdToChange, accuratePictureStatus })
     },
-
-
-
-
-
-
 
 // CHANGE ID DELETE
     async changeId(context, {loopEventIds, newId}) {

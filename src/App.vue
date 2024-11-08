@@ -1,30 +1,60 @@
 <template>
 
-<div style="display: flex; justify-content: space-around;">
-  <a href="http://www.ww2onthisday.com" target="_blank" style="margin: 15px auto">
-    <img style="width: 250px" src="./assets/ww2-on-this-day-logo.png" alt="ww2-on-this-day-logo">
-  </a>
-</div>
+  <div style="position: absolute; margin:3px;">
+
+    <input type="text" style="width: 70px;" v-model="input">
+    <button style="padding: 2px;" @click="markDate">mark</button>
+    <p>{{ this.$store.state.dateMark }}</p>
+
+  </div>
 
 
-<router-view/>
+  <div style="display: flex; justify-content: space-around;">
+    <a href="http://www.ww2onthisday.com" target="_blank" style="margin: 15px auto">
+      <img style="width: 250px" src="./assets/ww2-on-this-day-logo.png" alt="ww2-on-this-day-logo">
+    </a>
+  </div>
 
-<!-- SCROLL TO TOP -->
-<img
-    src="https://cdn.onlinewebfonts.com/svg/img_158933.png"
-    alt="to-top-icon"
-    class="to-top-icon"
-    @click="goToTop()"
->
+
+  <router-view/>
+
+  <!-- SCROLL TO TOP -->
+  <img
+      src="https://cdn.onlinewebfonts.com/svg/img_158933.png"
+      alt="to-top-icon"
+      class="to-top-icon"
+      @click="goToTop()"
+  >
 
 </template>
 
 <script>
 
 export default {
+  data() {
+    return {
+      input: null,
+    }
+  },
+  mounted() {
+    this.fetchDate();
+  },
   methods: {
     goToTop() {
       window.scrollTo(0,0);
+    },
+    fetchDate() {
+      this.$store.dispatch('fetchDate')
+    },
+    markDate() {
+
+      const dateWritten = {
+        dateMarked: this.input
+      }
+
+      if (this.input != null) {
+        this.$store.dispatch('markDate', dateWritten )
+      }
     }
   }
 }
