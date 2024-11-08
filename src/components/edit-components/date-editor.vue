@@ -33,7 +33,7 @@
             </option>
         </select>
         <button style="height: 22px; padding: 2px; width: 20px;" @click="clearDate()">&#x2715;</button>
-        <button style="margin-left: 10px; padding: 2px;" @click="markDate">mark</button>
+        <button style="margin-left: 10px; font-size: 10px; padding: 2px;" @click="markDate">mark</button>
     </div>
 
 </template>
