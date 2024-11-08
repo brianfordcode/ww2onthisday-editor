@@ -1,10 +1,13 @@
 <template>
 
-  <div style="position: absolute; margin:3px;">
+  <div style="position: absolute; margin:3px; font-size:12px;">
 
-    <input type="text" style="width: 70px;" v-model="input">
-    <button style="padding: 2px;" @click="markDate">mark</button>
-    <p>{{ this.$store.state.dateMark }}</p>
+    <p>last date edited:</p>
+    <b>{{ this.$store.state.dateMark }}</b>
+    <!-- <p>new date:</p>
+    <input type="text" style="width: 75px; box-sizing: border-box; margin: 0" v-model="inputValue">
+    <br>
+    <button style="padding: 2px;" @click="markDate">save</button> -->
 
   </div>
 
@@ -33,29 +36,28 @@
 export default {
   data() {
     return {
-      input: null,
+      inputValue: '',
     }
   },
   mounted() {
-    this.fetchDate();
+    this.$store.dispatch('fetchDate')
   },
   methods: {
     goToTop() {
       window.scrollTo(0,0);
     },
-    fetchDate() {
-      this.$store.dispatch('fetchDate')
-    },
-    markDate() {
+    // markDate() {
+    //   const dateWritten = {
+    //     dateMarked: this.inputValue
+    //   }
 
-      const dateWritten = {
-        dateMarked: this.input
-      }
+    //   if (this.inputValue != '') {
+    //     this.$store.dispatch('markDate', dateWritten )
+    //   }
+      
+    //   this.inputValue = ''
 
-      if (this.input != null) {
-        this.$store.dispatch('markDate', dateWritten )
-      }
-    }
+    // }
   }
 }
 

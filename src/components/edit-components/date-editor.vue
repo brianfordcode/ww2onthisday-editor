@@ -33,6 +33,7 @@
             </option>
         </select>
         <button style="height: 22px; padding: 2px; width: 20px;" @click="clearDate()">&#x2715;</button>
+        <button style="margin-left: 10px; padding: 2px;" @click="markDate">mark</button>
     </div>
 
 </template>
@@ -77,6 +78,20 @@ export default {
             this.year = ''
             this.month = ''
             this.day = ''
+        },
+        markDate() {
+            
+            const date = new Date(this.dateString);
+  
+            const formatDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            const dateWritten = {
+                dateMarked: formatDate
+            }
+            if (date != 'Invalid Date') {
+                this.$store.dispatch('markDate', dateWritten )
+            }
+
         }
     }
 }
