@@ -80,18 +80,16 @@ export default {
             this.day = ''
         },
         markDate() {
+            // Add a time part to ensure it's local time
+            const date = new Date(`${this.year}-${this.month}-${this.day}T00:00:00`);
             
-            const date = new Date(this.dateString);
-  
-            const formatDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-            const dateWritten = {
-                dateMarked: formatDate
+            if (date.getTime() && !isNaN(date)) {
+                const formatDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                const dateWritten = { dateMarked: formatDate };
+                this.$store.dispatch('markDate', dateWritten);
+            } else {
+                console.error('Invalid date');
             }
-            if (date != 'Invalid Date') {
-                this.$store.dispatch('markDate', dateWritten )
-            }
-
         }
     }
 }
