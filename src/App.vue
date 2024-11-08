@@ -1,14 +1,8 @@
 <template>
 
-  <div style="position: absolute; margin:3px; font-size:12px;">
-
-    <p>last date edited:</p>
+  <div style="display: flex; font-size:12px; margin:2px;">
+    <p style="margin-right: 3px;">last date edited:</p>
     <b>{{ this.$store.state.dateMark }}</b>
-    <!-- <p>new date:</p>
-    <input type="text" style="width: 75px; box-sizing: border-box; margin: 0" v-model="inputValue">
-    <br>
-    <button style="padding: 2px;" @click="markDate">save</button> -->
-
   </div>
 
 
